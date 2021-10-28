@@ -1,0 +1,8 @@
+{
+  "navigationBarTitleText": "配音街-10分钟配出超值好声音",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "music-audio": "/components/audio/audioplay",
+    "submit-form": "/components/submitform/submitform"
+  }
+}

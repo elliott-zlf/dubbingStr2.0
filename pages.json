@@ -1,0 +1,105 @@
+{
+	"easycom": {
+		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
+	},
+	"pages": [{
+		"path": "pages/index/index",
+		"style": {
+			"navigationBarTitleText": "配音街-10分钟配出超值好声音",
+			"enablePullDownRefresh": false
+		}
+	   },
+	   {
+            "path" : "pages/message/message",
+            "style" :                                                                                    
+            {
+                "navigationBarTitleText": "消息",
+                "enablePullDownRefresh": false
+            }
+            
+        }
+        ,{
+            "path" : "pages/personal/personal",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom"
+            }
+            
+        }
+        ,{
+            "path" : "pages/demand/demand",
+            "style" :                                                                                    
+            {
+              "navigationStyle":"custom"
+            }
+            
+        }
+    ],
+	"globalStyle": {
+		"navigationBarTextStyle": "black",
+		"backgroundTextStyle": "light",
+		"navigationBarTitleText": "配音街",
+		"navigationBarBackgroundColor": "#FFFFFF",
+		"backgroundColor": "#FFFFFF",
+		"app-plus": {
+			"background": "#efeff4"
+		}
+	},
+	"tabBar": {
+		"selectedColor":"#FF445A",
+		"backgroundColor":"#FFFFFF",
+		"borderStyle":"white",
+		"color":"#999999",
+		"height": "83px",
+		"list": [
+		  {
+			"pagePath": "pages/index/index",
+			"text": "发布需求",
+			"iconPath": "./static/tabbar/release.png",
+			"selectedIconPath":"./static/tabbar/releaseActive.png"
+		  },
+		  {
+			"pagePath": "pages/demand/demand",
+			"text": "我的需求",
+			"iconPath": "./static/tabbar/demand.png",
+			"selectedIconPath":"./static/tabbar/demandActive.png"
+		  },
+		  {
+			"pagePath": "pages/message/message",
+			"text": "消息",
+			"iconPath": "./static/tabbar/message.png",
+			"selectedIconPath":"./static/tabbar/messageActive.png"
+		  },
+		  {
+			"pagePath": "pages/personal/personal",
+			"text": "我的",
+			"iconPath": "./static/tabbar/my.png",
+			"selectedIconPath":"./static/tabbar/myActive.png"
+		  }
+		]
+	},
+	"subPackages": [
+		{
+			"root": "subpkg",
+			"name": "sub-1",
+			"pages": [
+			  {
+			      "path" : "pages/teacherlist/teacherlist",
+			      "style" :                                                                                    
+			      {
+					"navigationStyle":"custom"
+			      }  
+			  }
+                ,{
+                    "path" : "carddetails/carddetails",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+            ]
+		}
+	]
+}
