@@ -9,6 +9,9 @@
 					</view>
 					<view class="u-icon-wrap u-back-text u-line-1" v-if="backText" :style="[backTextStyle]">{{ backText }}</view>
 				</view>
+				<view class="u-slot-right">
+					<slot name="right"></slot>
+				</view>
 				<view class="u-navbar-content-title" v-if="title" :style="[titleStyle]">
 					<view
 					    class="u-title u-line-1"
@@ -22,9 +25,6 @@
 				</view>
 				<view class="u-slot-content">
 					<slot></slot>
-				</view>
-				<view class="u-slot-right">
-					<slot name="right"></slot>
 				</view>
 			</view>
 		</view>

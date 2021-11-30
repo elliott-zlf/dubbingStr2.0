@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
+    "l-file": "/uni_modules/l-file/components/l-file/l-file"
+  }
+}

@@ -10,7 +10,9 @@
       "root": "subpkg",
       "pages": [
         "pages/teacherlist/teacherlist",
-        "carddetails/carddetails"
+        "pages/carddetails/carddetails",
+        "pages/demanddetails/demanddetails",
+        "pages/chatpage/chatpage"
       ],
       "name": "sub-1"
     }
@@ -27,7 +29,6 @@
     "backgroundColor": "#FFFFFF",
     "borderStyle": "white",
     "color": "#999999",
-    "height": "83px",
     "list": [
       {
         "pagePath": "pages/index/index",

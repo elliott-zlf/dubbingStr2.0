@@ -109,12 +109,8 @@ page {
 .invitationBtn {
   width: 100%;
   height: 113.678rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
   border-radius: 8rpx;
   border: none;
   padding: 0 !important;
@@ -179,20 +175,12 @@ page {
 }
 .teacherlist_box .my_list_cell_box .list_cell {
   height: 113.678rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 .teacherlist_box .my_list_cell_box .list_cell .cell_logo_box {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherlist_box .my_list_cell_box .list_cell .cell_logo_box .cell_logo {
   margin-left: 30.797rpx;
@@ -229,13 +217,9 @@ page {
   border-radius: 14.493rpx;
 }
 .teacherlist_box .weChat_card .title_group_box {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   text-align: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherlist_box .weChat_card .title_group_box .group_icon {
   width: 47.101rpx;

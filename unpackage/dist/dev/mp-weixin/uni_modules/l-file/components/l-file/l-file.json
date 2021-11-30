@@ -1,0 +1,6 @@
+{
+  "component": true,
+  "usingComponents": {
+    "h5-file": "/uni_modules/l-file/components/l-file/h5-file"
+  }
+}

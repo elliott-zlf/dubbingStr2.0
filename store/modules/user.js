@@ -1,4 +1,5 @@
 import { login, getWechatUserInfo,saveUserInfo } from 'api/index';
+import { chatSignature } from '@/api/message.js'
 const STORAGE_KEY = 'user-info';
 const TOKEN_KEY = 'token';
 const PHONE_NUM = 'phoneNumber'
@@ -11,6 +12,7 @@ export default {
       // 用户信息
       userInfo: uni.getStorageSync(STORAGE_KEY) || {},
       phoneNumber: uni.getStorageSync(PHONE_NUM) || '',
+      userId: ''
     };
   },
   mutations: {
@@ -18,6 +20,7 @@ export default {
      * 保存 token 到 vuex
      */
     setToken(state, token) {
+      console.log('userToken',state,token)
       state.token = token;
       this.commit('user/saveToken');
     },
@@ -29,6 +32,10 @@ export default {
         key: TOKEN_KEY,
         data: state.token
       });
+    },
+    setUserId(state,userId) {
+      console.log('userID',state,userId)
+      state.userId = userId
     },
     setPhone(state,phone) {
       state.phoneNumber = phone;
@@ -82,11 +89,13 @@ export default {
       });
       // 登录逻辑
       console.log('登录请求', res.data)
-      this.commit('user/setToken', res.data);
+      this.commit('user/setToken', res.data.user_token);
       // this.commit('user/setUserInfo', JSON.parse(userProfile.rawData));
+      const userIdres = await chatSignature()
+      this.commit('user/setUserId', userIdres.data.userId);
+      console.log("-------------------------1")
     },
     async saveUserInfo(content,userProfile) {
-      console.log('user个人资料', userProfile)
       const data = userProfile.userInfo
       const wechatUser = {
         avatar: data.avatarUrl,

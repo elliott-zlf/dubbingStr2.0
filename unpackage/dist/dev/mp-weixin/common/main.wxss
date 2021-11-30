@@ -14,6 +14,23 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 .home_musicSrc_box {
 	width: 675.725rpx;
@@ -86,8 +103,7 @@ image {
 }
 view,
 text {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .u-font-xs {
   font-size: 22rpx;
@@ -106,64 +122,40 @@ text {
 }
 .u-flex {
 
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  flex-direction: row;
+  align-items: center;
 }
 .u-flex-wrap {
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
+  flex-wrap: wrap;
 }
 .u-flex-nowrap {
-  -webkit-flex-wrap: nowrap;
-          flex-wrap: nowrap;
+  flex-wrap: nowrap;
 }
 .u-col-center {
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .u-col-top {
-  -webkit-box-align: start;
-  -webkit-align-items: flex-start;
-          align-items: flex-start;
+  align-items: flex-start;
 }
 .u-col-bottom {
-  -webkit-box-align: end;
-  -webkit-align-items: flex-end;
-          align-items: flex-end;
+  align-items: flex-end;
 }
 .u-row-center {
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
 }
 .u-row-left {
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-          justify-content: flex-start;
+  justify-content: flex-start;
 }
 .u-row-right {
-  -webkit-box-pack: end;
-  -webkit-justify-content: flex-end;
-          justify-content: flex-end;
+  justify-content: flex-end;
 }
 .u-row-between {
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 .u-row-around {
-  -webkit-justify-content: space-around;
-          justify-content: space-around;
+  justify-content: space-around;
 }
 .u-text-left {
   text-align: left;
@@ -176,79 +168,48 @@ text {
 }
 .u-flex-col {
 
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
 .u-flex-0 {
-  -webkit-box-flex: 0;
-  -webkit-flex: 0;
-          flex: 0;
+  flex: 0;
 }
 .u-flex-1 {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 .u-flex-2 {
-  -webkit-box-flex: 2;
-  -webkit-flex: 2;
-          flex: 2;
+  flex: 2;
 }
 .u-flex-3 {
-  -webkit-box-flex: 3;
-  -webkit-flex: 3;
-          flex: 3;
+  flex: 3;
 }
 .u-flex-4 {
-  -webkit-box-flex: 4;
-  -webkit-flex: 4;
-          flex: 4;
+  flex: 4;
 }
 .u-flex-5 {
-  -webkit-box-flex: 5;
-  -webkit-flex: 5;
-          flex: 5;
+  flex: 5;
 }
 .u-flex-6 {
-  -webkit-box-flex: 6;
-  -webkit-flex: 6;
-          flex: 6;
+  flex: 6;
 }
 .u-flex-7 {
-  -webkit-box-flex: 7;
-  -webkit-flex: 7;
-          flex: 7;
+  flex: 7;
 }
 .u-flex-8 {
-  -webkit-box-flex: 8;
-  -webkit-flex: 8;
-          flex: 8;
+  flex: 8;
 }
 .u-flex-9 {
-  -webkit-box-flex: 9;
-  -webkit-flex: 9;
-          flex: 9;
+  flex: 9;
 }
 .u-flex-10 {
-  -webkit-box-flex: 10;
-  -webkit-flex: 10;
-          flex: 10;
+  flex: 10;
 }
 .u-flex-11 {
-  -webkit-box-flex: 11;
-  -webkit-flex: 11;
-          flex: 11;
+  flex: 11;
 }
 .u-flex-12 {
-  -webkit-box-flex: 12;
-  -webkit-flex: 12;
-          flex: 12;
+  flex: 12;
 }
 .u-font-9 {
   font-size: 9px;
@@ -2993,13 +2954,8 @@ text {
   padding-bottom: 80rpx !important;
 }
 .u-reset-nvue {
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  flex-direction: row;
+  align-items: center;
 }
 .u-type-primary-light {
   color: #ecf5ff;
@@ -3129,12 +3085,8 @@ page {
 /* end--去除webkit的默认样式--end */
 /* start--icon图标外层套一个view，让其达到更好的垂直居中的效果--start */
 .u-icon-wrap {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 /* end-icon图标外层套一个view，让其达到更好的垂直居中的效果--end */
 /* start--iPhoneX底部安全区定义--start */
@@ -3200,8 +3152,7 @@ page {
   left: 0;
   top: 0;
   pointer-events: none;
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   -webkit-transform-origin: 0 0;
   transform-origin: 0 0;
   width: 199.8%;
@@ -3278,46 +3229,29 @@ page {
 
 /* start--微信小程序编译后页面有组件名的元素，特别处理--start */
 u-td, u-th {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
-  -webkit-align-self: stretch;
-          align-self: stretch;
+  flex: 1;
+  align-self: stretch;
 }
 .u-td {
   height: 100%;
 }
 u-icon {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
   display: inline-flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 u-grid {
   width: 100%;
-  -webkit-box-flex: 0;
-  -webkit-flex: 0 0 100%;
-          flex: 0 0 100%;
+  flex: 0 0 100%;
 }
 u-line {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 u-switch {
-  display: -webkit-inline-box;
-  display: -webkit-inline-flex;
   display: inline-flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 u-dropdown {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 
 /* end-微信小程序编译后页面有组件名的元素，特别处理--end */
@@ -3343,26 +3277,113 @@ u-dropdown {
 
 
 
-
-
-
-
-
-
-
-
-
-
 /* end-头条小程序编译后页面有组件名的元素，特别处理--end */
-
-
-
-
-
-
-
-
-
-
-
+.pys_popup {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999999;
+}
+.pys_popup .popup_conent {
+  position: absolute;
+  padding: 36.232rpx;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  min-width: 500.71rpx;
+  min-height: 326.087rpx;
+  background: #FFFFFF;
+  border-radius: 28.986rpx;
+}
+.pys_popup .popup_conent .closeicon {
+  position: absolute;
+  width: 50.725rpx;
+  height: 50.725rpx;
+  top: -66.232rpx;
+  right: 0;
+}
+.erweimabox {
+  position: relative;
+}
+.erweimabox .close_iconbox {
+  position: absolute;
+  background: #000000;
+  right: 0rpx;
+  width: 50rpx;
+  height: 50rpx;
+  top: 0rpx;
+  border-radius: 50%;
+}
+.erweimabox .close_iconbox .close_icon {
+  width: 50rpx;
+  height: 50rpx;
+}
+.erweimabox .erweima_icon {
+  width: 491.014rpx;
+  height: 491.014rpx;
+}
+.erweimabox .erweima_box {
+  width: 471.014rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 36.232rpx;
+}
+.check_WeChat_test {
+  text-align: center;
+  height: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 39.855rpx;
+}
+.check_WeChat_tips {
+  margin-top: 28.986rpx;
+  margin-bottom: 36.232rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.share_btn_box {
+  display: flex;
+}
+.share_btn_box .cancelSharebtn {
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #FFFFFF;
+  border-radius: 39.855rpx;
+  border: 1.812rpx solid #DEDEDE;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
+}
+.share_btn_box .cancelSharebtn::after {
+  border: none !important;
+}
+.share_btn_box .sharebtn {
+  margin-left: 36.232rpx;
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #FF445A;
+  border-radius: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 79.71rpx;
+}
+.share_btn_box .sharebtn::after {
+  border: none !important;
+}
 

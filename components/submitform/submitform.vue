@@ -150,7 +150,7 @@
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
+import { mapState } from "vuex";
 export default {
   name: "submitform",
   props: {
@@ -231,27 +231,11 @@ export default {
     };
   },
   created() {
-    console.log("走这里了吗");
-    this.getUnionid();
   },
   computed: {
-    ...mapState("user", ["token", "userInfo"]),
+    ...mapState("user", ["token"]),
   },
   methods: {
-    ...mapActions("user", ["login"]),
-    //  获取用户token
-    getUnionid() {
-      uni.login({
-        provider: "weixin",
-        success: async (result) => {
-          await this.login(result.code);
-          // this.getAllteacher()
-        },
-        fail: (error) => {
-          console.log("登录失败", error);
-        },
-      });
-    },
     // 计算输入框的字数
     handleInputEvents() {
       this.textareanum = this.form.text.length;

@@ -13,12 +13,11 @@
             "path" : "pages/message/message",
             "style" :                                                                                    
             {
-                "navigationBarTitleText": "消息",
-                "enablePullDownRefresh": false
+                "navigationStyle": "custom"
             }
             
-        }
-        ,{
+        },
+        {
             "path" : "pages/personal/personal",
             "style" :                                                                                    
             {
@@ -50,7 +49,6 @@
 		"backgroundColor":"#FFFFFF",
 		"borderStyle":"white",
 		"color":"#999999",
-		"height": "83px",
 		"list": [
 		  {
 			"pagePath": "pages/index/index",
@@ -91,11 +89,27 @@
 			      }  
 			  }
                 ,{
-                    "path" : "carddetails/carddetails",
+                    "path" : "pages/carddetails/carddetails",
                     "style" :                                                                                    
                 {
                     "navigationBarTitleText": "",
                     "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pages/demanddetails/demanddetails",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/chatpage/chatpage",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
                 }
                 
                 }

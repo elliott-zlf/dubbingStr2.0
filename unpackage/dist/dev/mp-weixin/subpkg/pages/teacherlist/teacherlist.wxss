@@ -182,29 +182,19 @@ scroll-view  ::-webkit-scrollbar {
   position: absolute;
   right: -142.246rpx;
   top: 0;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   width: 143.246rpx;
 }
 .u-tabs-box .screening_btn_box .screening_btn.data-v-aeb7ac1e {
   width: 100rpx;
   height: 60rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   margin-top: -10rpx;
   margin-left: 10rpx;
   justify-content: center;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   text-align: center;
-  -webkit-box-pack: center;
-  -webkit-justify-content: center;
   justify-content: center;
   border-radius: 30rpx;
   border: #2E2E2E 1px solid;
@@ -232,12 +222,8 @@ scroll-view  ::-webkit-scrollbar {
 .price_screening_box.data-v-aeb7ac1e {
   width: 100%;
   padding: 27.174rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 .price_screening_box .price_item.data-v-aeb7ac1e {
   padding: 0 23.551rpx;
@@ -264,8 +250,6 @@ scroll-view  ::-webkit-scrollbar {
   margin-bottom: 21.739rpx;
 }
 .teacherOrder .teacher_top_Introduction.data-v-aeb7ac1e {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 }
 .teacherOrder .teacher_top_Introduction .top_Introduction_left.data-v-aeb7ac1e {
@@ -335,12 +319,8 @@ scroll-view  ::-webkit-scrollbar {
   margin-top: 25.362rpx;
   width: 639.493rpx;
   height: 90.58rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   position: relative;
   background: #F1F3F7;
   border-radius: 6px;
@@ -348,12 +328,8 @@ scroll-view  ::-webkit-scrollbar {
 .teacherOrder .teacher_bot_voices .teacher_play_box.data-v-aeb7ac1e {
   height: 100%;
   padding-left: 23.551rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherOrder .teacher_bot_voices .teacher_play_icon.data-v-aeb7ac1e {
   width: 47.101rpx;
@@ -379,21 +355,14 @@ scroll-view  ::-webkit-scrollbar {
   height: 28.986rpx;
 }
 .wrap.data-v-aeb7ac1e {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   height: calc(100vh - 0px);
   width: 100%;
   background: #F2F2F2;
 }
 .swiper-box.data-v-aeb7ac1e {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 .swiper-item.data-v-aeb7ac1e {
   height: 100%;
@@ -415,14 +384,9 @@ scroll-view  ::-webkit-scrollbar {
   line-height: 20px;
 }
 .popup_content_box .selection_listbox .item_tag_box.data-v-aeb7ac1e {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-flex-wrap: wrap;
-          flex-wrap: wrap;
-  -webkit-box-pack: start;
-  -webkit-justify-content: flex-start;
-          justify-content: flex-start;
+  flex-wrap: wrap;
+  justify-content: flex-start;
 }
 .popup_content_box .selection_listbox .item_tag_box .item_tag.data-v-aeb7ac1e {
   margin-top: 21.739rpx;
@@ -444,8 +408,6 @@ scroll-view  ::-webkit-scrollbar {
 }
 .popup_content_box .confrim_btn_box.data-v-aeb7ac1e {
   margin-top: 36.232rpx;
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 }
 .popup_content_box .confrim_btn_box .cancel_btn.data-v-aeb7ac1e {
@@ -514,8 +476,6 @@ scroll-view  ::-webkit-scrollbar {
   line-height: 36.232rpx;
 }
 .share_btn_box.data-v-aeb7ac1e {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 }
 .share_btn_box .cancelSharebtn.data-v-aeb7ac1e {
@@ -555,8 +515,7 @@ scroll-view  ::-webkit-scrollbar {
   height: 79.71rpx;
   line-height: 79.71rpx;
   background: #FFFFFF;
-  -webkit-box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-          box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
+  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
   border-radius: 57.971rpx 0px 0px 57.971rpx;
   border: 1px solid #EDEDED;
 }

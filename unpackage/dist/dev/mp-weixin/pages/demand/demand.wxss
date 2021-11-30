@@ -109,21 +109,14 @@ page {
   position: relative;
 }
 .wrap.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   height: calc(100vh - 0px);
   width: 100%;
   background: #F2F2F2;
 }
 .swiper-box.data-v-07e68366 {
-  -webkit-box-flex: 1;
-  -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 .swiper-item.data-v-07e68366 {
   height: 100%;
@@ -141,18 +134,12 @@ page {
   border-radius: 14.493rpx;
 }
 .teacherOrder .list_item_box .item_title_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   height: 91.957rpx;
 }
 .teacherOrder .list_item_box .item_title_box .logo_icon_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherOrder .list_item_box .item_title_box .logo_icon_box .logo_icon.data-v-07e68366 {
   width: 26.087rpx;
@@ -169,12 +156,8 @@ page {
   line-height: 39.855rpx;
 }
 .teacherOrder .list_item_box .item_title_box .apply_group_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherOrder .list_item_box .item_title_box .apply_group_box .apply_group.data-v-07e68366 {
   text-align: center;
@@ -189,21 +172,13 @@ page {
   color: #FFFFFF;
 }
 .teacherOrder .list_item_box .demand_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
   height: 70.957rpx;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 .teacherOrder .list_item_box .demand_box .time_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   width: 50%;
 }
 .teacherOrder .list_item_box .demand_box .time_box .time_icon.data-v-07e68366 {
@@ -260,8 +235,6 @@ page {
   line-height: 36.232rpx;
 }
 .share_btn_box.data-v-07e68366 {
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
 }
 .share_btn_box .cancelSharebtn.data-v-07e68366 {

@@ -23,6 +23,24 @@
           "pathName": "pages/personal/personal",
           "query": "",
           "scene": null
+        },
+        {
+          "name": "subpkg/pages/demanddetails/demanddetails",
+          "pathName": "subpkg/pages/demanddetails/demanddetails",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "pages/message/message",
+          "pathName": "pages/message/message",
+          "query": "",
+          "scene": null
+        },
+        {
+          "name": "subpkg/pages/chatpage/chatpage",
+          "pathName": "subpkg/pages/chatpage/chatpage",
+          "query": "",
+          "scene": null
         }
       ]
     }

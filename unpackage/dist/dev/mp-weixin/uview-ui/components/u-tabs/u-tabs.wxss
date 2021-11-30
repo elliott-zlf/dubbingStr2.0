@@ -49,8 +49,7 @@
 /* 文章场景相关 */
 view.data-v-3b2b1a80,
 scroll-view.data-v-3b2b1a80 {
-  -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
 }
 .data-v-3b2b1a80::-webkit-scrollbar,.data-v-3b2b1a80::-webkit-scrollbar,.data-v-3b2b1a80::-webkit-scrollbar {
   display: none;
@@ -71,7 +70,6 @@ scroll-view.data-v-3b2b1a80 {
   position: relative;
   display: inline-block;
   text-align: center;
-  -webkit-transition-property: background-color, color;
   transition-property: background-color, color;
 }
 .u-tab-bar.data-v-3b2b1a80 {
@@ -80,16 +78,9 @@ scroll-view.data-v-3b2b1a80 {
 }
 .u-tabs-scorll-flex.data-v-3b2b1a80 {
 
-  display: -webkit-box;
-  display: -webkit-flex;
   display: flex;
-  -webkit-box-orient: horizontal;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: row;
-          flex-direction: row;
+  flex-direction: row;
 
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
 }
 

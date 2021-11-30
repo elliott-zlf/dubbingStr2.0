@@ -1,5 +1,6 @@
 {
-  "navigationBarTitleText": "消息",
-  "enablePullDownRefresh": false,
-  "usingComponents": {}
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar"
+  }
 }

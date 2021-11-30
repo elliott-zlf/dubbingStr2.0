@@ -241,7 +241,9 @@ export default {
 		// 邀请配音
 		handleApplyGroup(id) {
 			this.groupId = id
-			this.sharePopShow = true
+			console.log('跳转')
+			uni.navigateTo({ url: '/subpkg/pages/demanddetails/demanddetails' })
+			// this.sharePopShow = true
 			// this.$refs.submitform.hadleUpdate()
 		},
 		reachBottom() {

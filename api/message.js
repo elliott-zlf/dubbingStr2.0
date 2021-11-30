@@ -14,3 +14,19 @@ export function loginwebsite(data) {
         data
     })
 }
+// 获取UserID
+export function chatSignature(data) {
+    return request({
+        url: '/street/chat/signature',
+        method: 'POST',
+        data
+    })
+}
+// 聊天列表
+export function chatListaction(data) {
+    return request({
+        url: '/street/chat/listaction',
+        method: 'POST',
+        data
+    })
+}

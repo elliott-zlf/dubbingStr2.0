@@ -8,7 +8,7 @@ function request({ url, data, method }) {
       data,
       method,
       header: {
-        UserToken: store.state.user.token || ''
+        UserToken: 1 || ''
       },
       success: ({ data }) => {
         console.log('接口返回数据', data)
