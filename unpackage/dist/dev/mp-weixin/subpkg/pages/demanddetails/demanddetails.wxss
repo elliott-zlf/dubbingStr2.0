@@ -117,6 +117,14 @@ page {
   height: 100%;
   background: #130836;
 }
+.container {
+  position: relative;
+}
+.container .home_musicSrc_box {
+  position: fixed;
+  z-index: 999999;
+  bottom: 120rpx;
+}
 .content .head_portrait_box {
   padding: 39.855rpx 27.174rpx 0 27.174rpx;
   display: flex;
@@ -318,6 +326,13 @@ page {
   height: 47.101rpx;
   bottom: -15rpx;
 }
+.content .invitation_vico .invitation_card .item_card .invitation_btn {
+  margin-top: 23.551rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FF445A;
+}
 .content .invitation_vico .invitation_card .item_card .nick_name {
   width: 90%;
   margin-left: 5%;
@@ -354,15 +369,6 @@ page {
   width: 25.362rpx;
   height: 25.362rpx;
 }
-.content .invitation_vico .invitation_card .item_card .invitation_btn {
-  padding-top: 28.986rpx;
-  height: 36.232rpx;
-  font-size: 25.362rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #FF445A;
-  line-height: 36.232rpx;
-}
 .content .invitation_vico .confirminvitation {
   margin-top: 43.478rpx;
   margin-left: 36.232rpx;
@@ -376,6 +382,20 @@ page {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
+}
+.content .invitation_vico .confirminvitation_grey {
+  margin-top: 43.478rpx;
+  margin-left: 36.232rpx;
+  text-align: center;
+  width: 623.188rpx;
+  height: 90.58rpx;
+  line-height: 90.58rpx;
+  background: #F3F4F9;
+  border-radius: 45.29rpx;
+  font-size: 32.609rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
 }
 .content .invitation_vico .invitation_process {
   margin-top: 34.42rpx;
@@ -467,6 +487,45 @@ page {
   font-weight: 500;
   color: #FFFFFF;
 }
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_top .invitation_box .confirmed_btn {
+  display: flex;
+  align-items: center;
+  height: 65.217rpx;
+  justify-content: center;
+  width: 159.42rpx;
+  background: #F3F4F9;
+  border-radius: 32.609rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_top .invitation_box .successful_btn {
+  display: flex;
+  align-items: center;
+  height: 65.217rpx;
+  justify-content: center;
+  width: 159.42rpx;
+  background: #F3F4F9;
+  border-radius: 32.609rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
+}
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_top .invitation_box .apush_btn {
+  display: flex;
+  align-items: center;
+  height: 65.217rpx;
+  justify-content: center;
+  width: 159.42rpx;
+  border: 1px solid #FF445A;
+  border-radius: 32.609rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FF445A;
+}
 .content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom {
   margin: 30.797rpx 36.232rpx;
   width: 623.188rpx;
@@ -476,13 +535,17 @@ page {
   align-items: center;
   border-radius: 10.87rpx;
 }
-.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom .play_box {
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom .play_list {
+  display: flex;
+  align-items: center;
+}
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom .play_list .play_box {
   width: 86.957rpx;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom .play_box .play {
+.content .sampleVoices .itemList_scroll .itemList_box .item_list .list_bottom .play_list .play_box .play {
   width: 47.101rpx;
   height: 47.101rpx;
 }
@@ -803,7 +866,7 @@ page {
 }
 .intelligent_title .title_text {
   margin-left: 14.493rpx;
-  width: 471.014rpx;
+  width: 481.014rpx;
   font-size: 28.986rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
@@ -825,7 +888,7 @@ page {
 }
 .price_screening_box {
   width: 100%;
-  padding: 27.174rpx;
+  padding: 27.174rpx 37rpx;
   display: flex;
   justify-content: space-between;
 }
@@ -911,6 +974,32 @@ page {
   font-weight: 500;
   color: #FFFFFF;
 }
+.popup_conten .smart_item .item_list .list_top .invitation_box .confirmed_btn {
+  display: flex;
+  align-items: center;
+  height: 65.217rpx;
+  justify-content: center;
+  width: 159.42rpx;
+  background: #F3F4F9;
+  border-radius: 32.609rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.popup_conten .smart_item .item_list .list_top .invitation_box .successful_btn {
+  display: flex;
+  align-items: center;
+  height: 65.217rpx;
+  justify-content: center;
+  width: 159.42rpx;
+  background: #F3F4F9;
+  border-radius: 32.609rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
+}
 .popup_conten .smart_item .item_list .list_bottom {
   margin: 25.362rpx 36.232rpx;
   width: 677.536rpx;
@@ -920,17 +1009,21 @@ page {
   align-items: center;
   border-radius: 10.87rpx;
 }
-.popup_conten .smart_item .item_list .list_bottom .play_box {
+.popup_conten .smart_item .item_list .list_bottom .play_list {
+  display: flex;
+  align-items: center;
+}
+.popup_conten .smart_item .item_list .list_bottom .play_list .play_box {
   width: 86.957rpx;
   display: flex;
   justify-content: center;
   align-items: center;
 }
-.popup_conten .smart_item .item_list .list_bottom .play_box .play {
+.popup_conten .smart_item .item_list .list_bottom .play_list .play_box .play {
   width: 47.101rpx;
   height: 47.101rpx;
 }
-.popup_conten .smart_item .item_list .list_bottom .nameWork {
+.popup_conten .smart_item .item_list .list_bottom .play_list .nameWork {
   width: 460.145rpx;
   font-size: 25.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -940,6 +1033,8 @@ page {
 .popup_conten .smart_item .item_list .list_bottom .collection_box {
   display: flex;
   align-items: center;
+  width: 109rpx;
+  justify-content: flex-end;
 }
 .popup_conten .smart_item .item_list .list_bottom .collection_box .collection {
   width: 39.855rpx;
@@ -971,6 +1066,7 @@ page {
   justify-content: center;
 }
 .popup_conten .smart_item .loading_text_box .loading_text {
+  text-align: center;
   width: 400.362rpx;
   font-size: 26.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;

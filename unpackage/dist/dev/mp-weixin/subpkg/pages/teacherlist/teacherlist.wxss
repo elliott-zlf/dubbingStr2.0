@@ -188,7 +188,7 @@ scroll-view  ::-webkit-scrollbar {
 }
 .u-tabs-box .screening_btn_box .screening_btn.data-v-aeb7ac1e {
   width: 100rpx;
-  height: 60rpx;
+  height: 50rpx;
   display: flex;
   margin-top: -10rpx;
   margin-left: 10rpx;

@@ -272,38 +272,160 @@ page {
   color: #FF445A;
   line-height: 45.29rpx;
 }
-.erweimabox {
-  position: relative;
+.pys_popup {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999999;
 }
-.erweimabox .close_iconbox {
+.pys_popup .popup_conent {
   position: absolute;
-  background: #000000;
-  right: 0rpx;
-  width: 50rpx;
-  height: 50rpx;
-  top: 0rpx;
-  border-radius: 50%;
+  padding: 36.232rpx;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  min-width: 500.71rpx;
+  min-height: 326.087rpx;
+  background: #FFFFFF;
+  border-radius: 28.986rpx;
 }
-.erweimabox .close_iconbox .close_icon {
-  width: 50rpx;
-  height: 50rpx;
+.pys_popup .popup_conent .closeicon {
+  position: absolute;
+  width: 50.725rpx;
+  height: 50.725rpx;
+  top: -66.232rpx;
+  right: 0;
 }
-.erweimabox .erweima_iconbox {
-  margin-left: 34.478rpx;
-}
-.erweimabox .erweima_icon {
-  width: 491.014rpx;
-  height: 491.014rpx;
-}
-.erweimabox .erweima_box {
-  width: 471.014rpx;
-  height: 36.232rpx;
+.applystorage {
+  position: fixed;
+  bottom: 70.391rpx;
+  width: 100%;
   text-align: center;
+}
+.applystorage .rankbtn {
+  display: inline-block;
+  width: 579.71rpx;
+  height: 94.203rpx;
+  line-height: 94.203rpx;
+  text-align: center;
+  background: #1274FF;
+  box-shadow: 0px 8px 10px 0px rgba(18, 70, 255, 0.18);
+  border-radius: 30px;
+  font-size: 32.609rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+.applystorage .applystorage_btn {
+  display: inline-block;
+  width: 579.71rpx;
+  height: 94.203rpx;
+  text-align: center;
+  background: #1274FF;
+  box-shadow: 0px 8px 10px 0px rgba(18, 70, 255, 0.18);
+  border-radius: 30px;
+}
+.applystorage .applystorage_btn .shenqing {
+  margin-top: 10rpx;
+  font-size: 32.609rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+.applystorage .applystorage_btn .gengduo {
+  font-size: 18.116rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+.rankingbox .rankingtop_text_box {
+  display: flex;
+  justify-content: center;
+}
+.rankingbox .rankingtop_text_box .rankingtext {
+  width: 271.739rpx;
+}
+.rankingbox .rankingtop_text_box .rankingtext .mingci {
+  text-align: center;
+  height: 50.725rpx;
+  font-size: 36.232rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 50.725rpx;
+}
+.rankingbox .rankingtop_text_box .rankingtext .mingci .mingci_num {
+  color: #1274FF;
+}
+.rankingbox .rankingtop_text_box .rankingtext .tipstitle {
+  text-align: center;
+  height: 36.232rpx;
   font-size: 25.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #999999;
+  color: #000000;
   line-height: 36.232rpx;
-  margin-left: 43.478rpx;
+}
+.rankingbox .rankingtop_text_box .scoretest {
+  width: 271.739rpx;
+}
+.rankingbox .rankingtop_text_box .scoretest .jifne {
+  text-align: center;
+  height: 50.725rpx;
+  font-size: 36.232rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 50.725rpx;
+}
+.rankingbox .rankingtop_text_box .scoretest .tipstitle {
+  text-align: center;
+  height: 36.232rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.rankingbox .prompt_box {
+  margin-top: 38.043rpx;
+  width: 543.478rpx;
+  height: 271.739rpx;
+  background: #F4F4F4;
+  border-radius: 14.493rpx;
+  text-align: center;
+}
+.rankingbox .prompt_box .defen {
+  text-align: center;
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  line-height: 30.797rpx;
+}
+.rankingbox .prompt_box .defen2 {
+  text-align: center;
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  line-height: 30.797rpx;
+}
+.rankingbox .prompt_box .know_btn {
+  display: inline-block;
+  width: 304.348rpx;
+  height: 79.71rpx;
+  line-height: 79.71rpx;
+  background: #1274FF;
+  box-shadow: 0px 14.493rpx 18.116rpx 0px rgba(18, 70, 255, 0.18);
+  border-radius: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
 }
 

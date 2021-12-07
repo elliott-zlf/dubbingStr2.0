@@ -1,5 +1,5 @@
 <template>
-	<view>
+	<view class="container">
 		 <u-navbar
 			:is-back="true"
 			:title="'需求详情' "
@@ -11,6 +11,7 @@
 			@custom-back="handleGoBack"
 		></u-navbar>
 		<view class="content">
+			<!-- 确认成品弹窗 -->
 			<view class="pys_popup" v-if="InvitedPopShow">
 			<view class="popup_conent">
 				<image
@@ -43,18 +44,51 @@
 				</view>
 			</view>
 		    </view>
+			<!-- 确认邀请弹框 -->
+			<view class="pys_popup" v-if="confirmPopShow">
+			<view class="popup_conent">
+				<image
+					class="closeicon"
+					src="@/static/home/close.png"
+					mode="scaleToFill"
+					@click="handlecloseerPopShow"
+				/>
+				<view>
+				<view style="height:17.971rpx"></view>	
+				<view class="check_WeChat_test">
+					确认邀请
+				</view>
+				<view class="check_WeChat_tips">每个需求可邀请3位试音 确认邀请后将不可重新邀请哦～</view>
+				<view class="share_btn_box">
+						<button
+							class="cancelSharebtn"
+							hover-class="button-hover"
+							@click="handlecloseerPopShow"
+						>
+						取消	 
+						</button>
+						<button
+							class="sharebtn"
+							@click="handleConfirmInvite"
+						>
+						确认
+						</button>
+				</view>
+				</view>
+			</view>
+		    </view>
 			<view class="head_portrait_box">
 			 <view class="portrait_img_box">
 				 <image
 			      class="head_portrait_img"
-				  src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/06/17/60cb0026c1735.png"
+				  :src="demandProfile.user.avatar"
 				  mode="scaleToFill"
 			    />
 			 </view>
 			  <view class="nick_name_box">
-				  <view class="nick_name u-line-1">蓝精灵</view>
+				  <view class="nick_name u-line-1">{{demandProfile.user.nickname}}</view>
 				  <view class="deta_box">
-					  <text>07-12 12:24</text>
+					  <text>{{demandProfile.user.created_at}}</text>
 					  <text>发布的需求</text>
 				  </view>
 			  </view>
@@ -63,16 +97,16 @@
               <view class="item_label">
 				  <view class="label">要求</view>
 				  <view class="label_value">
-					  <view class="profile_tags">宣传片</view>
-					  <view class="profile_tags">男声</view>
-					  <view class="profile_tags">大气沉稳</view>
+					  <view class="profile_tags" v-for="(item , index) in demandProfile.tags" :key="index">
+					    {{item.value}}
+					  </view>
 				  </view>
 			  </view>
 			  <view class="item_label">
 				  <view class="label_text">文本</view>
 				  <view class="label_value">
 					  <text :class="anShow ? 'label_value_text' : 'label_value_text_active'">
-                        在供给侧改革的稳步推进中,在“新四化”的要求下，做到四个坚定不移，五个全面发展，六个基本要求，为群众办实事，办好事，办快事。文明其精神，野蛮其体魄
+                        {{demandProfile.audition_text || '未输入试音文本'}}
 					  </text>
 					  <view class="label_anbox" @click="handleanorPack">
                         <image
@@ -87,28 +121,28 @@
 				  <view class="label_text">备注</view>
 				  <view class="label_value">
 					  <text :class="anShow ? 'label_value_text' : 'label_value_text_active'">
-                        要求30-45岁的男配音师
+                        {{demandProfile.content || '未输入其他要求'}}
 					  </text>
 				  </view>
 			  </view>
 			  <view class="item_label last_item_label">
 				  <view class="label_text"></view>
 				  <view class="label_value">
-					  <view class="download_voices">
+					  <view class="download_voices" @click="downloadcopy(demandProfile.audition_url,'下载链接已复制到剪贴板')">
                         <image
 						    class="download_icon"
 							src="@/static/home/mp3icon.png"
 							mode="scaleToFill"
 						/>
-						<text class="download_text">下载参考样音</text>
+						<text class="download_text">{{demandProfile.audition_url ? '下载参考样音' : '无参考样音'}}</text>
 					  </view>
-					  <view class="download_voices">
+					  <view class="download_voices" @click="downloadcopy(demandProfile.audition_url,'下载链接已复制到剪贴板')">
                         <image
 						    class="download_icon"
 							src="@/static/home/wordicon.png"
 							mode="scaleToFill"
 						/>
-						<text class="download_text">下载文本附件</text>
+						<text class="download_text">{{demandProfile.content_url ? '下载文本附件' : '无文本附件'}}</text>
 					  </view>
 				  </view>
 			  </view>
@@ -120,7 +154,7 @@
 					src="@/static/home/lefticon.png"
 					mode="scaleToFill"
 				/>
-				<text class="title_slogan">已邀请<text class="red_num">2</text>位试音，还可以邀请<text class="red_num">1</text>位</text>
+				<text class="title_slogan">已邀请<text class="red_num">{{beConfirmedData.length}}</text>位试音，还可以邀请<text class="red_num">{{3-beConfirmedData.length}}</text>位</text>
 				<image
 					class="slogan_icon"
 					src="@/static/home/righticon.png"
@@ -128,64 +162,49 @@
 				/>
 			  </view>
 			  <view class="invitation_card">
-				  <view class="item_card">
-					  <view class="card_head_portrait">
+				  <view class="item_card" v-for="(beitem,index) in beConfirmedData" :key="index">
+					  <view class="card_head_portrait" @click="playTheMusic(beitem)">
 						  <image
 						      class="card_head_img"
-							  src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/10/28/675/tmp_74164cf4738a94455158d44d10419358.png"
+							  :src="beitem.teacher.avatar"
 							  mode="scaleToFill"
 						  />
 						  <image
 						      class="playActive"
-							  src="@/static/home/play.png"
+							  :src="beitem.works[0].playStatus ? playActive : play"
 							  mode="scaleToFill"
 						  />
 					  </view>
-					  <view class="nick_name">小精灵</view>
-					  <view class="price_num">68元/百字</view>
-					  <div class="carddelet_box">
+					  <view class="nick_name">{{beitem.teacher.nickname || ''}}</view>
+					  <view class="price_num">{{beitem.start_price || ''}}元/百字</view>
+					  <div class="carddelet_box" v-if="invitationStatus !== 0">
 						<image
 					      class="carddelet"
 						  src="@/static/home/carddelet.png"
 						  mode="scaleToFill"
+						  @click="handleDemandDel(beitem)"
 					    />
 					  </div>
 				  </view>
-				  <view class="item_card">
+				  <view class="item_card" v-for="(weiitem,indexs) in 3- beConfirmedData.length" :key="indexs" @tap="handleInvite">
 					  <view class="card_head_portrait">
 						  <image
 						      class="card_head_img"
-							  src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/10/26/471/tmp_c194a3a9482be8fe101d19fd8be509f9.png"
-							  mode="scaleToFill"
-						  />
-						  <image
-						      class="playActive"
-							  src="@/static/home/play.png"
-							  mode="scaleToFill"
-						  />
-					  </view>
-					  <view class="nick_name">小精灵</view>
-					  <view class="price_num">68元/百字</view>
-					  <div class="carddelet_box">
-						<image
-					      class="carddelet"
-						  src="@/static/home/carddelet.png"
-						  mode="scaleToFill"
-					    />
-					  </div>
-				  </view>
-				  <view class="item_card">
-					  <view class="card_head_portrait">
-						  <image
-						      class="card_head_img"
-							  src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/10/26/471/tmp_c194a3a9482be8fe101d19fd8be509f9.png"
+							  src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/06/16/60c9fce3c3080.png"
 							  mode="scaleToFill"
 						  />
 					  </view>
 					  <view class="invitation_btn">去邀请</view>
 				  </view>
 			  </view>
-			  <view class="confirminvitation">
+			  
+			  <view v-if="beConfirmedData.length>0 && invitationStatus !==0" class="confirminvitation" @click="handleConfirmInviteshow">
+				  确认邀请
+			  </view>
+			  <view v-if="beConfirmedData.length>0 && invitationStatus===0" class="confirminvitation" @click="handleviewInviteshow">
+				  查看试音
+			  </view>
+			  <view v-if="beConfirmedData.length==0" class="confirminvitation_grey" @click="handleDidnInvite">
 				  确认邀请
 			  </view>
 			  <view class="invitation_process">邀请试音  <u-icon name="arrow-right"></u-icon>  找相中的配音师报价付款  <u-icon name="arrow-right"></u-icon> 交付与验收</view>
@@ -208,87 +227,55 @@
 					></u-tabs>
 				</view>
 				<scroll-view class="itemList_scroll" scroll-x>
-					<view v-if="current===0" class="itemList_box">
-                       <view class="item_list">
+					<view v-if="listData.length > 0">
+					  <view v-if="current===0" class="itemList_box">
+                       <view class="item_list" v-for="(itemList,lsitindex) in listData" :key="lsitindex">
 						   <view class="list_top">
                              <view class="avatar_bxo">
 								 <image
 								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
+									 :src="itemList.teacher.avatar"
 									 mode="scaleToFill"
 								 />
 							 </view>
 							 <view class="nickname_box">
                                <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
+								   <view class="nickname_tetx">{{itemList.teacher.nickname}}</view>
 								   <image
-								       class="sex_img"
-									   src="@/static/teacherlist/manicon.png"
-									   mode="scaleToFill"
-								   />
+										v-if="itemList.teacher.sex===1"
+										class="sex_img"
+										src="@/static/teacherlist/manicon.png"
+										mode="scaleToFill"
+									/>
+									<image
+										v-if="itemList.teacher.sex===2"
+										class="sex_img"
+										src="@/static/teacherlist/woman.png"
+										mode="scaleToFill"
+									/>
 							   </view>
 							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
+                                  专享价<text class="price_text">{{itemList.start_price}}元/百字</text>
 							   </view>
 							  </view>
 							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
+							    <view v-if="itemList.teacher_status === 0" class="invitation_btn" @click="handleInvitedAudition(itemList)">邀请试音</view>
+							    <view v-if="itemList.teacher_status === 1" class="confirmed_btn" @click="handleInvitedAudition(itemList)">待确认</view>
+							    <view v-if="itemList.teacher_status === 2" class="successful_btn" @click="handleInvitedAudition(itemList)">邀请成功</view>
 							  </view>
 						   </view>
 						   <view class="list_bottom">
-							   <view class="play_box">
+                             <view class="play_list" @click="playTheMusic(itemList)">
+                               <view class="play_box">
                                  <image
-							       class="play"
-								   :src="play"
-								   mode="scaleToFill"
-							     />
-							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
-                                 <image
-							       class="collection"
-								   src="@/static/demand/collection.png"
-								   mode="scaleToFill"
-							     />
-							   </view>
-						   </view>
-					   </view>
-					   <view class="item_list">
-						   <view class="list_top">
-                             <view class="avatar_bxo">
-								 <image
-								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
-									 mode="scaleToFill"
+									class="play"
+									:src="itemList.works[0].playStatus ? playActive : play"
+									mode="scaleToFill"
 								 />
+							   </view>
+							   <view class="nameWork">{{itemList.works[0].title}}</view>
 							 </view>
-							 <view class="nickname_box">
-                               <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
-								   <image
-								       class="sex_img"
-									   src="@/static/teacherlist/manicon.png"
-									   mode="scaleToFill"
-								   />
-							   </view>
-							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
-							   </view>
-							  </view>
-							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
-							  </view>
-						   </view>
-						   <view class="list_bottom">
-							   <view class="play_box">
-                                 <image
-							       class="play"
-								   :src="play"
-								   mode="scaleToFill"
-							     />
-							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
+							   <view class="collection_box" @click.stop="demandFabulousadd(itemList,1)">
                                  <image
 							       class="collection"
 								   src="@/static/demand/collection.png"
@@ -308,20 +295,20 @@
 						   </view>
 						   <view class="tips_share">仅分享音频文件</view>
 					   </view>
-					</view>
+					  </view>
 					<view v-if="current===1" class="itemList_box">
-                       <view class="item_list">
+                       <view class="item_list" v-for="(itemList,lsitindex) in listData" :key="lsitindex">
 						   <view class="list_top">
                              <view class="avatar_bxo">
 								 <image
 								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
+									 :src="itemList.teacher.avatar"
 									 mode="scaleToFill"
 								 />
 							 </view>
 							 <view class="nickname_box">
                                <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
+								   <view class="nickname_tetx">{{itemList.teacher.nickname}}</view>
 								   <image
 								       class="sex_img"
 									   src="@/static/teacherlist/manicon.png"
@@ -329,15 +316,17 @@
 								   />
 							   </view>
 							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
+                                  专享价<text class="price_text">{{itemList.start_price}}元/百字</text>
 							   </view>
 							  </view>
 							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
+								<view v-if="itemList.status === 1" class="apush_btn" @click="handleRoute(itemList.teacher_id)">催一催</view>
+							    <view v-if="itemList.status === 0" class="invitation_btn" @click="handleTaOrder(itemList.teacher_id)">找TA下单</view>
 							  </view>
 						   </view>
 						   <view class="list_bottom">
-							   <view class="play_box">
+							<view class="play_list" v-if="itemList.status === 1"  @click="playTheMusic(itemList)">
+                               <view class="play_box">
 								 <image
 								     class="play"
 									 src="@/static/demand/loading.png"
@@ -350,8 +339,23 @@
 								   mode="scaleToFill"
 							     />
 							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
+							   <view class="nameWork">
+								   正在为你试音中
+								   <text v-if="itemList.time!==0">，上传倒计时</text>
+                                   <u-count-down v-if="itemList.time!==0" class="countdown_num" :timestamp="itemList.time" font-size = '25.362' separator-size="25.362" :show-hours="false" bg-color="#F1F3F7" separator-color="#000000" color='#000000'></u-count-down>
+							   </view>
+							 </view>
+							 <view class="play_list" v-if="itemList.status === 0"  @click="playTheMusic(itemList)">
+                                   <view class="play_box"> 
+										<image
+											class="play"
+											:src="itemList.works[0].playStatus ? playActive : play"
+											mode="scaleToFill"
+										/>
+									</view>
+									<view class="nameWork">{{itemList.works[0].title}}</view>
+							 </view>
+							 <view  v-if="itemList.status === 0" class="collection_box" @click="downloadcopy(itemList.works[0].url,'下载链接已复制到剪贴板')">
                                  <image
 							       class="download"
 								   src="@/static/teacherlist/download.png"
@@ -808,7 +812,8 @@
 						   </view>
 					    </view>
 					</view>
-					<view v-if="false" class="temporarily_box">
+					</view>
+					<view v-if="listData.length === 0" class="temporarily_box">
                        <image
 					      class="temporarily_icon"
 						  src="@/static/demand/defaulticon.png"
@@ -820,7 +825,7 @@
 				</scroll-view>
 			</view>
 		</view>
-		<u-popup v-model="recommendedShow" mode="bottom" height="1188.406rpx" border-radius="20">
+		<u-popup v-model="recommendedShow" mode="bottom" height="1188.406rpx" border-radius="20" :mask-close-able="false">
 			<view class="popup_conten" v-if="!loadingmatchingShow">
 				<view class="intelligent_title">
 					<image
@@ -828,8 +833,8 @@
 						src="@/static/home/title_img.png"
 						mode="scaleToFill"
 					/>
-				  <view class="title_text">已邀请<text>2</text>位试音，还可以邀请<text>1</text>位</view>
-				  <view class="confirm_btn">去确认</view>
+				  <view class="title_text">已邀请<text>{{invitationCount}}</text>位试音，还可以邀请<text>{{3-invitationCount}}</text>位</view>
+				  <view class="confirm_btn" @tap="invitationConfirm">去确认</view>
 				</view>
 				<view class="price_screening_box">
 					<view class="price_item" :class="activeIndex==index ? 'activeClass' : ''" v-for="(item,index) in priceList" :key="index" @click="handlePriceScreening(index)">
@@ -837,137 +842,60 @@
 					</view>
 				</view>
 				<view class="smart_item">
-                  <view class="item_list">
-						   <view class="list_top">
-                             <view class="avatar_bxo">
-								 <image
-								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
-									 mode="scaleToFill"
-								 />
-							 </view>
-							 <view class="nickname_box">
-                               <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
-								   <image
-								       class="sex_img"
-									   src="@/static/teacherlist/manicon.png"
-									   mode="scaleToFill"
-								   />
-							   </view>
-							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
-							   </view>
-							  </view>
-							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
-							  </view>
-						   </view>
-						   <view class="list_bottom">
-							   <view class="play_box">
-                                 <image
-							       class="play"
-								   :src="play"
-								   mode="scaleToFill"
-							     />
-							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
-                                 <image
-							       class="collection"
-								   src="@/static/demand/collection.png"
-								   mode="scaleToFill"
-							     />
-							   </view>
-						   </view>
-				  </view>
-				  <view class="item_list">
-						   <view class="list_top">
-                             <view class="avatar_bxo">
-								 <image
-								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
-									 mode="scaleToFill"
-								 />
-							 </view>
-							 <view class="nickname_box">
-                               <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
-								   <image
-								       class="sex_img"
-									   src="@/static/teacherlist/manicon.png"
-									   mode="scaleToFill"
-								   />
-							   </view>
-							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
-							   </view>
-							  </view>
-							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
-							  </view>
-						   </view>
-						   <view class="list_bottom">
-							   <view class="play_box">
-                                 <image
-							       class="play"
-								   :src="play"
-								   mode="scaleToFill"
-							     />
-							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
-                                 <image
-							       class="collection"
-								   src="@/static/demand/collection.png"
-								   mode="scaleToFill"
-							     />
-							   </view>
-						   </view>
-				  </view>
-				  <view class="item_list broder_none">
-						   <view class="list_top">
-                             <view class="avatar_bxo">
-								 <image
-								     class="avatar_img"
-									 src="https://thirdwx.qlogo.cn/mmopen/vi_32/sUak1ndq38T8ZaZNMyibhsPxPrucV1jSib3SqYQOqJbBLVuPFy8uWtiaiczDPzL9xibsthahPnbcVAO0aiboK3Vp6GwA/132"
-									 mode="scaleToFill"
-								 />
-							 </view>
-							 <view class="nickname_box">
-                               <view class="nicknamen u-line-1">
-								   <view class="nickname_tetx">渐行渐远</view>
-								   <image
-								       class="sex_img"
-									   src="@/static/teacherlist/manicon.png"
-									   mode="scaleToFill"
-								   />
-							   </view>
-							   <view class="price_box">
-                                  专享价<text class="price_text">78元/百字</text>
-							   </view>
-							  </view>
-							  <view class="invitation_box">
-								  <view class="invitation_btn">邀请试音</view>
-							  </view>
-						   </view>
-						   <view class="list_bottom">
-							   <view class="play_box">
-                                 <image
-							       class="play"
-								   :src="play"
-								   mode="scaleToFill"
-							     />
-							   </view>
-							   <view class="nameWork">品牌广告-党政机关-医疗机构</view>
-							   <view class="collection_box">
-                                 <image
-							       class="collection"
-								   src="@/static/demand/collection.png"
-								   mode="scaleToFill"
-							     />
-							   </view>
-						   </view>
+                  <view class="item_list" :class="{'broder_none' : recommendedData.length===index+1}" v-for="(recItem,index) in recommendedData" :key="index">
+					<view class="list_top">
+						<view class="avatar_bxo">
+							<image
+								class="avatar_img"
+								:src="recItem.teacher.avatar"
+								mode="scaleToFill"
+							/>
+						</view>
+						<view class="nickname_box">
+						<view class="nicknamen u-line-1">
+							<view class="nickname_tetx">{{recItem.teacher.nickname}}</view>
+							<image
+							    v-if="recItem.teacher.sex===1"
+								class="sex_img"
+								src="@/static/teacherlist/manicon.png"
+								mode="scaleToFill"
+							/>
+							<image
+							     v-if="recItem.teacher.sex===2"
+								class="sex_img"
+								src="@/static/teacherlist/woman.png"
+								mode="scaleToFill"
+							/>
+						</view>
+						<view class="price_box">
+							专享价<text class="price_text">{{recItem.start_price}}元/百字</text>
+						</view>
+						</view>
+						<view class="invitation_box">
+							<view v-if="recItem.status === 0" class="invitation_btn" @click="handleInvitedAudition(recItem)">邀请试音</view>
+							<view v-if="recItem.status === 1" class="confirmed_btn" @click="handleInvitedAudition(recItem)">待确认</view>
+							<view v-if="recItem.status === 2" class="successful_btn" @click="handleInvitedAudition(recItem)">邀请成功</view>
+						</view>
+					</view>
+					<view class="list_bottom">
+						<view class="play_list" @click="playTheMusic(recItem)">
+							<view class="play_box">
+							<image
+							class="play"
+							:src="recItem.works[0].playStatus ? playActive : play"
+							mode="scaleToFill"
+							/>
+							</view>
+							<view class="nameWork">{{recItem.works[0].title}}</view>
+						</view>
+						<view class="collection_box" @click.stop="demandFabulousadd(recItem,recItem.fabulous_status)">
+							<image
+							  class="collection"
+							  :src="recItem.fabulous_status ? collection : weicollection"
+							  mode="scaleToFill"
+							/>
+						</view>
+					</view>
 				  </view>
 				</view>
 				<view class="customer_service_box">
@@ -984,14 +912,14 @@
 						</view>
 					</button>
 				</view>
-				<view class="batch_box">
+				<view class="batch_box" @click="handleInbatch">
 					<image
 					    class="batch_img"
 						src="@/static/demand/batch.png"
 						mode="scaleToFill"
 					/>
 					<view class="batch_text">
-						换一批（<text>1</text>/<text>3</text>页）
+						换一批（<text>{{recommended.page}}</text>/<text>{{totalNum}}</text>页）
 					</view>
 				</view>
 			</view>
@@ -1021,18 +949,44 @@
 			</view>
 		</u-popup>
 		<dropball></dropball>
+		<view v-if="audioShow" class="home_musicSrc_box disappear">
+        <musicAudio 
+		  ref="musicAudio"
+		  :url="dataPlay.works[0].url"
+		  :autoplay="true"
+		  :portrait="dataPlay.teacher.avatar"
+		  :music_title="dataPlay.works[0].title"
+		  @handleChangePlay="handleChangePlay"  
+		  @musicClose="musicClose"
+		  ></musicAudio>
+	  </view>
 	</view>
 </template>
 
 <script>
-import play from '@/static/home/play.png'
-import playActive from '@/static/home/palyActive.gif'
 import dropball from '@/components/dropball/dropball.vue'
 import collection from '@/static/demand/collection.png'
 import weicollection from '@/static/demand/weicollection.png'
+// 引入需求详情api
+import { 
+	demandDetail,
+    demandDemandteacher,
+	demandFabulousadd,
+	demandFabulousdel,
+	demandAdd,
+	demandDetailteacher,
+	demandDel,
+	demandConfirm,
+	demandFabulouslist
+	} from "@/api/myneeds.js"
+// 复制
+import uniCopy from '@/utils/uni-copy.js'
+// 播放组件
+import musicAudio from '@/components/audio/audioplay.vue'
 	export default {
 		components: {
 			dropball,
+			musicAudio
 		},
 		data() {
 			return {
@@ -1054,8 +1008,8 @@ import weicollection from '@/static/demand/weicollection.png'
 					id: 4
 					}
 				],
-				play: play,
-				playActive: playActive,
+				play: 'https://www.peiyinstreet.com/guidang/play.png',
+				playActive: "https://www.peiyinstreet.com/guidang/palyActive.gif",
 				collection: collection,
 				weicollection: weicollection,
 			    current: 0,
@@ -1065,6 +1019,7 @@ import weicollection from '@/static/demand/weicollection.png'
 			    },
 				timestamp: 86400,
 				InvitedPopShow: false,
+				confirmPopShow: false,
 				barStyle: {
 					// backgroundColor: "#ffffff",
 				},
@@ -1075,33 +1030,384 @@ import weicollection from '@/static/demand/weicollection.png'
 					'特级≥50元',
 				],
 				activeIndex: 0,
-				recommendedShow: true,
-				anShow: true
+				recommendedShow: false,
+				anShow: true,
+				demand_id: '',
+				needType: '',
+				demandProfile: {},
+				// 推荐弹窗参数
+				recommended: {
+					demand_id: this.demand_id,
+					type: 1,
+					page: 1,
+					size: 3 
+				},
+				audioShow: false,
+				has_next: '',
+				dataPlay: {
+					works: [{
+					url: ''
+					}	
+					]
+				},
+				recommendedData: [],
+				beConfirmedData: [],
+				invitationCount: 0,
+				// 邀请状态
+				invitationStatus: 0,
+				totalNum: 0,
+				// 列表数据
+				listData: [],
+				listObj: {
+				  demand_id: '',
+				  status: 0
+				}
 			};
 		},
 		onLoad(options) {
+			console.log('传过来的id', options)
 			setTimeout(()=>{
               this.loadingmatchingShow = false
 			},3000)
+			this.demand_id = options.id
+			this.recommended.demand_id = options.id
+			this.listObj.demand_id = options.id
+			this.needType = options.type
+			this.getDemandDetail()
+			// 推荐弹窗
+			this.getDemandDemandteacher()
+			this.getlsitData(this.listObj)
+		},
+		onUnload() {
+			uni.$TUIKit.off(uni.$TUIKitEvent.SDK_READY, this.onConversationListUpdated);
 		},
 		methods: {
+		  // 需求详情数据
+		  getDemandDetail() {
+			  demandDetail({demand_id: this.demand_id}).then((res)=>{
+                console.log('需求详情的数据', res)
+				this.demandProfile = res.data
+				this.getDemandDetailteacher()
+				if (res.status === 0) {
+					this.recommendedShow = false
+				} else {
+					this.recommendedShow = true
+				}
+				this.invitationStatus = res.status
+			  })
+		  },
+		  //  待邀请的配音师
+		  getDemandDetailteacher () {
+			demandDetailteacher({demand_id: this.demand_id}).then((res)=>{
+			  this.beConfirmedData = res.data
+			})
+		  },
+		  handleConfirmInviteshow() {
+			  this.confirmPopShow = true
+		  },
+		  handleviewInviteshow() {
+			this.current = 1
+			this.listObj.status = 1
+			this.getlsitData(this.listObj) 
+		  },
+		  // 确认邀请配音师提示
+		  handleConfirmInvite() {
+			demandConfirm({demand_id:this.demand_id}).then((res)=>{
+              console.log('确认邀请配音师',res)
+			  this.confirmPopShow = false
+			  this.getDemandDetail()
+			})
+		  },  
+		  //  没有待邀请的配音师提示
+		  handleDidnInvite() {
+             uni.showToast({
+				title: '您还没有邀请的配音师哦',
+				icon: "none",
+				duration: 2000
+			 })
+		  },
+		  // 智能推荐弹窗
+		  getDemandDemandteacher() {
+            demandDemandteacher(this.recommended).then((res)=>{
+			  this.totalNum = Math.ceil(res.teacher_count/3)
+			  this.recommendedData = res.data
+			})
+		  },
+		  // 收藏和取消收藏配音师
+		  demandFabulousadd(item,index) {
+			if (index===0) {
+				demandFabulousadd({demand_id: this.demand_id,teacher_id:item.teacher_id})
+				.then((res)=>{
+					uni.showToast({
+						title: '已为您添加到【收藏的样音】里，可在需求详情页查看',
+						icon: "none",
+						duration: 2000
+					})
+					this.recommendedData.map((recitem)=>{
+						if(item.teacher_id === recitem.teacher_id) {
+							recitem.fabulous_status = 1
+						}
+					})
+				})
+			} else {
+			   demandFabulousdel({demand_id: this.demand_id,teacher_id:item.teacher_id})
+				.then((res)=>{
+					uni.showToast({
+						title: '取消收藏成功',
+						icon: "none",
+						duration: 2000
+					})
+					this.recommendedData.map((recitem)=>{
+						if(item.teacher_id === recitem.teacher_id) {
+							recitem.fabulous_status = 0
+						}
+					})
+					this.getlsitData(this.listObj)
+				})	
+			}
+		  },
+		  //  换一批
+		  handleInbatch() {
+            // 换一批
+			if (this.recommended.page>=Math.ceil(this.totalNum/5)　) {
+				this.recommended.page = 1
+			}else {
+				this.recommended.page += 1
+			}
+			this.getDemandDemandteacher()
+		  },
+		  //  去确认
+		  invitationConfirm() {
+		    this.recommendedShow = false
+			this.getlsitData(this.listObj)
+		  },
+		  //  去邀请
+		  handleInvite() {
+			if (this.invitationStatus) {
+				this.recommendedShow = true
+			} else {
+				uni.showToast({
+				title: '你已确认邀请',
+				icon: "none",
+				duration: 2000
+			  })
+			}  
+		  },
+		  // 邀请试音
+		  handleInvitedAudition(item) {
+            demandAdd({teacher_id: item.teacher_id, demand_id: this.demand_id})
+			.then((res)=>{
+			  uni.showToast({
+				title: '谢谢邀请，确认后我会在10分钟内，快速出试音并上传哦',
+				icon: "none",
+				duration: 2000
+			  })
+			  this.getDemandDemandteacher()
+			  this.getDemandDetailteacher()
+			})
+			.catch((err)=>{
+               uni.showToast({
+				title: '每个需求最多可邀请3位试音哦，快点击上方【去确认】吧',
+				icon: "none",
+				duration: 2000
+			  })
+			})
+		  },
+		  // 删除邀请配音师
+		  handleDemandDel(item) {
+			 demandDel({teacher_id:item.teacher_id,demand_id:this.demand_id}).then((res)=>{
+                this.getDemandDemandteacher()
+			    this.getDemandDetailteacher()
+			 }).catch(err=>{
+				 console.log(err)
+			 })
+		  },
           handleanorPack() {
 			  this.anShow = !this.anShow
 		  },
+		   //  获取列表数据
+		  getlsitData(obj) {
+	        demandFabulouslist(obj).then((res)=>{
+				console.log('获取列表数据',res)
+				this.listData = res.data
+			})
+		     
+		  },
 		  change(index) {
             this.current = index
+			this.listObj.status = index
+			this.getlsitData(this.listObj)
 		  },
 		  handlecloseerPopShow() {
 			  this.InvitedPopShow = false
+			  this.confirmPopShow = false
 		  },
 		  handlechangehome() {
 			 this.InvitedPopShow = true 
 		  },
 		  // 价格筛选
 		  handlePriceScreening(index) {
-			this.activeIndex = index
-			// this.getOrderList(this.tagParameter,this.current)
+			this.activeIndex = index  
+			this.recommended.type = index + 1 
+			this.getDemandDemandteacher()
 		  },
+		  //  IM催一催
+		  handleRoute(ids) {
+			    const id = "C2Cteacher_"+ids
+				console.log(ids, id)
+				const url = `/subpkg/pages/chatpage/chatpage?conversationID=${id}`;
+				uni.navigateTo({
+					url
+				});
+				},
+				// 对话列表更新
+				onConversationListUpdated(event) {
+				this.setData({
+					conversationList: event.data
+				});
+			}, 
+		  // IM找TA下单
+		  handleTaOrder(ids) {
+			const id = "C2Cteacher_"+ids  
+            const to = "teacher_"+ids 
+            let tagstr = ''
+			this.demandProfile.tags.map((item,index)=>{
+				if (index===3) {
+					tagstr += item.value
+				} else {
+					tagstr += item.value + '-'
+				}
+			})
+			const message = uni.$TUIKit.createCustomMessage({
+				to,
+				conversationType: 'C2C',
+				payload: {
+				    data: 'demand',
+					description: this.demandProfile.audition_text,
+					// 获取骰子点数
+					extension: JSON.stringify({
+						audition_text: this.demandProfile.audition_text,
+						content: this.demandProfile.content,
+						tags: tagstr,
+						demand_id: this.demand_id
+					})
+				}
+			});
+			this.$sendTIMMessage(message);
+			const url = `/subpkg/pages/chatpage/chatpage?conversationID=${id}`;
+				uni.navigateTo({
+					url
+				});
+		  },
+		  $sendTIMMessage(message) {
+			this.$emit('sendMessage', {
+				detail: {
+				message
+				}
+			});
+			uni.$TUIKit.sendMessage(message)
+			this.setData({
+				displayFlag: ''
+			});
+		  },
+		  // 音乐播放按钮
+		  playTheMusic(orderItem) {
+			console.log("传过来的数据", orderItem, this.recommendedData);
+			this.audioShow = true;
+			if (this.dataPlay.works[0].url === orderItem.works[0].url) {
+				this.recommendedData.map((item) => {
+				if (this.dataPlay === item) {
+					orderItem.works[0].playStatus = !orderItem.works[0].playStatus;
+				} else {
+					item.works[0].playStatus = false;
+				}
+				});
+				this.beConfirmedData.map((item) => {
+				if (this.dataPlay === item) {
+					orderItem.works[0].playStatus = !orderItem.works[0].playStatus;
+				} else {
+					item.works[0].playStatus = false;
+				}
+				});
+				this.listData.map((item) => {
+				if (this.dataPlay === item) {
+					orderItem.works[0].playStatus = !orderItem.works[0].playStatus;
+				} else {
+					item.works[0].playStatus = false;
+				}
+				});
+
+			} else {
+				this.recommendedData.map((item) => {
+				item.works[0].playStatus = false;
+				});
+				this.beConfirmedData.map((item) => {
+				item.works[0].playStatus = false;
+				});
+				this.listData.map((item) => {
+				item.works[0].playStatus = false;
+				});
+
+				orderItem.works[0].playStatus = true;
+				this.dataPlay = orderItem;
+			}
+			setTimeout(() => {
+				this.$refs.musicAudio.preStartPlay();
+			}, 0);
+			},
+			handleChangePlay(status) {
+				this.recommendedData.map((item) => {
+					if (this.dataPlay === item) {
+					item.works[0].playStatus = status;
+					} else {
+					item.works.playStatus = false;
+					}
+				});
+				this.beConfirmedData.map((item) => {
+					if (this.dataPlay === item) {
+					item.works[0].playStatus = status;
+					} else {
+					item.works.playStatus = false;
+					}
+				});
+				this.listData.map((item) => {
+					if (this.dataPlay === item) {
+					item.works[0].playStatus = status;
+					} else {
+					item.works.playStatus = false;
+					}
+				});
+			},
+			musicClose() {
+			this.recommendedData.map((item) => {
+				item.works[0].playStatus = false;
+			});
+			this.beConfirmedData.map((item) => {
+				item.works[0].playStatus = false;
+			});
+			this.listData.map((item) => {
+				item.works[0].playStatus = false;
+			});
+			this.audioShow = false;
+			this.dataPlay = {
+				works: [{
+				url: "",
+				}],
+			};
+		  },
+		  downloadcopy(groupNum,title) {
+			uniCopy({
+				content:groupNum,
+				success:(res)=>{
+					uni.showToast({
+						title: title,
+						icon: 'none'
+					})
+				},
+				error:(e)=>{
+				}
+			})
+		}
 		}
 	}
 </script>
@@ -1128,6 +1434,14 @@ page {
 	height: 100%;
 	// overflow: hidden;
 	background: #130836;
+}
+.container {
+	position: relative;
+	.home_musicSrc_box {
+		position: fixed;
+		z-index: 999999;
+		bottom: 120rpx;
+	}
 }
 .content {
   .head_portrait_box {
@@ -1329,6 +1643,15 @@ page {
 				  height: 47.101rpx;
 				  bottom: -15rpx;
 				}
+
+			}
+			.invitation_btn {
+				margin-top: 23.551rpx;
+				font-size: 25.362rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #FF445A;
+
 			}
 			.nick_name {
 				width: 90%;
@@ -1366,15 +1689,6 @@ page {
 				height: 25.362rpx;
 			  }
 			}
-			.invitation_btn {
-			  padding-top: 28.986rpx;
-			  height: 36.232rpx;
-			  font-size: 25.362rpx;
-			  font-family: PingFangSC-Regular, PingFang SC;
-			  font-weight: 400;
-			  color: #FF445A;
-			  line-height: 36.232rpx;
-			}
 		  }
 	  }
 	  .confirminvitation {
@@ -1390,6 +1704,20 @@ page {
 		  font-family: PingFangSC-Medium, PingFang SC;
 		  font-weight: 500;
 		  color: #FFFFFF;
+	  }
+	  .confirminvitation_grey {
+		 margin-top: 43.478rpx;
+		  margin-left: 36.232rpx;
+		  text-align: center;
+		  width: 623.188rpx;
+		  height: 90.58rpx;
+		  line-height: 90.58rpx;
+		  background: #F3F4F9;
+		  border-radius: 45.29rpx;
+		  font-size: 32.609rpx;
+		  font-family: PingFangSC-Medium, PingFang SC;
+		  font-weight: 500;
+		  color: #999999; 
 	  }
 	  .invitation_process {
 		margin-top: 34.42rpx;  
@@ -1417,7 +1745,7 @@ page {
 			  border-bottom: 1px solid #F6F6F6;
 			  border-top-left-radius: 25.362rpx;
 			  border-top-right-radius: 25.362rpx;
-			//   padding-bottom: 36.232rpx;
+			  // padding-bottom: 36.232rpx;
 			  .list_top {
 				 padding: 0 36.232rpx; 
 				 display: flex;
@@ -1479,6 +1807,45 @@ page {
 					font-weight: 500;
 					color: #FFFFFF;
 				  }
+				  .confirmed_btn {
+					display: flex;  
+					align-items: center;
+					height: 65.217rpx;
+					justify-content: center;  
+					width: 159.42rpx;
+					background: #F3F4F9;
+					border-radius: 32.609rpx;
+					font-size: 25.362rpx;
+					font-family: PingFangSC-Medium, PingFang SC;
+					font-weight: 500;
+					color: #000000;
+					}
+					.successful_btn {
+						display: flex;  
+						align-items: center;
+						height: 65.217rpx;
+						justify-content: center;  
+						width: 159.42rpx;
+						background: #F3F4F9;
+						border-radius: 32.609rpx;
+						font-size: 25.362rpx;
+						font-family: PingFangSC-Medium, PingFang SC;
+						font-weight: 500;
+						color: #999999;
+					}
+					.apush_btn {
+					    display: flex;  
+						align-items: center;
+						height: 65.217rpx;
+						justify-content: center;  
+						width: 159.42rpx;
+						border: 1px solid #FF445A;
+						border-radius: 32.609rpx;
+						font-size: 25.362rpx;
+						font-family: PingFangSC-Medium, PingFang SC;
+						font-weight: 500;
+						color: #FF445A;	
+					}
 				}
 			  }
 			  .list_bottom{
@@ -1489,7 +1856,10 @@ page {
 				display: flex;
 				align-items: center;
 				border-radius: 10.87rpx;
-				.play_box {
+				.play_list {
+				  display: flex;
+		          align-items: center;	
+				  .play_box {
 					width: 86.957rpx;
 					display: flex;
 					justify-content: center;
@@ -1498,7 +1868,8 @@ page {
 					  width: 47.101rpx;
 					  height: 47.101rpx;
 					}
-			    }
+			       }
+			    } 
 				.nameWork {
 					width: 460.145rpx;
 					font-size: 25.362rpx;
@@ -1508,7 +1879,7 @@ page {
 				}
 				.collection_box {
 				  display: flex;
-				  align-items: center;	
+				  align-items: center;
 				  .collection {
 					  width: 39.855rpx;
 					  height: 39.855rpx;
@@ -1729,8 +2100,8 @@ page {
 						color: #000000;
 					}
 					.collection_box {
-					display: flex;
-					align-items: center;	
+					  display: flex;
+					  align-items: center;	
 					.collection {
 						width: 39.855rpx;
 						height: 39.855rpx;
@@ -1825,7 +2196,7 @@ page {
 		}
 	   .title_text {
 		  margin-left: 14.493rpx; 
-		  width: 471.014rpx;
+		  width: 481.014rpx;
 		  font-size: 28.986rpx;
 		  font-family: PingFangSC-Medium, PingFang SC;
 		  font-weight: 500;
@@ -1848,7 +2219,7 @@ page {
 }
 .price_screening_box {
   width: 100%;
-  padding: 27.174rpx;
+  padding: 27.174rpx 37rpx;
   display: flex;
   justify-content: space-between;
   .price_item{
@@ -1937,17 +2308,46 @@ page {
 			font-weight: 500;
 			color: #FFFFFF;
 			}
+			.confirmed_btn {
+			display: flex;  
+			align-items: center;
+			height: 65.217rpx;
+			justify-content: center;  
+			width: 159.42rpx;
+			background: #F3F4F9;
+			border-radius: 32.609rpx;
+			font-size: 25.362rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #000000;
+			}
+			.successful_btn {
+				display: flex;  
+				align-items: center;
+				height: 65.217rpx;
+				justify-content: center;  
+				width: 159.42rpx;
+				background: #F3F4F9;
+				border-radius: 32.609rpx;
+				font-size: 25.362rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #999999;
+			}
 		}
 		}
 		.list_bottom{
-		margin: 25.362rpx 36.232rpx;  
-		width: 677.536rpx;
-		height: 90.58rpx;
-		background: #F1F3F7;
-		display: flex;
-		align-items: center;
-		border-radius: 10.87rpx;
-		.play_box {
+		  margin: 25.362rpx 36.232rpx;  
+		  width: 677.536rpx;
+		  height: 90.58rpx;
+		  background: #F1F3F7;
+		  display: flex;
+		  align-items: center;
+		  border-radius: 10.87rpx;
+          .play_list {
+		    display: flex;
+		    align-items: center;	
+          .play_box {
 			width: 86.957rpx;
 			display: flex;
 			justify-content: center;
@@ -1955,18 +2355,21 @@ page {
 			.play {
 				width: 47.101rpx;
 				height: 47.101rpx;
-			}
-		}
-		.nameWork {
+			 }
+		  }
+		  .nameWork {
 			width: 460.145rpx;
 			font-size: 25.362rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #000000;
+		  }
 		}
 		.collection_box {
 			display: flex;
-			align-items: center;	
+			align-items: center;
+			width: 109rpx;
+            justify-content: flex-end;
 			.collection {
 				width: 39.855rpx;
 				height: 39.855rpx;
@@ -1999,6 +2402,7 @@ page {
 		align-items: center;
 		justify-content: center;
 		.loading_text {
+			text-align: center;
 			width: 400.362rpx;
 			font-size: 26.362rpx;
 			font-family: PingFangSC-Regular, PingFang SC;

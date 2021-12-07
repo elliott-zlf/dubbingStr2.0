@@ -31,12 +31,12 @@
           @columnchange="bindMultiPickerColumnChange"
           :value="multiIndex"
           :range="multiArray"
-          range-key="label"
+          range-key="value"
         >
           <view class="drop_down_select_box">
             <view class="drop_down_box">
               <text class="drop_down_text">{{
-                multiArray[0][multiIndex[0]].label
+                multiArray[0][multiIndex[0]].value
               }}</text>
               <image
                 class="drop_down_img"
@@ -46,7 +46,7 @@
             </view>
             <view class="drop_down_box">
               <text class="drop_down_text">{{
-                multiArray[1][multiIndex[1]].label
+                multiArray[1][multiIndex[1]].value
               }}</text>
               <image
                 class="drop_down_img"
@@ -56,7 +56,7 @@
             </view>
             <view class="drop_down_box">
               <text class="drop_down_text">{{
-                multiArray[2][multiIndex[2]].label
+                multiArray[2][multiIndex[2]].value
               }}</text>
               <image
                 class="drop_down_img"
@@ -78,7 +78,7 @@
           <view class="textarea_box">
             <textarea
               class="textareainput"
-              v-model="form.text"
+              v-model="form.audition_text"
               :disable-default-padding="true"
               placeholder="输入20-200字的试音文本，或直接上传文稿；"
               maxlength="200"
@@ -92,11 +92,11 @@
               <text>/200</text>
             </view>
             <view class="home_upload_box">
-              <view v-if="fileShow" class="home_upload">上传</view>
+              <view v-if="fileShow" class="home_upload" @click="onUpload('file')">上传</view>
               <view
                 v-else
                 class="upload_successful_box"
-                @click="handleDeleteFile"
+                @click="handleDeleteFile('file')"
               >
                 <image
                   class="deletefile_img"
@@ -119,6 +119,7 @@
         </view>
         <view class="note_text_box">
           <input
+            v-model="form.content"
             class="note_text"
             type="text"
             placeholder="输入其他要求或上传参考样音"
@@ -126,8 +127,8 @@
           />
         </view>
         <view class="home_upload_box">
-          <view v-if="fileShow" class="home_upload"  @click="handleUploadFile">上传</view>
-          <view v-else class="upload_successful_box" @click="handleDeleteFile">
+          <view v-if="musicShow" class="home_upload"  @tap="onUpload('music')">上传</view>
+          <view v-else class="upload_successful_box" @click="handleDeleteFile('music')">
             <image
               class="deletefile_img"
               src="@/static/home/deletefile.png"
@@ -142,14 +143,16 @@
         </view>
       </view>
       <view class="home_submit_box">
-        <view class="submit_btn" @click="submit">立即匹配 配音师试音</view>
+        <view class="submit_btn" @tap="submit">立即匹配 配音师试音</view>
       </view>
       <view v-if="bottomTitle" class="submit_remind">配音师会在10分钟内快速出试音</view>
     </view>
+    <l-file ref="lFile" @up-success="onSuccess"></l-file>
   </view>
 </template>
 
 <script>
+import { homeTag,loginStatus,demandPublish,profileUpdate } from '@/api/index.js'
 import { mapState } from "vuex";
 export default {
   name: "submitform",
@@ -166,123 +169,262 @@ export default {
       type: Boolean,
       required: false
     },
+    teachrID: {
+      type: String,
+		  required: ''
+    }
   },
   data() {
     return {
       texterheight: "70",
       form: {
-        subject: "题材",
-        sex: "性别",
-        style: "风格",
-        text: "",
+        tag_data: {
+          '2': '',
+          '1': '',
+          '5': ''
+        },
+        audition_text: '',
+        audition_url: '',
+        content: '',
+        content_url: '',
+        teacher_id: ''
       },
-      multiArray: [
-        [
-          {
-            value: "0",
-            label: "题材",
-          },
-          {
-            value: "1",
-            label: "促销广告",
-          },
-          {
-            value: "2",
-            label: "柔和甜美",
-          },
-        ],
-        [
-          {
-            value: "0",
-            label: "性别",
-          },
-          {
-            value: "1",
-            label: "男",
-          },
-          {
-            value: "2",
-            label: "女",
-          },
-          {
-            value: "2",
-            label: "男女组合",
-          },
-        ],
-        [
-          {
-            value: "0",
-            label: "风格",
-          },
-          {
-            value: "1",
-            label: "促销广告",
-          },
-          {
-            value: "2",
-            label: "柔和甜美",
-          },
-        ],
-      ],
+      multiArray: [],
       multiIndex: [0, 0, 0],
       textareanum: 0,
-      fileShow: false,
+      fileShow: true,
+      musicShow: true,
       subjectShow: false,
+      uploaditem: '',
+      submittime: true,
     };
   },
   created() {
+    this.getTagAll()
+  },
+  mounted() {
   },
   computed: {
-    ...mapState("user", ["token"]),
+    ...mapState("user", ["token","userId"]),
   },
   methods: {
+    // 获取标签列表
+    getTagAll() {
+      homeTag().then((res)=>{
+        console.log('标签列表数据',res)
+        let themeArray=[]
+        let sexArray = []
+        let styleArray= []
+        res.data.map((item)=>{
+           if(item.value==="题材") {
+              themeArray=item.tags
+           }else if(item.value==="性别") {
+              sexArray=item.tags
+           }else if (item.value==="风格"){
+              styleArray=item.tags
+           }
+        })
+        this.multiArray = [themeArray,sexArray,styleArray]
+        this.form.tag_data={
+          '2': themeArray[0].id,
+          '1': sexArray[0].id,
+          '5': styleArray[0].id
+        }
+        console.log('标签列表数据合并后的数据', this.multiArray)
+      })
+    },
     // 计算输入框的字数
     handleInputEvents() {
-      this.textareanum = this.form.text.length;
+      this.textareanum = this.form.audition_text.length;
+    },
+    // 提交订单
+    submit() {
+      if (!this.submittime) {
+         return;
+      }
+      if(this.form.audition_text=='' && this.form.audition_url=='') {
+          uni.showToast({
+						title: "请输入20字以上的成品文本，或直接上传文稿",
+						icon: 'none',
+						mask: true,
+						duration: 3000
+				});
+      }else if(this.form.audition_url=='' && this.form.audition_text !=='' && this.form.audition_text.length < 20){
+        console.log('上传附件',this.form.text)
+         uni.showToast({
+						title: "请输入20字以上的成品文本，或直接上传文稿",
+						icon: 'none',
+						mask: true,
+						duration: 3000
+				});
+      }else {
+        loginStatus().then((res)=>{
+           console.log('登录状态', res)
+           if(res.data.nickname===0) {
+             this.getUserInfo()
+           }else {
+              const formData = {
+                "audition_text": this.form.audition_text,
+                "audition_url": this.form.audition_url,
+                "content": this.form.content,
+                "content_url": this.form.content_url,
+                "teacher_id": this.teachrID,
+                "tag_data":  this.form.tag_data,
+              }
+              this.submittime = false
+              demandPublish(formData).then((res)=>{
+                this.submittime = true
+                uni.showToast({
+                    title: "请输入20字以上的成品文本，或直接上传文稿",
+                    icon: 'none',
+                    mask: true,
+                    duration: 3000
+                });
+                this.fileShow = true
+                this.musicShow = true
+                this.form.audition_text=''
+                this.form.audition_url=''
+                this.form.content=''
+                this.form.content_url = ''
+                this.form.teacher_id = ''
+                this.form.tag_data = {}
+                uni.navigateTo({
+                  url: '/subpkg/pages/demanddetails/demanddetails?id='+ res.data+'&status=0',
+              });
+              }).catch(err=>{
+                this.submittime = true
+                console.log(err)
+              })
+           }
+        })
+      }
+    },
+    // 获取用户资料
+    getUserInfo() {
+      uni.showLoading({
+          title: "加载中",
+        });
+      uni.getUserProfile({
+        desc: "登录后可发布需求",
+        success: async (obj) => {
+          uni.showToast({
+            title: "授权成功",
+            icon: "default",
+            mask: true,
+          });
+          console.log('获取个人信息',obj)
+          const userobj = {
+            nickname: obj.userInfo.nickName,
+            userId: this.userId,
+            avatar: obj.userInfo.avatarUrl,
+            phone: ''
+          }
+          await profileUpdate(userobj);
+          this.submit()
+        },
+        fail: () => {
+          uni.showToast({
+            title: "授权已取消",
+            icon: "default",
+            mask: true,
+          });
+        },
+        complete: () => {
+          // 隐藏loading
+          uni.hideLoading();
+        },
+      });   
     },
     // 上传文件
     handleUploadFile() {
 
     },
 	  // 删除文件事件
-    handleDeleteFile() {
-      this.fileShow = true;
+    handleDeleteFile(item) {
+      if(item==='file') {
+        this.fileShow = true;
+      }else {
+        this.musicShow = true;
+      }
     },
 	  // 选择框的值
     bindMultiPickerColumnChange(e) {
-    //   console.log(
-    //     "修改的列为：" + e.detail.column + "，值为：" + e.detail.value
-    //   );
+      console.log(
+        "修改的列为：" + e.detail.column + "，值为：" + e.detail.value
+      );
 	  this.multiIndex[e.detail.column] = e.detail.value
 	  switch (e.detail.column) {
 		  case 0:
-			  this.form.subject = this.multiArray[e.detail.column][e.detail.value].label
+			  this.form.tag_data['2'] = this.multiArray[e.detail.column][e.detail.value].id
 			  break;
 	      case 1:
-              this.form.sex = this.multiArray[e.detail.column][e.detail.value].label
+        this.form.tag_data['1'] = this.multiArray[e.detail.column][e.detail.value].id
 			  break;
 		  case 2:
-              this.form.style = this.multiArray[e.detail.column][e.detail.value].label
+        this.form.tag_data['5']= this.multiArray[e.detail.column][e.detail.value].id
 		  default:
 			  break;
 	  }
 	  console.log('选择数据的值', this.form)
 	  this.$forceUpdate()
     },
-	// 更新text数据
-	hadleUpdate() {
-		if(!this.form.text){
-			this.form.text='输入20-200字的试音文本，或直接上传文稿；';
-			let timeId=setTimeout(()=>{
-				this.form.text='';
-				clearTimeout(timeId);
-			},50);
-        }
-	},
+    // 更新text数据
+    hadleUpdate() {
+      if(!this.form.audition_text){
+        this.form.audition_text='输入20-200字的试音文本，或直接上传文稿；';
+        let timeId=setTimeout(()=>{
+          this.form.audition_text='';
+          clearTimeout(timeId);
+        },50);
+          }
+    },
     handleSubjectValue(e) {
       console.log("题材的值", e);
       this.form.subject = e[0].label;
     },
+     /* 上传 */
+		onUpload(item) { 
+				let platform =  uni.getSystemInfoSync().platform
+        if (platform == 'android' || platform == 'ios' || platform == 'devtools') {
+          console.log('有没有走onUpload',platform,this.$refs.lFile)
+          this.uploaditem = item
+					this.$refs.lFile.upload({
+						// #ifdef APP-PLUS
+						// nvue页面使用时请查阅nvue获取当前webview的api，当前示例为vue窗口
+						currentWebview: this.$mp.page.$getAppWebview(),
+						// #endif
+						url: "https://www.peiyinstreet.com/business/chat/upload", //替换为你的
+						name: 'file',
+						header: {  //根据你接口需求自定义
+						userToken: this.token || ''	
+						},
+						formData: {
+						fileName: '',
+						},
+					});
+				}else {
+					uni.showToast({
+						title: "微信小程序仅支持从手机端上传",
+						icon: 'none',
+						mask: true,
+						duration: 3000
+					});
+				}	
+			},
+		onSuccess(res) {
+        console.log('上传成功回调',JSON.stringify(res), res);
+         if(this.uploaditem==='file') {
+            this.fileShow = false;
+            this.form.audition_url = res.data.data
+         }else {
+            this.musicShow = false;
+            this.form.content_url = res.data.data
+        }
+				uni.showToast({
+					title: '文件上传成功',
+					icon: 'none'
+				})
+		},
   },
 };
 </script>

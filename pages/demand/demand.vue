@@ -22,7 +22,7 @@
 			<scroll-view scroll-y style="height:100%; width: 100%;" @scrolltolower="reachBottom" :refresher-triggered="triggered">
 				<view class="page-box" v-if="defaultshow">
 					<view class="teacherOrder" v-for="(orderItem, index) in dataList" :key="index">
-						<view class="list_item_box">
+						<view class="list_item_box" @click="handleJumpOrderDetails(orderItem.id,orderItem.status)">
 							<view class="item_title_box">
 								<view class="logo_icon_box">
 									<image
@@ -30,10 +30,12 @@
 										src="@/static/demand/demand.png"
 										mode="scaleToFill"
 									/>
-									<text class="title_text u-line-1">宣传片-男生-大气沉稳</text>
+									<text class="title_text u-line-1">{{orderItem.audition_text}}</text>
 								</view>
 								<view class="apply_group_box">
-									<view class="apply_group" @click="handleApplyGroup(orderItem.id)">报价与付款</view>
+									<view class="apply_group">
+										<text>{{statusValue[orderItem.status]}}</text>
+									</view>
 								</view>
 							</view>
 							<view class="demand_box">
@@ -43,15 +45,62 @@
 										src="@/static/demand/time.png"
 										mode="scaleToFill"
 									/>
-									<text class="time_title">2021-07-12 12:24</text>
+									<text class="time_title">{{orderItem.created_at}}</text>
 								</view>
-								<view class="instructions_box">
-									<text class="instructions_title">交付倒计时：04:12</text>
+								<view class="instructions_box" v-if="orderItem.status===0">
+									<text class="instructions_title">邀请试音</text>
 									<image
 									    class="instructions_icon"
 										src="@/static/demand/arrorRight.png"
 										mode="scaleToFill"
 									/>
+								</view>
+								<view class="instructions_box" v-if="orderItem.status===1">
+									<view class="status_box" v-if="orderItem.status_time===0">
+                                       <text class="instructions_title">上传倒计时:</text>
+										<u-count-down class="countdown_num" :timestamp="orderItem.time" font-size = '25.362' separator-size="25.362" separator-color="#3387FB" :show-hours="false"  color='#3387FB'></u-count-down>
+										<image
+											class="instructions_icon"
+											src="@/static/demand/arrorRight.png"
+											mode="scaleToFill"
+										/>
+									</view>
+									<view class="status_box" v-if="orderItem.status_time===1">
+                                       <text class="instructions_title">已完成{{orderItem.demanddata}}</text>
+									   <image
+										  class="instructions_icon"
+										  src="@/static/demand/arrorRight.png"
+										  mode="scaleToFill"
+										/>
+									</view>
+								</view>
+								<view class="instructions_box" v-if="orderItem.status===2">
+									<text class="instructions_title">付款倒计时:</text>
+									<u-count-down class="countdown_num" :timestamp="orderItem.time" font-size = '25.362' separator-size="25.362" separator-color="#3387FB" separator="zh" color='#3387FB'></u-count-down>
+									<image
+										class="instructions_icon"
+										src="@/static/demand/arrorRight.png"
+										mode="scaleToFill"
+									/>
+								</view>
+								<view class="instructions_box" v-if="orderItem.status===3">
+									<view class="status_box" v-if="orderItem.order_status===0">
+                                        <text class="instructions_title">交付倒计时:</text>
+										<u-count-down class="countdown_num" :timestamp="orderData.end_time" font-size = '25.362' separator-size="25.362" separator-color="#3387FB" separator="zh" color='#3387FB'></u-count-down>
+										<image
+											class="instructions_icon"
+											src="@/static/demand/arrorRight.png"
+											mode="scaleToFill"
+										/>
+									</view>
+									<view class="status_box" v-if="orderItem.order_status===1">
+                                       <text class="instructions_title">去验收成品</text>
+									   <image
+											class="instructions_icon"
+											src="@/static/demand/arrorRight.png"
+											mode="scaleToFill"
+										/>
+									</view>
 								</view>
 							</view>
 						</view>
@@ -100,30 +149,31 @@
 </template>
 
 <script>
-import { logingroup } from '@/api/message'
-import { loginShare } from "@/api/index.js"
-import play from '@/static/home/play.png'
-import playActive from '@/static/home/palyActive.gif'
-import submitForm from '@/components/submitform/submitform.vue'
+import { demandSquare } from '@/api/myneeds.js'
 import musicAudio from '@/components/audio/audioplay.vue'
-import { mapState, mapActions } from "vuex";
 export default {
 	components: {
-		submitForm,
 		musicAudio
 	},
 	data() {
 		return {
-			orderList: [],
-			listtext: [
-					'影视人自己的社群',
-					'互帮互助，互利互惠',
-					'全实名制，拒绝广告(已有2500人申请加入~)'
-				],
 			dataList: [],
-			play: play,
 			sharePopShow: false,
-			playActive: playActive,
+			play: 'https://www.peiyinstreet.com/guidang/play.png',
+			playActive: "https://www.peiyinstreet.com/guidang/playActive.png",
+			current: 0,
+			tabsHeight: 0,
+			groupId: '',
+			defaultshow: true,
+			triggered: false,
+			demObj: {
+			  page: 1,
+			  size: 10,
+			  status: 0
+			},
+			barStyle: {
+				backgroundColor: '#FF445A',
+			},
 			list: [
 				{
                   name: '全部',
@@ -145,123 +195,48 @@ export default {
 				  name: '交付与验收',
 				  id: 2
 				}
-				],
-			current: 0,
-			swiperCurrent: 0,
-			tabsHeight: 0,
-			playStatus: false,
-			dx: 0,
-			groupId: '',
-			barStyle: {
-				backgroundColor: '#FF445A',
-			},
-			webSrc: 'https://wj.qq.com/s2/9032862/464d/',
-			countdown:[],
-			convertminutes: '',
-            defaultshow: true,
-			screeningShow: false,
-			triggered: false,
-			shareShow: true,
-			dataPlay: {
-			},
-			loadStatus: ['loadmore','loadmore','loadmore','loadmore'],
+			],
+			statusValue: ['新建','邀请的试音','报价与付款','交付与验收']
 		};
 	},
-	onLoad(options) {
-		this.getUnionid()
-		// this.getOrderList(0);
+	onLoad() {
+	  
 	},
-	computed: {
-      ...mapState("user", ["token", "userInfo"]),
-    },
+	onShow() {
+      this.getOrderList(this.demObj);
+	},
 	onHide() {
 	},
 	onShareAppMessage(res) {
 		if (res.from === 'button') {// 来自页面内分享按钮
 		    console.log(res.target)
 		}
-		this.sharePopShow = false
-		var str = {
-			type: 2,
-			group_id: this.groupId, 
-		}
-		loginShare(str).then((res)=>{
-          console.log(res)
-		  this.getOrderList(this.current)
-		}).catch((err)=>{
-          console.log(err)
-		})
 		return {
-			title: '影视人自己的资源小站',
-			desc: '影视人自己的资源小站',
+			title: '',
+			desc: '',
 			complete: function(res) {
 				console.log('分享成功', res)
 			},
 		}
 	},
-	filters: {
-      convertMinutes(time) {
-			var time1 = Date.now();
-			var date = new Date(time);
-			var time2 = date.getTime();
-			var resttime = 600-(time1-time2)/1000
-
-			if (resttime) {
-				this.countdown.push(resttime)
-				return parseInt(resttime / 60)
-			}else {
-				this.countdown.push(0)
-				return 0
-			}
-
-		},
-	},
 	methods: {
-		...mapActions("user", ["login"]),
-		getUnionid() {
-			uni.login({
-				provider: "weixin",
-				success: async (result) => {
-				  await this.login(result.code);
-				  this.handleList()
-				// this.getAllteacher()
-				},
-				fail: (error) => {
-				console.log("登录失败", error);
-				},
-			});
-		},
-		async handleList() {
-			this._freshing = false;
-			setTimeout(() => {
-				this.triggered = true;
-			}, 1000)
-		  this.getOrderList(0)
-		},
-		// 邀请配音
-		handleApplyGroup(id) {
-			this.groupId = id
-			console.log('跳转')
-			uni.navigateTo({ url: '/subpkg/pages/demanddetails/demanddetails' })
-			// this.sharePopShow = true
-			// this.$refs.submitform.hadleUpdate()
+		// 跳转详情
+		handleJumpOrderDetails(id,type) {
+			uni.navigateTo({ url: '/subpkg/pages/demanddetails/demanddetails?id='+id+'&status='+type })
 		},
 		reachBottom() {
 		},
 		// 页面数据
-		async getOrderList(idx) {
-			// const res = await getDemandList({
-			// 	state: this.list[idx].id
-			// })
-			const res = await logingroup({type:idx+1})
-			this.triggered = false
-			this.dataList = res.data.data
-			if(this.dataList.length===0){
-              this.defaultshow = false
-			}else {
-			  this.defaultshow = true	
-			}
-			this.$set(this.orderList, idx, this.dataList)
+	   getOrderList(demObj) {
+			demandSquare(demObj).then((res)=>{
+				console.log('我的需求数据',res)
+               this.dataList = res.data
+			   if(this.dataList.length===0){
+				this.defaultshow = false
+				}else {
+				this.defaultshow = true	
+			   }
+			})
 		},
 		handleCanceShare() {
 			this.sharePopShow = false
@@ -269,27 +244,11 @@ export default {
 			  title: '配音师资源',
 		  })
 		},
-		// 跳转到问卷调查
-		handleCheckWeb() {
-		//   uni.navigateTo({ url: '/pages/webview/webview?src='+ this.webSrc })
-		},
-		// 取消选择，收回弹窗
-		handletagCancel(){
-		  this.screeningShow = false
-		},
 		// tab栏切换
 		change(index) {
 			this.current = index;
-			this.getOrderList(index);
-		},
-		transition({ detail: { dx } }) {
-			this.$refs.tabs.setDx(dx);
-		},
-		animationfinish({ detail: { current } }) {
-			this.$refs.tabs.setFinishCurrent(current);
-			this.getOrderList(current);
-			this.swiperCurrent = current;
-			this.current = current;
+			this.demObj.status=index
+			this.getOrderList(this.demObj);
 		}
 	}
 };
@@ -406,9 +365,11 @@ page {
 			display: flex;
             align-items: center;
 			.apply_group {
-				text-align: center;
-				width: 144.928rpx;
+				display: flex;
+				align-items: center;
+				justify-content: center;
 				height: 39.855rpx;
+				width: 144.928rpx;
 				background: #FF445A;
 				border-radius: 12px;
 				border: 1px solid #FF445A;
@@ -426,7 +387,7 @@ page {
 		.time_box {
 		  display: flex;	
 		  align-items: center;
-		  width: 50%;
+		  width: 40%;
           .time_icon {
 			  width: 21.739rpx;
 			  height: 21.739rpx;
@@ -443,8 +404,27 @@ page {
 		  }
 		}
 		.instructions_box {
-			width: 50%;
+			width: 60%;
 			text-align: right;
+			.status_box {
+				// width: 60%;
+			    text-align: right;
+				.instructions_title {
+					margin-right: 3.623rpx;
+					width: 215.58rpx;
+					height: 36.232rpx;
+					font-size: 25.362rpx;
+					font-family: PingFangSC-Medium, PingFang SC;
+					font-weight: 500;
+					color: #3387FB;
+					line-height: 36.232rpx;
+				}
+				.instructions_icon {
+					width: 21.739rpx;
+					height: 21.739rpx;
+					margin-bottom: -3.623rpx;
+				}
+			}
 			.instructions_title {
 				margin-right: 3.623rpx;
 				width: 215.58rpx;

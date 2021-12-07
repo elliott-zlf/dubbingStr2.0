@@ -160,9 +160,11 @@ page {
   align-items: center;
 }
 .teacherOrder .list_item_box .item_title_box .apply_group_box .apply_group.data-v-07e68366 {
-  text-align: center;
-  width: 144.928rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   height: 39.855rpx;
+  width: 144.928rpx;
   background: #FF445A;
   border-radius: 12px;
   border: 1px solid #FF445A;
@@ -179,7 +181,7 @@ page {
 .teacherOrder .list_item_box .demand_box .time_box.data-v-07e68366 {
   display: flex;
   align-items: center;
-  width: 50%;
+  width: 40%;
 }
 .teacherOrder .list_item_box .demand_box .time_box .time_icon.data-v-07e68366 {
   width: 21.739rpx;
@@ -196,8 +198,26 @@ page {
   line-height: 36.232rpx;
 }
 .teacherOrder .list_item_box .demand_box .instructions_box.data-v-07e68366 {
-  width: 50%;
+  width: 60%;
   text-align: right;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box.data-v-07e68366 {
+  text-align: right;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box .instructions_title.data-v-07e68366 {
+  margin-right: 3.623rpx;
+  width: 215.58rpx;
+  height: 36.232rpx;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #3387FB;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box .instructions_icon.data-v-07e68366 {
+  width: 21.739rpx;
+  height: 21.739rpx;
+  margin-bottom: -3.623rpx;
 }
 .teacherOrder .list_item_box .demand_box .instructions_box .instructions_title.data-v-07e68366 {
   margin-right: 3.623rpx;

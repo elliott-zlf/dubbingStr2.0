@@ -1,4 +1,4 @@
-import { login, getWechatUserInfo,saveUserInfo } from 'api/index';
+import { login, getWechatUserInfo } from 'api/index';
 import { chatSignature } from '@/api/message.js'
 const STORAGE_KEY = 'user-info';
 const TOKEN_KEY = 'token';
@@ -20,7 +20,6 @@ export default {
      * 保存 token 到 vuex
      */
     setToken(state, token) {
-      console.log('userToken',state,token)
       state.token = token;
       this.commit('user/saveToken');
     },
@@ -54,29 +53,6 @@ export default {
       state.token = '';
       this.commit('user/saveToken');
     },
-    /**
-     * 保存 用户信息 到 vuex
-     */
-    setUserInfo(state, userInfo) {
-      state.userInfo = userInfo;
-      this.commit('user/saveUserInfo');
-    },
-    /**
-     * 保存 用户信息 到 本地存储
-     */
-    saveUserInfo(state) {
-      uni.setStorage({
-        key: STORAGE_KEY,
-        data: state.userInfo
-      });
-    },
-    /**
-     * 删除用户信息
-     */
-    removeUserInfo(state) {
-      state.userInfo = {};
-      this.commit('user/saveUserInfo');
-    }
   },
   actions: {
     /**
@@ -88,23 +64,12 @@ export default {
         code: userProfile,
       });
       // 登录逻辑
-      console.log('登录请求', res.data)
-      this.commit('user/setToken', res.data.user_token);
-      // this.commit('user/setUserInfo', JSON.parse(userProfile.rawData));
+      console.log('登录请求', res.data.id)
+      this.commit('user/setToken', res.data.id);
       const userIdres = await chatSignature()
       this.commit('user/setUserId', userIdres.data.userId);
-      console.log("-------------------------1")
     },
-    async saveUserInfo(content,userProfile) {
-      const data = userProfile.userInfo
-      const wechatUser = {
-        avatar: data.avatarUrl,
-        city: data.province,
-        nickname: data.nickName
-      }
-      // const res = await saveUserInfo(wechatUser)
-      this.commit('user/setUserInfo', JSON.parse(userProfile.rawData));
-    },
+
     async getWechatUserInfo(content) {
       const res = await getWechatUserInfo()
       this.commit('user/setPhone',res.data.phone)

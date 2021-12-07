@@ -20,11 +20,7 @@ export function caculateTimeago(dateTimeStamp) {
   const dayC = diffValue / day;
   const weekC = diffValue / week;
 
-  if (weekC >= 1 && weekC <= 4) {
-    result = ` ${parseInt(weekC, 10)}周前`;
-  } else if (dayC >= 1 && dayC <= 6) {
-    result = ` ${parseInt(dayC, 10)}天前`;
-  } else if (hourC >= 1 && hourC <= 23) {
+  if (hourC >= 1 && hourC <= 23) {
     result = ` ${parseInt(hourC, 10)}小时前`;
   } else if (minC >= 1 && minC <= 59) {
     result = ` ${parseInt(minC, 10)}分钟前`;

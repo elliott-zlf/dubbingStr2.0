@@ -1,11 +1,49 @@
 <script>
 import { mapState, mapActions } from "vuex";
+import TIM from '@/TIM/tim-wx';
+import COS from "@/TIM/cos-wx-sdk-v5";
+import { chatSignature } from '@/api/message.js'
 	export default {
 		onLaunch: function() {
           this.getUnionid()
+		  uni.setStorageSync('islogin', false);
+		  // 重点注意： 为了 uni-app 更好地接入使用 tim，快速定位和解决问题，请勿修改 uni.$TUIKit 命名。
+		  // 如果您已经接入 tim ，请将 uni.tim 修改为 uni.$TUIKit。
+		  uni.$TUIKit = TIM.create({
+		    SDKAppID: 1400535949
+		  });
+		  uni.$TUIKit.registerPlugin({
+		    'cos-wx-sdk': COS
+		  });
+		  uni.$TUIKitTIM = TIM;
+		  uni.$TUIKitEvent = TIM.EVENT;
+		  uni.$TUIKitVersion = TIM.VERSION;
+		  uni.$TUIKitTypes = TIM.TYPES; // 监听系统级事件
+		  uni.$resetLoginData = this.resetLoginData()
+		  
+		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_NOT_READY, this.onSdkNotReady);
+		  uni.$TUIKit.on(uni.$TUIKitEvent.KICKED_OUT, this.onKickedOut);
+		  uni.$TUIKit.on(uni.$TUIKitEvent.ERROR, this.onTIMError);
+		  uni.$TUIKit.on(uni.$TUIKitEvent.NET_STATE_CHANGE, this.onNetStateChange);
+		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_RELOAD, this.onSDKReload);
+		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_READY, this.onSDKReady);
+		},
+		onShow: function() {
+			console.log('App Show')
+		},
+		onHide: function() {
+			console.log('App Hide')
 		},
 		computed: {
 		  ...mapState("user", ["token", "userId"]),
+		},
+		globalData: {
+		  // userInfo: userID userSig token phone
+		  userInfo: null,
+		  // 个人信息
+		  userProfile: null,
+		  headerHeight: 0,
+		  statusBarHeight: 0,
 		},
 		methods: {
             ...mapActions("user", ["login"]),
@@ -14,18 +52,50 @@ import { mapState, mapActions } from "vuex";
 					provider: "weixin",
 					success: async (result) => {
 					await this.login(result.code);
+					const userIdres = await chatSignature()
+					console.log('userIdD', userIdres)
+					const userID = userIdres.data.userId
+					const userSig = userIdres.data.sign
+					
+					this.setData({
+					  userID: userID,
+					})
+					uni.$TUIKit.login({
+						userID: userID,
+						userSig: userSig
+					}).then(() => {}).catch(() => {});
 					},
 					fail: (error) => {
 					console.log("登录失败", error);
 					},
 				});
 			},
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
+			// TODO:
+			resetLoginData() {
+			  this.globalData.expiresIn = '';
+			  this.globalData.sessionID = '';
+			  this.globalData.userInfo = {
+			    userID: '',
+			    userSig: '',
+			    token: '',
+			    phone: ''
+			  };
+			  this.globalData.userProfile = null;
+			},
+			onTIMError() {},
+			onNetStateChange() {},
+			onSDKReload() {},
+			onSDKReady() {},
+			onSdkNotReady() {},
+			onKickedOut() {
+			  uni.showToast({
+				title: '您被踢下线',
+				icon: 'error'
+			  });
+			  uni.navigateTo({
+				url: './pages/TUI-Login/login'
+			  });
+			},
 		}
 	}
 </script>
@@ -114,13 +184,11 @@ import { mapState, mapActions } from "vuex";
 	.check_WeChat_tips {
 		margin-top: 28.986rpx;
 		margin-bottom: 36.232rpx;
-		height: 36.232rpx;
 		text-align: center;
 		font-size: 25.362rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
 		color: #000000;
-		line-height: 36.232rpx;
 	}
 	.share_btn_box {
 	display: flex;

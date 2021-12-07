@@ -10,7 +10,6 @@
       "root": "subpkg",
       "pages": [
         "pages/teacherlist/teacherlist",
-        "pages/carddetails/carddetails",
         "pages/demanddetails/demanddetails",
         "pages/chatpage/chatpage"
       ],

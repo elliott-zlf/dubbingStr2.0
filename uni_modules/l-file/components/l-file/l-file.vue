@@ -1,7 +1,7 @@
 <template>
 	<view>
-		<view class='t-toptips' :style="{top: top,background: cubgColor}" :class="[show?'t-top-show':'']">
-			<view v-if="loading" class="flex flex-sub">
+		<view v-if="loading" class='t-toptips' :style="{top: top,background: cubgColor}" style="margin-left: 75rpx;border: 1px solid #636468;width: 600rpx;height: 50px;border-radius: 4px;" :class="[show?'t-top-show':'']">
+			<view  v-if="loading"  class="flex flex-sub">
 				<view class="flex flex-sub">
 					<view class="cu-progress flex-sub round striped active sm">
 						<view :style="{ background: color,width: value + '%'}"></view>
@@ -10,17 +10,17 @@
 				</view>
 				<view @click="downOnAbort" v-if="value<100" class="close">取消</view>
 			</view>
-			<block v-else>{{msg}}</block>
+			<!-- <block v-else>{{msg}}</block> -->
 		</view>
 		<!-- #ifdef H5 -->
 		<h5-file 
-		v-if="showH5"
-		ref="h5File"
-		:logo="logo"
-		:showTip="showTip"
-		:progress="value"
-		@abort="onAbort"
-		@close="onCloseH5"
+			v-if="showH5"
+			ref="h5File"
+			:logo="logo"
+			:showTip="showTip"
+			:progress="value"
+			@abort="onAbort"
+			@close="onCloseH5"
 		></h5-file>
 		<!-- #endif -->
 	</view>
@@ -41,20 +41,20 @@ export default {
 		},
 		bgColor: {
 			type: String,
-			default: 'rgba(49, 126, 243, 0.5)',
+			default: 'RGBA(4, 4, 4, 0.5)',
 		},
 		color: {
 			type: String,
-			default: '#55aa00',
+			default: '#1E78FB',
 		}
 	},
 	data() {
 		this.uploadTask = null;
 		this.downloadTask = null;
 		return {
-			cubgColor: '',
+			cubgColor: 'RGBA(4, 4, 4, 0.5)',
 			loading: false,
-			value: 5,
+			value: 0,
 			show: false,
 			msg: '执行完毕~',
 			showH5: false,
@@ -85,7 +85,7 @@ export default {
 			header: 上传接口请求头
 			...：body内其他参数
 		*/
-		appChooseFile({currentWebview,url,name = 'file',header,addName = '',addSize = '',maxSize = 10,...formData} = {}) {
+		appChooseFile({currentWebview,url,name = 'file',header,...formData} = {}) {
 			// #ifdef APP-PLUS
 				let wvPath = '/uni_modules/l-file/hybrid/html/index.html';
 				let wv = plus.webview.create("",wvPath,{
@@ -96,9 +96,6 @@ export default {
 				},{
 					url,
 					header,
-					addName,
-					addSize,
-					maxSize,
 					formData,
 					key: name,
 					logo: this.logo
@@ -106,55 +103,37 @@ export default {
 				wv.loadURL(wvPath);
 				currentWebview.append(wv);
 				wv.overrideUrlLoading({mode:'reject'},(e)=>{
-					let {fileName,size,str} = this.getRequest(e.url);
+					let {fileName,str} = this.getRequest(e.url);
 					fileName = unescape(fileName);
 					str = unescape(str);
-					return this.handleBack(fileName,str,size);
+					return this.handleBack(fileName,str);
 				});
 			// #endif
 		},
-		wxChooseFile({maxSize = 10,...param}) {
+		wxChooseFile(param) {
 			wx.chooseMessageFile({
 				count: 1,
 				type: 'file',
 				success: ({tempFiles}) => {
 					this.setdefUI();
-					let file = tempFiles[0];
-					if(file.size > (1024*1024 * Math.abs(maxSize))) {
-						uni.showToast({
-							title:`单个文件请勿超过${maxSize}M,请重新上传`,
-							icon: 'none'
-						});
-						return this.errorHandler('文件选择失败',this.upErr);
-					}
-					this.handleWXUpload(param,file);
+					this.handleWXUpload(param,tempFiles[0]);
 				},
 				fail: () => this.errorHandler('文件选择失败',this.upErr)
 			})
 		},
-		h5ChooseFile({maxSize = 10,...param} = {}) {
+		h5ChooseFile(param) {
 			this.showH5 = true;
 			this.value = 0;
 			this.$nextTick(()=>{
 				this.$refs.h5File.hFile.onchange = (event) => {  
-					let file = event.target.files[0];
-					if(file.size > (1024*1024 * Math.abs(maxSize))) {
-						uni.showToast({
-							title:`单个文件请勿超过${maxSize}M,请重新上传`,
-							icon: 'none'
-						});
-						return;
-					}
-					this.handleH5Upload(param, file);
+					this.handleH5Upload(param, event.target.files[0]);
 				}  
 			})
 		},
-		handleH5Upload({url,name = 'file',header,addName,addSize,...data} = {},tempFile) {
+		handleH5Upload({url,name = 'file',header,...data} = {},tempFile) {
 			let fileName = tempFile.name;
 			let formData = new FormData();
 			for (let keys in data) {formData.append(keys, data[keys]);}
-			if (addName) {formData.append(addName, fileName);}
-			if (addSize) {formData.append(addSize, tempFile.size);}
 			formData.append(name, tempFile);
 			this.uploadTask = new XMLHttpRequest();
 			this.uploadTask.open("POST", url, true);
@@ -170,6 +149,7 @@ export default {
 			this.uploadTask.upload.addEventListener("progress",(event) => {
 				if(event.lengthComputable){
 					this.value = Math.ceil(event.loaded * 100 / event.total);
+					console.log('会变化的value', this.value)
 					if (this.value > 100) {this.value=100;}
 					this.$forceUpdate();
 				}
@@ -179,7 +159,7 @@ export default {
 				if(this.uploadTask.readyState == 4) {
 					console.log('status：'+this.uploadTask.status);
 					if (this.uploadTask.status == 200) {
-						return this.handleBack(fileName,this.uploadTask.responseText,tempFile.size);
+						return this.handleBack(fileName,this.uploadTask.responseText);
 					}
 					else {
 						this.showTip = false;
@@ -194,10 +174,9 @@ export default {
 			this.showTip = true;
 			this.uploadTask.send(formData);
 		},
-		handleWXUpload({url,name = 'file',header,addName,addSize,...formData} = {},tempFile) {
+		handleWXUpload({url,name = 'file',header,...formData} = {},tempFile) {
+			formData['fileName'] = tempFile.name;
 			let opt = {url,name,formData,header,filePath:tempFile.path};
-			if (addName) {opt.formData[addName] = tempFile.name;}
-			if (addSize) {opt.formData[addSize] = tempFile.size;}
 			let fileName = tempFile.name;
 			opt['fail'] = (e) => {
 				this.showTip = false;
@@ -207,14 +186,14 @@ export default {
 				if (res.statusCode==200) {
 					let data = JSON.parse(res.data);
 					//可自行添加后台返回状态验证
-					return this.onCommit(this.$emit('up-success',{fileName,size:tempFile.size,data}));
+					return this.onCommit(this.$emit('up-success',{fileName,data}));
 				}
 				return this.errorHandler('文件上传失败',this.upErr);
 			};
 			this.showTip = true;
 			this.uploadTask = uni.uploadFile(opt);
 			this.uploadTask&&this.uploadTask.onProgressUpdate(({progress = 0}) => {
-				if (progress <= 100) {
+				if (progress <= 99) {
 					this.value = progress;
 					this.$forceUpdate();
 				}
@@ -232,21 +211,21 @@ export default {
 			this.onCommit(false,'已取消');
 		},
 		// app+h5返回内容，此处按实际项目修改
-		handleBack(fileName,str = '{}',size) {
+		handleBack(fileName,str = '{}') {
 			console.log('可根据需求自行修改emit内容，服务端返回：'+ str);
 			try{
 				str = JSON.parse(str);
 			}catch(e){
 				str = {id:str};
 			}
-			return this.onCommit(this.$emit('up-success',{statusCode: 200,fileName,size,...str}));
+			return this.onCommit(this.$emit('up-success',{statusCode: 200,fileName,...str}));
 		},
 		/* 
 		上传
 		*/
 		upload(param = {}) {
 			if (!param.url) {this.toast('上传地址不正确');return;}
-			if (this.loading) {this.toast('还有个文件玩命处理中，请稍候..');return;}
+			if (this.loading) {this.toast('文件正在上传，请稍候..');return;}
 			
 			// #ifdef APP-PLUS
 				return this.appChooseFile(param);
@@ -365,7 +344,7 @@ export default {
 			this.msg = msg;
 			this.loading = false;
 			this.showTip = false;
-			this.cubgColor = 'rgba(57, 181, 74, 0.5)';
+			this.cubgColor = 'RGBA(4, 4, 4, 0.5)';
 			this.uploadTask = null;
 			this.downloadTask = null;
 			setTimeout(()=>{this.show = false;this.showH5 = false;},1500);
@@ -386,7 +365,7 @@ export default {
 		errorHandler(errText,reject) {
 			this.msg = errText;
 			this.loading = false;
-			this.cubgColor = 'rgba(229, 77, 66, 0.5)';
+			this.cubgColor = 'RGBA(4, 4, 4, 0.5)';
 			this.uploadTask = null;
 			this.downloadTask = null;
 			setTimeout(()=>{this.show = false;},1500);
@@ -405,6 +384,7 @@ export default {
 		z-index: 90;
 		color: #fff;
 		font-size: 30upx;
+		bottom: 50%;
 		left: 0;
 		display: flex;
 		align-items: center;

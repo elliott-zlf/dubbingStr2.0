@@ -22,11 +22,3 @@ export function chatSignature(data) {
         data
     })
 }
-// 聊天列表
-export function chatListaction(data) {
-    return request({
-        url: '/street/chat/listaction',
-        method: 'POST',
-        data
-    })
-}

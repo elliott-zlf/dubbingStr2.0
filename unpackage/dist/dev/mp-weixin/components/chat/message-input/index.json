@@ -1,0 +1,8 @@
+{
+  "component": true,
+  "usingComponents": {
+    "l-file": "/uni_modules/l-file/components/l-file/l-file",
+    "t-u-i-emoji": "/components/chat/message-elements/emoji/index",
+    "t-u-i-order-list": "/components/chat/message-private/order-list/index"
+  }
+}

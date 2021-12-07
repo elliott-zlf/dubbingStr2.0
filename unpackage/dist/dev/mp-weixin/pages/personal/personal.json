@@ -1,7 +1,6 @@
 {
   "navigationStyle": "custom",
   "usingComponents": {
-    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
-    "u-popup": "/uview-ui/components/u-popup/u-popup"
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar"
   }
 }

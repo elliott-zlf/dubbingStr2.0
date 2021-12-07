@@ -31,6 +31,76 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 .home_musicSrc_box {
 	width: 675.725rpx;
@@ -3346,13 +3416,11 @@ u-dropdown {
 .check_WeChat_tips {
   margin-top: 28.986rpx;
   margin-bottom: 36.232rpx;
-  height: 36.232rpx;
   text-align: center;
   font-size: 25.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
-  line-height: 36.232rpx;
 }
 .share_btn_box {
   display: flex;

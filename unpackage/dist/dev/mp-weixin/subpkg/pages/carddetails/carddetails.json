@@ -1,8 +1,0 @@
-{
-  "navigationBarTitleText": "",
-  "enablePullDownRefresh": false,
-  "usingComponents": {
-    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
-    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar"
-  }
-}

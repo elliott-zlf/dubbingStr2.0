@@ -66,14 +66,8 @@
 </template>
 
 <script>
-import colorRed from '@/static/home/colorRed.png'
-import colorBlue from '@/static/home/colorBlue.png'
-import colorYellow from '@/static/home/colorYellow.png'
-import play from '@/static/home/play.png'
-import playActive from '@/static/home/palyActive.gif'
 import musicAudio from '@/components/audio/audioplay.vue'
 import { getAllteacher } from "@/api/index.js"
-import { mapState, mapActions } from "vuex";
 import submitForm from '@/components/submitform/submitform.vue'
 	export default {
 		components: {
@@ -83,12 +77,18 @@ import submitForm from '@/components/submitform/submitform.vue'
 		data() {
 			return {
 				swiperList: [],
-				colorClass: [colorRed,colorBlue,colorYellow],
-				play: play,
+				colorClass: ["https://www.peiyinstreet.com/guidang/colorRed.png","https://www.peiyinstreet.com/guidang/colorBlue.png","https://www.peiyinstreet.com/guidang/colorYellow.png"],
+				play: 'https://www.peiyinstreet.com/guidang/play.png',
+				playActive: "https://www.peiyinstreet.com/guidang/palyActive.gif",
 				swiperId: '',
-				playActive: playActive,
 				musicSrc: '',
 				dataPlay: {
+				},
+				getListArg: {
+				  tag_data: [],
+				  page: 1,
+				  size: 10,
+				  type: 1
 				},
 				audioShow: false,
 			    innerAudio: '',
@@ -118,13 +118,12 @@ import submitForm from '@/components/submitform/submitform.vue'
 			},
 			// 初始化towerSwiper
 			TowerSwiper() {
-				getAllteacher().then((res)=>{
+				getAllteacher(this.getListArg).then((res)=>{
 					console.log('配音师数据', res)
 					var dataList = res.data.data
 					dataList.map((item)=>{
 						item.playStatus = false
 					})
-                    console.log('配音师列表数据', dataList)
 					this.swiperList = dataList
 				}).catch(err=>{
 
@@ -170,7 +169,7 @@ import submitForm from '@/components/submitform/submitform.vue'
 			musicClose() {
 			  this.audioShow = false	
 			  this.dataPlay = {}
-			}
+			},
 		}
 	}
 </script>

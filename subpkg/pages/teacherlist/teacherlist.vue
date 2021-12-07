@@ -151,7 +151,7 @@
 		</view>
 	    </u-popup>
 		<u-popup v-model="submitShow" mode="bottom" height="984.348rpx">
-			<submit-form ref="submitform" :bottomTitle="true" :subTitle="false" btnText="立即邀请"></submit-form>
+			<submit-form ref="submitform" :bottomTitle="true" :teachrID="teachrID" :subTitle="false" btnText="立即邀请"></submit-form>
 	   </u-popup>
 	   <view v-if="audioShow" class="home_musicSrc_box disappear">
         <musicAudio 
@@ -169,13 +169,10 @@
 </template>
 
 <script>
-import { homeConfig,serviceLits } from "@/api/index.js"
-import play from '@/static/home/play.png'
-import playActive from '@/static/home/palyActive.gif'
+import { tagAll,getAllteacher } from "@/api/index.js"
 import submitForm from '@/components/submitform/submitform.vue'
 import musicAudio from '@/components/audio/audioplay.vue'
 import uniCopy from '@/utils/uni-copy.js'
-import { mapState, mapActions } from "vuex";
 export default {
 	components: {
 		submitForm,
@@ -184,9 +181,8 @@ export default {
 	data() {
 		return {
 			dataList: [],
-			play: play,
-			erweimaShow: false,
-			playActive: playActive,
+			play: 'https://www.peiyinstreet.com/guidang/play.png',
+			playActive: "https://www.peiyinstreet.com/guidang/palyActive.gif",
 			tagList: [],
 			screenTag: [],
 			scrollInto: 0,
@@ -198,39 +194,6 @@ export default {
 				type: 1,
 				tag_data: {}
 			},
-			list: [
-				{
-                  name: '热门推荐',
-				  id: 1
-				},
-				{
-				  name: '宣传片',
-				  id: 2
-				},
-				{
-				  name: '专题片',
-				  id: 3
-				},
-				{
-				  name: '广告',
-				  id: 4
-				},
-				{
-				  name: '影视配音',
-				  id: 5
-				},
-				{
-				  name: '动漫',
-				  id: 6
-				},
-				{
-				  name: '影视配音',
-				  id: 7
-				},
-				{
-				  name: '动漫',
-				  id: 8
-				}],
 			priceList: [
 				'不限',
                 '中级≤20元',
@@ -241,14 +204,12 @@ export default {
 			swiperCurrent: 0,
 			tabsHeight: 0,
 			playStatus: false,
-			dx: 0,
 			activeIndex: 0,
 			selectedIdObj: {},
 			tagDatas: {},
 			barStyle: {
 				backgroundColor: '#FF445A',
 			},
-			voiceTeacherId: '',
 			countdown:[],
             defaultshow: true,
 			loadmore: false,
@@ -263,33 +224,16 @@ export default {
 				}	
 				]
 			},
-			loadStatus: ['loadmore','loadmore','loadmore','loadmore'],
+			teachrID: '',
 		};
 	},
 	onLoad(options) {
-		this.getUnionid()
+		this.handleList()
 	},
-	computed: {
-      ...mapState("user", ["token", "userInfo"]),
-    },
 	onHide() {
 	  this.musicClose()	
 	},
 	methods: {
-		...mapActions("user", ["login"]),
-		getUnionid() {
-			uni.login({
-				provider: "weixin",
-				success: async (result) => {
-				  await this.login(result.code);
-				  this.handleList()
-				// this.getAllteacher()
-				},
-				fail: (error) => {
-				console.log("登录失败", error);
-				},
-			});
-		},
 		// 价格筛选
 		handlePriceScreening(index) {
           this.activeIndex = index
@@ -300,12 +244,13 @@ export default {
 		  this.screeningShow = true
 		},
 		async handleList() {
-		  const res = await homeConfig()
-		  this.screenTag = res.data.tags
-		  const tagListArr = res.data.tags.filter(item=>{
+		  const res = await tagAll()
+		  this.screenTag = res.data
+		  const tagListArr = res.data.filter(item=>{
 			  this.$set(this.selectedIdObj,item.id,[])
               return item.value == '题材'
 		  })
+		  console.log('这是啥',tagListArr)
 		  var allList = {
 			    created_at: "2021-05-26 21:37:08",
 				filter: 0,
@@ -322,9 +267,6 @@ export default {
 		  setTimeout(() => {
 			this.triggered = true;
 		  }, 1000)
-		  // this.list = res.data
-		//   this.getOrderList(0)
-
 		},
 		handlere(idx) {
 		 this.triggered = true
@@ -370,17 +312,12 @@ export default {
 			console.log(this.selectedIdObj)
 			this.$forceUpdate()
 		},
-		// 查看微信
+		// 邀请试音
 		handleInviteDubbing(item) {
 			// console.log('配音师资源ID',item)
-			// this.voiceTeacherId=item.teacher_id
+			this.teachrID=item.teacher_id
 			this.submitShow = true
 			this.$refs.submitform.hadleUpdate()
-		},
-		handleCanceShare() {
-			uni.showShareMenu({
-			  title: '配音师资源',
-		  })
 		},
 		handletagQuery() {
 		this.screeningShow = false
@@ -399,6 +336,7 @@ export default {
 		handletagCancel(){
 		  this.screeningShow = false
 		},
+		// 下拉刷新
 		async reachBottom() {
 			if (this.has_next) {
 				var pages = this.tagParameter.page+1;
@@ -413,7 +351,7 @@ export default {
 				// const res = await getDemandList({
 				// 	state: this.list[idx].id
 				// })
-				const res = await serviceLits(this.tagParameter)
+				const res = await getAllteacher(this.tagParameter)
 				this.triggered = false
 				this.has_next = res.data.has_next
 				res.data.data.map((item)=>{
@@ -477,11 +415,9 @@ export default {
 			// const res = await getDemandList({
 			// 	state: this.list[idx].id
 			// })
-			const res = await serviceLits(tagParameter)
-			console.log('配音师列表数据', res)
+			const res = await getAllteacher(tagParameter)
 			this.triggered = false
 			this.has_next = res.data.has_next
-			console.log('有没有下一页数据', this.has_next)
 			res.data.data.map((item)=>{
 				item.playStatus = false
 			})
@@ -529,13 +465,6 @@ export default {
 					tag_data: tagData
 				}
 			this.getOrderList(this.tagParameter,index)
-		},
-		// 配音师入驻
-		handleVicTer() {
-			this.erweimaShow = true
-		},
-		handlecloseerweima() {
-			this.erweimaShow = false
 		},
 		tabScoll(e) {
 		  this.scrollTop = e.detail.scrollTop;
@@ -652,7 +581,7 @@ scroll-view ::v-deep ::-webkit-scrollbar {
 	  width: 143.246rpx;
 	  .screening_btn {
 		     width: 100rpx;
-			height: 60rpx;
+			height: 50rpx;
 			display: -webkit-box;
 			display: -webkit-flex;
 			display: flex;

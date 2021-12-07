@@ -8,15 +8,45 @@
       :border-bottom="false"
     ></u-navbar>
     <view class="teacherlist_box">
+	 <view class="pys_popup" v-if="erweimaShow">
+		<view class="popup_conent">
+			<image
+				class="closeicon"
+				src="@/static/home/close.png"
+				mode="scaleToFill"
+				@click="handlecloseerweima"
+			/>
+			<view class="erweimabox">
+			<view class="erweima_iconbox">
+				<image
+				class="erweima_icon"
+				src="@/static/my/erweimaqun.jpeg"
+				mode="scaleToFill"
+				/>
+			</view>	
+			<view class="erweima_box">
+			  截图保存图片，添加客服微信
+			</view>
+			</view>
+		</view>
+	 </view>	
 	 <scroll-view class="scroll_box" scroll-y="true">
 		  <view class="head_card_box">
-        <view class="my_avatar" @click="handleClicklogin">
+        <view class="my_avatar">
           <image
+		    v-if="!loginStatusShow"
             class="avatar_icon"
-            :src="userInfo.avatarUrl ? userInfo.avatarUrl : defaultAvatar"
+            src="https://www.peiyinstreet.com/guidang/defaultAvatar.png"
+            mode="scaleToFill"
+			@click="handleClicklogin"
+          />
+		  <image
+		    v-if="loginStatusShow"
+            class="avatar_icon"
+            :src="userInfo.avatar"
             mode="scaleToFill"
           />
-          <view class="nick_name"> {{userInfo.nickName ? userInfo.nickName : '未登录'}} </view>
+          <view class="nick_name"> {{loginStatusShow ? userInfo.nickname : '未登录'}} </view>
         </view>
         <image
           class="background_icon"
@@ -120,53 +150,43 @@
 	  </view>
 	 </scroll-view>	
     </view>
-	<u-popup v-model="erweimaShow" :mask-close-able="true" border-radius="10" mode="center" width="557.971rpx" height="625rpx">
-		<view class="erweimabox">
-			<view class="erweima_iconbox" @click="handlecloseerweima">
-			<view class="close_iconbox">
-				<image
-					class="close_icon"
-					src="@/static/my/close.png"
-					mode="scaleToFill"
-					/>
-			</view>
-			<view style="height:41.667rpx"></view>   
-			<image
-				class="erweima_icon"
-				src="@/static/my/erweimaqun.jpeg"
-				mode="scaleToFill"
-				/>
-			</view>	
-			<view class="erweima_box">
-				添加工作人员微信，资料认证后拉你进群
-			</view>
-		</view>
-	</u-popup>
   </view>
 </template>
 
 <script>
-import { mapState, mapActions } from "vuex";
-import defaultAvatar from '@/static/my/defaultAvatar.png'
+import { loginStatus,profileIndex } from '@/api/index.js'
 export default {
   data() {
     return {
 		erweimaShow: false,
+		loginStatusShow: false,
+		userInfo: {
+
+		}
 	};
   },
   computed: {
-    ...mapState("user", ["token", "userInfo"]),
   },
   onLoad() {
-	console.log('存储的个人资料', this.userInfo)
+  },
+  onShow() {
+    this.getloginStatus()
   },
   methods: {
-	 ...mapActions("user", ["login","saveUserInfo"]),  
+	getloginStatus() {
+	   loginStatus().then((res)=>{
+		   if(res.data.nickname===0) {
+             this.loginStatusShow = false
+           }else {
+			 profileIndex().then((res)=>{
+			   this.userInfo = res.data
+			   this.loginStatusShow = true  
+			 }) 
+		   }
+	   })	
+	},
     handleClicklogin() {
-	  if (this.userInfo.nickName) {
-	  } else {
-		this.getUserInfo()
-	  }	
+	  this.getUserInfo()
 	},
 	// 跳转到问卷调查
 	handleCheckWeb() {
@@ -188,7 +208,14 @@ export default {
             icon: "default",
             mask: true,
           });
-		  await this.saveUserInfo(obj);
+		  const userobj = {
+            nickname: obj.userInfo.nickName,
+            userId: this.userId,
+            avatar: obj.userInfo.avatarUrl,
+            phone: ''
+          }
+          await profileUpdate(userobj);
+		  this.getloginStatus()
         },
         fail: () => {
           uni.showToast({
@@ -385,40 +412,165 @@ page {
 	}
   }
 }
-.erweimabox {
-	position: relative;
-	.close_iconbox{
-	    position: absolute;
-		background: #000000;
-		right: 0rpx;
-		width: 50rpx;
-		height: 50rpx;
-		top: 0rpx;
-		border-radius: 50%;
-      .close_icon {
-		width: 50rpx;
-		height: 50rpx;
-	  }
-	}
-	.erweima_iconbox {
-		margin-left: 34.478rpx;
-	}
-	.erweima_icon {
-		width: 491.014rpx;
-		height: 491.014rpx;
-		
-	}
-	.erweima_box {
-		width: 471.014rpx;
-		height: 36.232rpx;
-		text-align: center;
-		font-size: 25.362rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #999999;
-		line-height: 36.232rpx;
-		margin-left: 43.478rpx;
-
+.pys_popup {
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    background:rgba(0,0,0,0.5);
+    z-index: 999999;
+	.popup_conent {
+		position: absolute;
+		padding: 36.232rpx;
+		top: 40%;
+		left: 50%;
+		transform: translate(-50%,-50%);
+		min-width: 500.71rpx;
+		min-height: 326.087rpx;
+		background: #FFFFFF;
+		border-radius: 28.986rpx;
+		.closeicon {
+			position: absolute;
+			width: 50.725rpx;
+			height: 50.725rpx;
+			top: -66.232rpx;
+			right: 0;
+		}
 	}
 }
+.applystorage {
+	position: fixed;
+	bottom: 70.391rpx;
+	width: 100%;
+	text-align: center;
+	.rankbtn {
+        display: inline-block;
+		width: 579.71rpx;
+		height: 94.203rpx;
+		line-height: 94.203rpx;
+		text-align: center;
+		background: #1274FF;
+		box-shadow: 0px 8px 10px 0px rgba(18, 70, 255, 0.18);
+		border-radius: 30px;
+		font-size: 32.609rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+	}
+	.applystorage_btn {
+		display: inline-block;
+		width: 579.71rpx;
+		height: 94.203rpx;
+		text-align: center;
+		background: #1274FF;
+		box-shadow: 0px 8px 10px 0px rgba(18, 70, 255, 0.18);
+		border-radius: 30px;
+        .shenqing{
+			margin-top: 10rpx;
+           font-size: 32.609rpx;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #FFFFFF;
+		}
+		.gengduo{
+			font-size: 18.116rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #FFFFFF;
+		}
+
+	}
+
+}
+.rankingbox {
+	.rankingtop_text_box{
+		display: flex;
+		justify-content: center;
+		.rankingtext{
+			width: 271.739rpx;
+			.mingci {
+                text-align: center;
+				height: 50.725rpx;
+				font-size: 36.232rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #000000;
+				line-height: 50.725rpx;
+				.mingci_num {
+					color: #1274FF;
+				}
+			}
+			.tipstitle {
+				text-align: center;
+				height: 36.232rpx;
+				font-size: 25.362rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #000000;
+				line-height: 36.232rpx;
+			}
+
+		}
+		.scoretest {
+			width: 271.739rpx;
+			.jifne {
+			    text-align: center;
+				height: 50.725rpx;
+				font-size: 36.232rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #000000;
+				line-height: 50.725rpx;	
+			}
+			.tipstitle {
+				text-align: center;
+				height: 36.232rpx;
+				font-size: 25.362rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #000000;
+				line-height: 36.232rpx;
+			}
+		}
+	}
+	.prompt_box {
+	  margin-top: 38.043rpx;
+	  width: 543.478rpx;
+	  height: 271.739rpx;
+	  background: #F4F4F4;
+	  border-radius: 14.493rpx;
+	  text-align: center;
+	  .defen {
+		text-align: center;
+		height: 30.797rpx;
+		font-size: 21.739rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #666666;
+		line-height: 30.797rpx;
+	  }
+	  .defen2 {
+		text-align: center;
+		height: 30.797rpx;
+		font-size: 21.739rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #666666;
+		line-height: 30.797rpx;
+	  }
+	  .know_btn {
+		display: inline-block;
+		width: 304.348rpx;
+		height: 79.71rpx;
+		line-height: 79.71rpx;
+		background: #1274FF;
+		box-shadow: 0px 14.493rpx 18.116rpx 0px rgba(18, 70, 255, 0.18);
+		border-radius: 39.855rpx;
+		font-size: 28.986rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #FFFFFF;
+	  }
+	}
+}
+
 </style>

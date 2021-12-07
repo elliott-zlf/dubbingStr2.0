@@ -88,31 +88,22 @@
 					"navigationStyle":"custom"
 			      }  
 			  }
-                ,{
-                    "path" : "pages/carddetails/carddetails",
-                    "style" :                                                                                    
-                {
-                    "navigationBarTitleText": "",
-                    "enablePullDownRefresh": false
-                }
-                
-                }
-                ,{
-                    "path" : "pages/demanddetails/demanddetails",
-                    "style" :                                                                                    
-                {
-                    "navigationStyle":"custom"
-                }
-                
-                }
-                ,{
-                    "path" : "pages/chatpage/chatpage",
-                    "style" :                                                                                    
-                {
-                    "navigationStyle":"custom"
-                }
-                
-                }
+              ,{
+					"path" : "pages/demanddetails/demanddetails",
+					"style" :                                                                                    
+				{
+					"navigationStyle":"custom"
+				}
+				
+				}
+				,{
+					"path" : "pages/chatpage/chatpage",
+					"style" :                                                                                    
+				{
+					"navigationStyle":"custom"
+				}
+				
+				}
             ]
 		}
 	]

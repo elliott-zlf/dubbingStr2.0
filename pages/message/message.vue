@@ -12,43 +12,37 @@
 		></u-navbar>
 		<view class="content">
 		 <scroll-view 
-		   v-if="this.sessionItemList.length !== 0"
+		   v-if="conversationList.length !== 0"
 		   class="session_item_scroll"
 		   scroll-y
-		   @refresherrefresh="handlere()"
-		   :refresher-enabled="true"
-		   :scroll-top="scrollInto"
-		   @scroll="tabScoll"
-		   @scrolltolower="reachBottom"
-		   :refresher-triggered="triggered"
 		>
 			 <view class="session_item_box">
-			  <view v-for="(item,index) in sessionItemList" :key="index" class="item_list" @click.stop="handlechatpage">
+			  <view v-for="(item,index) in conversationList" :key="index" class="item_list" @tap="handleRoute(item.conversationID)">
 				  <view class="head_img_box">
-					  <view class="message_num" v-if="item.newnum !== 0">
-						<view class="read-text" v-if="item.newnum > 99">99+</view>
-						<view class="read-text" v-else>{{item.newnum}}</view>
+					  <view class="message_num" v-if="item.unreadCount !== 0">
+						<view class="read-text" v-if="item.unreadCount > 99">99+</view>
+						<view class="read-text" v-else>{{item.unreadCount}}</view>
 					  </view>
 					  <image
 					      class="head_icon"
-						  :src="item.profile[1].Value"
+						  :src="item.userProfile.avatar"
 						  mode="scaleToFill"
 					  />
 					  <view class="online"></view>
 				  </view>
 				  <view class="message_content">
                      <view class="message_body">
-						 <view class="nick_name u-line-1">{{item.profile[0].Value}}</view>
-						 <view v-if="item.content[0].MsgType==='TIMTextElem'" class="message_text u-line-1">{{item.content[0].MsgContent.Text}}</view>
+						 <view class="nick_name u-line-1">{{item.userProfile.nick}}</view>
+						 <view class="message_text u-line-1">{{ setConversationAvatarHandler(item) }}</view>
 					 </view>
 					 <view class="message_time">
-						 {{ getcaculateTimeago(item.MsgTime) }}
+						 {{ getcaculateTimeago(item.lastMessage.lastTime) }}
 					 </view>
 				  </view>
 			  </view>
 		  </view>	
 		 </scroll-view>	
-          <view v-if="this.sessionItemList.length == 0" class="temporarily_box">
+          <view v-if="conversationList.length == 0" class="temporarily_box">
 			<image
 				class="temporarily_icon"
 				src="@/static/demand/defaulticon.png"
@@ -61,12 +55,21 @@
 </template>
 
 <script>
-import { chatListaction } from '@/api/message.js'
 import { mapState } from "vuex";
 import { caculateTimeago } from '@/utils/common';
 	export default {
 		data() {
 			return {
+				conversationList: [],
+				conversation: {},
+				showSelectTag: false,
+				array: [{
+					name: '发起会话'
+				}, {
+					name: '发起群聊'
+				}, {
+					name: '加入群聊'
+				}],
 				background: {
 				  backgroundColor: '#ffffff',
 			    },
@@ -83,53 +86,75 @@ import { caculateTimeago } from '@/utils/common';
 			...mapState("user", ["token","userId"]),
 
 		},
-		onLoad(options) {
-		  this.getChatListaction()
+		/**
+		 * 生命周期函数--监听页面加载
+		 */
+		onLoad() {
+			// 登入后拉去会话列表
+			this.getConversationList();
+			uni.$TUIKit.on(uni.$TUIKitEvent.CONVERSATION_LIST_UPDATED, this.onConversationListUpdated);
+		},
+
+		/**
+		 * 生命周期函数--监听页面卸载
+		 */
+		onUnload() {
+			uni.$TUIKit.off(uni.$TUIKitEvent.SDK_READY, this.onConversationListUpdated);
 		},
 		methods: {
-		  // 获取会话列表
-		  getChatListaction() {
-			  this.sessionAugments = {
-					id: 'teacher_1',
-					StartIndex: 0,
-					TimeStamp: 0
+		handleRoute(id) {
+			console.log('会话的ID是多少',id)
+			const url = `/subpkg/pages/chatpage/chatpage?conversationID=${id}`;
+			uni.navigateTo({
+				url
+			});
+			},
+			// 对话列表更新
+			onConversationListUpdated(event) {
+			this.setData({
+				conversationList: event.data
+			});
+		},
+            // 请求列表数据
+			getConversationList() {
+			uni.$TUIKit.getConversationList().then(imResponse => {
+				console.log('聊天的列表数据列表数据',imResponse)
+				this.setData({
+				conversationList: imResponse.data.conversationList
+				});
+			});
+			},
+			// 判断自定义文件类型
+			setConversationAvatarHandler(item) {
+				if (item.lastMessage.type === 'TIMTextElem') {
+					return item.lastMessage.payload.text;
 				}
-			  chatListaction(this.sessionAugments).then((res)=>{
-				  console.log('回话列表', res)
-				  this.sessionItemList = res.data.SessionItem
-			  })
-			  .catch((err)=>{
-				  console.log('列表错误的消息', err)
-			  })
-		  },
+
+				if (item.lastMessage.type === 'TIMCustomElem') {
+					if (item.lastMessage.payload.data==="offer") {
+						return "[订单] " + item.lastMessage.payload.description
+					} else if(item.lastMessage.payload.data==="file"){
+						return "[文件] " + item.lastMessage.payload.description
+					} else if(item.lastMessage.payload.data==="zuopin"){
+						return "[作品] " + item.lastMessage.payload.description
+					}else if(item.lastMessage.payload.data==="chengping"){
+						return "[成品] " + item.lastMessage.payload.description
+					}else if(item.lastMessage.payload.data==="wodexuqiu"){
+						return "[我的需求] " + item.lastMessage.payload.description
+					}else if(item.lastMessage.payload.data==="请求报价单"){
+						return "[请求报价单] " + item.lastMessage.payload.description
+					}else if(item.lastMessage.payload.data==="配音报价单"){
+						return "[配音报价单] " + item.lastMessage.payload.description
+					}
+				}
+				if (item.lastMessage.type === 'GROUP') {
+					return conversation.groupProfile.avatar || "";
+				}
+			},
 		  //  时间戳转换 
 		  getcaculateTimeago(item) {
             return caculateTimeago(item*1000)
-		  },
-		  // 跳转到聊天详情
-		  handlechatpage() {
-			uni.navigateTo({ url: '/subpkg/pages/chatpage/chatpage' })
-		  },
-		  //  下拉刷新
-		  async reachBottom() {
-				if (this.has_next) {
-					this.orderPar.page = this.orderPar.page + 1;
-					const res = await orderList(this.orderPar);
-					console.log("res新数据", res);
-					this.triggered = false;
-					this.has_next = res.has_next;
-					res.data.map((item) => {
-					this.orderList.push(item);
-					});
-					if (this.orderList.length === 0) {
-					  this.defaultshow = true;
-					  this.has_next = "";
-					} else {
-					  this.defaultshow = false;
-					}
-				} else {
-				}
-			},
+		  }
 		}
 	}
 </script>
