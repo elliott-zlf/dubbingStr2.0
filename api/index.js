@@ -85,3 +85,74 @@ export function profileIndex(data) {
         data
     })
 }
+// 获取需求页面详情
+export function urlIndex(data) {
+    return request({
+        url: '/street/url/index',
+        method: 'POST',
+        data
+    })
+}
+// 筛选标签
+export function homeConfig() {
+    return request ({
+        url: '/resources/home/config',
+        method: 'GET'
+    })
+}
+// 配音师库
+export function serviceLits(data) {
+    return request ({
+        url: '/business/service/service',
+        method: 'POST',
+        data
+    })
+}
+// 分享
+export function profileShare(data) {
+    return request ({
+        url: '/business/profile/share',
+        method: 'POST',
+        data
+    })
+}
+// 分享试音
+export function fabulouworks(data) {
+    return request({
+        url: '/street/demand/fabulouworks',
+        method: 'POST',
+        data
+    })
+}
+// 排名
+export function serviceRank(data) {
+    return request ({
+        url: '/business/service/rank',
+        method: 'POST',
+        data
+    })
+}
+// 领取优惠卷
+export function couponadd(data) {
+    return request ({
+        url: '/street/coupon/add',
+        method: 'POST',
+        data
+    })
+}
+// 优惠卷状态
+export function couponstatus(data) {
+    return request ({
+        url: '/street/login/couponstatus',
+        method: 'POST',
+        data
+    }) 
+}
+// 热门作品
+export function servicehot(data) {
+    return request({
+        url: '/street/service/hot',
+        method: 'POST',
+        data
+    })
+}

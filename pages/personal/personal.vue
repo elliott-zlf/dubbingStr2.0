@@ -8,6 +8,13 @@
       :border-bottom="false"
     ></u-navbar>
     <view class="teacherlist_box">
+	 <!-- <image
+	    v-if="erweimaShow"
+		class="erweima_icon"
+		:show-menu-by-longpress="true"
+		src="https://www.peiyinstreet.com/guidang/erweimaqun.jpeg"
+		mode="widthFix"
+	 />	 -->
 	 <view class="pys_popup" v-if="erweimaShow">
 		<view class="popup_conent">
 			<image
@@ -16,28 +23,34 @@
 				mode="scaleToFill"
 				@click="handlecloseerweima"
 			/>
-			<view class="erweimabox">
-			<view class="erweima_iconbox">
-				<image
-				class="erweima_icon"
-				src="@/static/my/erweimaqun.jpeg"
-				mode="scaleToFill"
-				/>
-			</view>	
-			<view class="erweima_box">
-			  截图保存图片，添加客服微信
-			</view>
-			</view>
+			<view>
+            <view style="height: 17.971rpx"></view>
+            <view class="check_WeChat_test"> 请在电脑端入驻，网址 </view>
+            <view class="check_WeChat_tips"
+              >https://www.peiyinstreet.com/t/#/</view
+            >
+            <view class="share_btn_box">
+              <button
+                class="cancelSharebtn"
+                hover-class="button-hover"
+                @click="handlecloseerweima"
+              >
+                取消
+              </button>
+              <button class="sharebtn" @click="downloadcopy('https://www.peiyinstreet.com/t/#/','链接复制成功')">
+                复制
+              </button>
+            </view>
+          </view>
 		</view>
 	 </view>	
 	 <scroll-view class="scroll_box" scroll-y="true">
-		  <view class="head_card_box">
+		<view class="head_card_box">
         <view class="my_avatar">
           <image
 		    v-if="!loginStatusShow"
             class="avatar_icon"
             src="https://www.peiyinstreet.com/guidang/defaultAvatar.png"
-            mode="scaleToFill"
 			@click="handleClicklogin"
           />
 		  <image
@@ -48,13 +61,161 @@
           />
           <view class="nick_name"> {{loginStatusShow ? userInfo.nickname : '未登录'}} </view>
         </view>
+		<view class="integral">
+			<view class="item" @click="handleCheckBalance">
+              <view class="digital">0</view>
+			  <view class="digital_text">钱包</view>
+			</view>
+			<view class="item" @click="handleIntegral">
+              <view class="digital">{{userInfos.score || 0}}</view>
+			  <view class="digital_text">积分</view>
+			</view>
+			<view class="item" @click="handlecoupons">
+              <view class="digital">{{userInfos.coupon_count || 0}}</view>
+			  <view class="digital_text">优惠券</view>
+			</view>
+		</view>
         <image
           class="background_icon"
           src="@/static/my/backgroundicon.png"
           mode="scaleToFill"
         />
       </view>
+	   <view class="activity">
+		   <view class="activity_title_box">
+			   <view class="activity_title">我的订单</view>
+			   <view class="activity_all">
+				   <view class="activity_all_title" @click="handleJumpmyOrder(0)">查看全部</view>
+				   <image
+				       class="activity_all_img"
+					   src="@/static/my/traveltoicon.png"
+					   mode="scaleToFill"
+				   />
+			   </view>
+		   </view>
+		   <view class="item_list_box">
+             <view class="orderitem_list" @click="handleJumpmyOrder(1)">
+			   <u-badge  style="position:absolute;right: 40rpx; top: -45rpx;" :count="userInfos.order_paid_count" bgColor="#FE445A"></u-badge>	 
+			   <image
+			       class="item_icon"
+				   src="@/static/coupons/daifukuan.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">待付款</view>
+			 </view>
+			  <view class="orderitem_list" @click="handleJumpmyOrder(2)">
+			   <u-badge  style="position:absolute;right: 40rpx; top: -45rpx;" :count="userInfos.order_delivere_count" bgColor="#FE445A"></u-badge>		  
+			   <image
+			       class="item_icon"
+				   src="@/static/coupons/daijiaofu.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">待交付</view>
+			 </view>
+			  <view class="orderitem_list" @click="handleJumpmyOrder(3)">
+			   <u-badge  style="position:absolute;right: 40rpx; top: -45rpx;" :count="userInfos.order_completed_count" bgColor="#FE445A"></u-badge>		  
+			   <image
+			       class="item_icon"
+				   src="@/static/coupons/yiwancheng.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">已完成</view>
+			 </view>
+		   </view>
+	   </view>
+	    <view class="activity">
+		   <view class="activity_title_box">
+			   <view class="activity_title">我的服务</view>
+			   <!-- <view class="activity_all">
+				   <view class="activity_all_title" @click="handleMyWorks">查看全部</view>
+				   <image
+				       class="activity_all_img"
+					   src="@/static/my/traveltoicon.png"
+					   mode="scaleToFill"
+				   />
+			   </view> -->
+		   </view>
+		   <view class="item_list_box">
+             <view class="orderitem_list" @click="handleMyWorks"> 
+			   <image
+			       style="width: 48.913rpx;height: 59.725rpx;"
+			       class="item_icon"
+				   src="@/static/coupons/zuopin.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">作品</view>
+			 </view>
+			  <view class="orderitem_list" @click="handleMyFocus">	  
+			   <image
+			       style="width: 56.159rpx; height: 59.725rpx;"
+			       class="item_icon"
+				   src="@/static/coupons/peiyinshi.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">配音师</view>
+			 </view>
+			  <view class="orderitem_list">	  
+			   <!-- <image
+			       style="width: 70.652rpx;height: 59.725rpx;"
+			       class="item_icon"
+				   src="@/static/coupons/yunfenxiang.png"
+				   mode="scaleToFill"
+			   />
+			   <view class="item_title">云分享</view> -->
+			 </view>
+		   </view>
+	   </view>
+	   <!-- 我的配音师 -->
+	  <!-- <view class="activity">
+		   <view class="activity_title_box">
+			   <view class="activity_title">我的配音师</view>
+			   <view class="activity_all">
+				   <view class="activity_all_title" @click="handleMyFocus">查看全部</view>
+				   <image
+				       class="activity_all_img"
+					   src="@/static/my/traveltoicon.png"
+					   mode="scaleToFill"
+				   />
+			   </view>
+		   </view>
+		   <view class="item_list_box">
+             <view class="item_list" @click="handleMyFocus" v-for="(item,index) in 3" :key="index">
+			   <view class="img_icon_box">
+				  <image
+				    v-if="voiceData[index]"
+					class="img_icon"
+					:src="voiceData[index].teacher.avatar"
+					mode="scaleToFill"
+			      /> 
+				  <image
+				    v-if="!voiceData[index]"
+					class="img_icon"
+					src="@/static/coupons/emptyRound.png"
+					mode="scaleToFill"
+			       />
+				   <text v-if="!voiceData[index]" class="add_text">+</text>
+			   </view>
+			 </view>
+		   </view>
+	  </view>	 -->
       <view class="my_list_cell_box">
+	    <!-- <view class="list_cell" @click="handleMyFocus">
+		   <view class="cell_logo_box">
+             <image
+			     class="cell_logo"
+				 src="@/static/home/guanzhu.png"
+				 mode="scaleToFill"
+			 />
+			 <text class="cell_text">我的关注</text>
+		   </view>
+		   <view class="travel_to_iconbox">
+			  <image
+				class="travel_to_icon"
+				src="@/static/my/traveltoicon.png"
+				mode="scaleToFill"
+			  />
+		   </view>
+	   </view>   -->
        <view class="list_cell">
 		    <button  class="invitationBtn" open-type="contact" send-message-title="联系客服" :show-message-card="true">
 				 <view class="cell_logo_box">
@@ -74,7 +235,7 @@
 			  />
 		   </view>
 	   </view>
-	    <view class="list_cell">
+	    <view class="list_cell" @click="handleJumpAbout">
 		   <view class="cell_logo_box">
              <image
 			     class="cell_logo"
@@ -92,23 +253,7 @@
 		   </view>
 	   </view>
 	   <view class="list_cell">
-		   <view class="cell_logo_box">
-             <image
-			     class="cell_logo"
-				 src="@/static/my/qa.png"
-				 mode="scaleToFill"
-			 />
-			 <text class="cell_text">常见问题</text>
-		   </view>
-		   <view class="travel_to_iconbox">
-			  <image
-				class="travel_to_icon"
-				src="@/static/my/traveltoicon.png"
-				mode="scaleToFill"
-			  />
-		   </view>
-	   </view>
-	   <view class="list_cell">
+		 <button  class="invitationBtn" @click="handlJumpCard">  
 		   <view class="cell_logo_box">
              <image
 			     class="cell_logo"
@@ -117,6 +262,7 @@
 			 />
 			 <text class="cell_text">配音师入驻</text>
 		   </view>
+		  </button>
 		   <view class="travel_to_iconbox">
 			  <image
 				class="travel_to_icon"
@@ -135,7 +281,8 @@
 			  />
 			  <text class="group_text">全国广告宣传片甲方资源置换微信群</text>
 		  </view>
-		  <view class="group_content" @click="handleCheckWeb">
+		  <view class="group_content">
+			<button  class="invitationBtn" @click="handleCheckWeb"> 
 			  <view class="group_content_box">
                 <image
 			        class="group_icon"
@@ -146,6 +293,7 @@
 				<view class="text_in">只可通过邀请进群</view>
 				<view class="in_btn">点击加入</view>
 			  </view>
+			</button>  
 		  </view>
 	  </view>
 	 </scroll-view>	
@@ -154,7 +302,10 @@
 </template>
 
 <script>
-import { loginStatus,profileIndex } from '@/api/index.js'
+import { loginStatus,profileIndex,profileUpdate } from '@/api/index.js'
+import { followList, profileinformation } from '@/api/personal.js'
+import { mapState } from "vuex";
+import uniCopy from '@/utils/uni-copy.js'
 export default {
   data() {
     return {
@@ -162,7 +313,9 @@ export default {
 		loginStatusShow: false,
 		userInfo: {
 
-		}
+		},
+		userInfos: {},
+		voiceData: []
 	};
   },
   computed: {
@@ -170,7 +323,26 @@ export default {
   onLoad() {
   },
   onShow() {
-    this.getloginStatus()
+    // this.getloginStatus()
+	// // 获取积分，优惠卷数据
+	// this.getCoupondata()
+	this.getIntegral()
+
+  },
+  onShareAppMessage(res) {
+	if (res.from === 'button') {// 来自页面内分享按钮
+		console.log(res.target)
+	}
+	return {
+		title: '全国影视宣传片甲方资源置换群入口',
+		desc: '',
+		complete: function(res) {
+			console.log('分享成功', res)
+		},
+	}
+  },
+  computed: {
+    ...mapState("user", ["token","userId"]),
   },
   methods: {
 	getloginStatus() {
@@ -178,24 +350,124 @@ export default {
 		   if(res.data.nickname===0) {
              this.loginStatusShow = false
            }else {
-			 profileIndex().then((res)=>{
+			 profileIndex().then((res)=>{	 
 			   this.userInfo = res.data
 			   this.loginStatusShow = true  
 			 }) 
 		   }
 	   })	
 	},
+	getIntegral() {
+		profileinformation().then((res)=>{
+			console.log('订单滴滴代驾点击',res)
+			this.userInfos = res.data
+		})
+	},
+	// 查看余额
+	handleCheckBalance() {
+	  uni.showToast({
+        icon: 'none',
+        title: '钱包功能暂未开通'
+      });
+	},
+	// 优惠卷积分数据
+	getCoupondata() {
+	  followList().then((res)=>{
+        console.log('我的关注数据',res)
+		this.voiceData = res.data
+	  }).catch((err)=>{
+
+	  })
+	},
     handleClicklogin() {
 	  this.getUserInfo()
 	},
 	// 跳转到问卷调查
 	handleCheckWeb() {
-		this.erweimaShow = true
+		// this.erweimaShow = true
+		uni.previewImage({
+            urls: ['https://www.peiyinstreet.com/guidang/jinqun.png'],
+            longPressActions: {
+                itemList: ['发送给朋友', '保存图片', '收藏'],
+                success: function(data) {
+                    console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+                },
+                fail: function(err) {
+                    console.log(err.errMsg);
+                }
+            }
+        });
 	//   uni.navigateTo({ url: '/pages/webview/webview?src='+ this.webSrc })
+	},
+	handleJumpAbout() {
+	  uni.navigateTo({ url: '/subpkg/pages/about/about' })
+	},
+	// 跳转到我的作品页面
+	handleMyWorks() {
+	   uni.navigateTo({ url: '/subpkg/pages/mywork/mywork' })	
+	},
+	// 跳转到我的配音师页面
+	handleMyFocus() {
+	   uni.navigateTo({ url: '/subpkg/pages/myfocus/myfocus' })	
 	},
 	handlecloseerweima() {
 		this.erweimaShow = false
 	},
+	// 跳转到积分页面
+	handleIntegral() {
+	   uni.navigateTo({ url: '/subpkg/pages/integral/integral' })	
+	},
+	// 跳转到优惠卷
+	handlecoupons() {
+	  uni.navigateTo({ url: '/subpkg/pages/coupons/coupons' })
+	},
+	handleJumpmyOrder(index) {
+	  uni.navigateTo({ url: '/subpkg/pages/myorder/myorder?type='+ index })
+	},
+	handlJumpCard() {
+		uni.previewImage({
+            urls: ['https://www.peiyinstreet.com/guidang/qiyewechat.png'],
+            longPressActions: {
+                itemList: ['发送给朋友', '保存图片', '收藏'],
+                success: function(data) {
+                    console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+                },
+                fail: function(err) {
+                    console.log(err.errMsg);
+                }
+            }
+        });
+		// console.log('配音师弹窗',this.erweimaShow)
+		// this.erweimaShow = true
+			/* #ifdef MP-WEIXIN */
+			//  wx.navigateToMiniProgram({
+			// 	appId: '',
+			// 	path: '',
+			// 	extraData: {
+			// 		foo: 'bar'
+			// 	},
+			// 	shortLink: '#小程序://配音师名片/配音师名片/wVGSK7UmpbJxS5c',
+			// 	envVersion: 'release',
+			// 	success(res) {
+			// 		// 打开成功
+			// 		console.log(res)
+			//    }
+		    // })
+		  /* #endif */
+	},
+	onTabItemTap() {
+		loginStatus().then((res)=>{
+           if(res.data.nickname == 0) {
+              this.getUserInfo()
+            } else {
+              this.getloginStatus()
+			  // 获取积分，优惠卷数据
+			  this.getCoupondata()
+			}
+         }).catch((err)=>{
+           console.log('返回错误信息', err)
+         })  
+	    },
     getUserInfo() {
       uni.showLoading({
         title: "加载中",
@@ -216,6 +488,8 @@ export default {
           }
           await profileUpdate(userobj);
 		  this.getloginStatus()
+		  // 获取积分，优惠卷数据
+		  this.getCoupondata()
         },
         fail: () => {
           uni.showToast({
@@ -230,6 +504,20 @@ export default {
         },
       });
     },
+	downloadcopy(groupNum,title) {
+		uniCopy({
+			content:groupNum,
+			success:(res)=>{
+				uni.showToast({
+					title: title,
+					icon: 'none'
+				})
+				this.erweimaShow = false
+			},
+			error:(e)=>{
+			}
+		})
+	}
   }
 };
 </script>
@@ -248,7 +536,6 @@ page {
 <style lang="scss">
 .invitationBtn {
 	width: 100%;
-	height: 113.678rpx;
 	display: flex;
 	justify-content: space-between;
 	border-radius: 8rpx;
@@ -274,7 +561,7 @@ page {
     margin-top: 27.174rpx;
     margin-left: 27.174rpx;
     width: 695.652rpx;
-    height: 344.203rpx;
+    height: 289.855rpx;
     .background_icon {
       width: 100%;
       height: 100%;
@@ -284,17 +571,20 @@ page {
       left: 0;
     }
     .my_avatar {
-      text-align: center;
+      display: flex;
+	  align-items: center;
+	  padding-top: 38.043rpx;
       z-index: 99;
       .avatar_icon {
-        margin-top: 38.043rpx;
-        width: 177.536rpx;
-        height: 177.536rpx;
-		border-radius: 88.768rpx;
+		margin-left: 43.478rpx;  
+		width: 108.696rpx;
+		height: 108.696rpx;
+	    border-radius: 181.58rpx;
+		border: 2px solid #FFFFFF;
       }
       .nick_name {
+		margin-left: 27.174rpx;  
         text-align: center;
-        margin-top: 18.116rpx;
         height: 43.478rpx;
         font-size: 32.609rpx;
         font-family: PingFangSC-Medium, PingFang SC;
@@ -303,12 +593,32 @@ page {
         line-height: 43.478rpx;
       }
     }
+	.integral {
+		display: flex;
+		justify-content: space-between;
+		margin: 43.478rpx 0rpx 0px 0rpx;
+		.item {
+			width: 50%;
+			text-align: center;
+			.digital {
+				font-size: 32.609rpx;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #FFFFFF;
+			}
+			.digital_text {
+				font-size: 21.739rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #FFFFFF;
+			}
+		}
+	}
   }
   .my_list_cell_box {
 	margin-top: 21.739rpx;
     margin-left: 27.174rpx;  
     width: 695.652rpx;
-	height: 454.71rpx;
 	background: #FFFFFF;
 	border-radius: 14.493rpx;
 	.list_cell {
@@ -572,5 +882,94 @@ page {
 	  }
 	}
 }
+.group_content_box {
+	width: 100%;
+	text-align: center;
+}
+// 活动样式
+.activity {
+  margin-left: 27.174rpx;	
+  width: 695.652rpx;
+  height: 217.391rpx;
+  background: #FFFFFF;
+  border-radius: 14.493rpx;
+  margin-top: 21.739rpx;
+  margin-bottom: 21.739rpx;
+  .activity_title_box {
+	  padding: 25.362rpx 30.797rpx;
+	  display: flex;
+	  justify-items: center;
+	  justify-content: space-between;
+      .activity_title {
+		height: 36.232rpx;
+		font-size: 26.362rpx;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+		line-height: 36.232rpx;
+	  }
+	  .activity_all {
+		  display: flex;
+	      justify-items: center;
+		  align-items: center;
+		  .activity_all_title {
+			font-size: 21.739rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #999999;
+			margin-right: 8.246rpx;
+		  }
+		  .activity_all_img {
+			width: 10.87rpx;
+			height: 19.928rpx;
 
+		  }
+	  }
+  }
+  .item_list_box {
+	margin-top: 15rpx;  
+	width: 100%; 
+	display: flex;
+    justify-content: space-between;
+	.orderitem_list {
+		position: relative;
+		text-align: center;
+		width: 50%;
+		.item_icon {
+			width: 59.783rpx;
+			height: 50.725rpx;
+		}
+		.item_title {
+			font-size: 25.362rpx;
+			font-family: PingFangSC-Regular, PingFang SC;
+			font-weight: 400;
+			color: #666666;
+		}
+	}
+	.item_list {
+	  display: flex;
+	  justify-content: center;
+	  width: 50%;
+	  .img_icon_box {
+		 position: relative;
+		 width: 100rpx;
+		 height: 100rpx;
+		 border-radius: 50rpx;
+		.img_icon {
+		  width: 100rpx;
+		  height: 100rpx;
+		  border-radius: 50rpx;
+	    }
+		.add_text {
+			position: absolute;
+			top: 48%;
+            left: 52%;
+			transform: translate(-50%,-50%);
+			font-size: 47.101rpx;
+			color: #D3D3D3;
+		}
+	  }
+    }
+  }
+}
 </style>

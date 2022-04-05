@@ -6,14 +6,13 @@
     </view>
     <view class="TUI-message-input">
         <view v-if="!isAudio" class="TUI-message-input-main">
-            <input class="TUI-message-input-area" :adjust-position="true" cursor-spacing="20" v-model="inputText" @input="onInputValueChange" maxlength="140" type="text"  placeholder-class="input-placeholder" placeholder="新消息..." @focus="inputBindFocus" @blur="inputBindBlur">
+            <input class="TUI-message-input-area" :focus="focusShow" hold-keyboard :adjust-position="false" cursor-spacing="20" v-model="inputText" @input="onInputValueChange" maxlength="140" type="text"  placeholder-class="input-placeholder"  placeholder="新消息..." @keyboardheightchange="hanldekeyboardheight" @focus="inputBindFocus" @blur="inputBindBlur">
         </view>
         <view class="send" :class="isVoice?'hidden':''" @tap="sendTextMessage">
-              <view class="btn">发送</view>
+            <view class="btn">发送</view>
         </view>
     </view>
-    <view class="place_view"></view>
-    <TUI-Order-List class="tui-cards" :display="displayOrderList" :conversation="conversation" @sendCustomMessage="$handleSendCustomMessage" @close="$handleCloseCards"></TUI-Order-List>
+    <TUI-Order-List class="tui-cards" :display="displayOrderList" :conversationOffer="offerData" :conversation="conversation" @sendCustomMessage="$handleSendCustomMessage" @close="$handleCloseCards"></TUI-Order-List>
 </view>
 <l-file ref="lFile" :logo="logo" @up-success="onSuccess"></l-file>
 </view>
@@ -28,6 +27,7 @@ export default {
     return {
       // todo  conversation
       // conversation: {},
+      dd: '',
       inputText: '',
       extensionArea: false,
       sendMessageBtn: false,
@@ -43,6 +43,8 @@ export default {
       isShow: true,
       recordTime: 0,
       recordTimer: null,
+      focusShow: false,
+      offerData: {},
       commonFunction: [{
         name: '请求报价',
         key: '0'
@@ -77,17 +79,25 @@ export default {
       deep: true
     }
   },
-
+  
   beforeMount() {
+    let _that = this
+     uni.$on('handlePopDetails',function(data){
+        console.log('update ，携带参数 msg 为：', JSON.parse(data));
+        _that.setData({
+            displayOrderList: true,
+            offerData: JSON.parse(data)
+        });
+    })
   },
 
   methods: {
-
     handleCommonFunctions(e) {
       switch (e.target.dataset.function.key) {
         case '0':
           this.setData({
-            displayOrderList: true
+            displayOrderList: true,
+            offerData: {}
           });
           break;
 
@@ -125,9 +135,15 @@ export default {
     },
 
     sendTextMessage(msg, flag) {
+      if(this.inputText === ''){
+					return;
+			}
+      var reg = /\d{4}\d+/g;
+      let str  = this.inputText.replace(reg, "***");
+      // 聊天内容脱敏处理
+      console.log('脱敏处理信息', str)
       const to = this.getToAccount();
-      console.log('发送的消息内容to', to)
-      const text = flag ? msg : this.inputText;
+      const text = flag ? msg : str;
       const message = uni.$TUIKit.createTextMessage({
         to,
         conversationType: this.conversation.type,
@@ -201,7 +217,12 @@ export default {
       console.log("占位：函数 inputBindFocus 未声明");
     },
     inputBindBlur() {
+      this.focusShow = false
+      this.$emit('keybottm',0)
       console.log("占位：函数 inputBindBlur 未声明");
+    },
+    inputBindFocusfoce() {
+       this.focusShow = true
     },
      /* 上传 */
 		onUpload() { 
@@ -212,7 +233,7 @@ export default {
 						// nvue页面使用时请查阅nvue获取当前webview的api，当前示例为vue窗口
 						currentWebview: this.$mp.page.$getAppWebview(),
 						// #endif
-						url: "https://www.peiyinstreet.com/business/chat/upload", //替换为你的
+						url: "https://www.peiyinstreet.com/street/chat/uploadfile", //替换为你的
 						name: 'file',
 						header: {  //根据你接口需求自定义
 						userToken: this.token || ''	
@@ -230,9 +251,12 @@ export default {
 					});
 				}	
 			},
+      hanldekeyboardheight(ev) {
+        console.log('高度',ev)
+        this.$emit('keybottm',ev.detail.height)
+      },
 			onSuccess(res) {
         console.log('上传成功回调',JSON.stringify(res), res);
-        const size = this.formatFileSize(res.size)
         this.$handleSendCustomMessage({detail: {
             payload: {
               // data 字段作为表示，可以自定义
@@ -241,7 +265,7 @@ export default {
               // 获取骰子点数
               extension: JSON.stringify({
                 fileName: res.fileName,
-                size: size,
+                size: res.size,
                 url: res.data.data
               })
             }
@@ -251,23 +275,6 @@ export default {
 					icon: 'none'
 				})
 			},
-     formatFileSize(fileSize) {
-      if (fileSize < 1024) {
-          return fileSize + 'B';
-      } else if (fileSize < (1024*1024)) {
-          var temp = fileSize / 1024;
-          temp = temp.toFixed(2);
-          return temp + 'KB';
-      } else if (fileSize < (1024*1024*1024)) {
-          var temp = fileSize / (1024*1024);
-         temp = temp.toFixed(2);
-         return temp + 'MB';
-     } else {
-         var temp = fileSize / (1024*1024*1024);
-         temp = temp.toFixed(2);
-         return temp + 'GB';
-     }
-   }
   }
 };
 </script>

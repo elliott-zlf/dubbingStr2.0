@@ -1,0 +1,103 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+.p-line-1.data-v-4d630804 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}
+.text_exclusive.data-v-4d630804 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30.797rpx;
+}
+.text_price.data-v-4d630804 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FF445A;
+  line-height: 30.797rpx;
+}
+/* uni.scss */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+view.data-v-4d630804,
+scroll-view.data-v-4d630804 {
+  box-sizing: border-box;
+}
+.data-v-4d630804::-webkit-scrollbar,.data-v-4d630804::-webkit-scrollbar,.data-v-4d630804::-webkit-scrollbar {
+  display: none;
+  width: 0 !important;
+  height: 0 !important;
+  -webkit-appearance: none;
+  background: transparent;
+}
+.u-scroll-box.data-v-4d630804 {
+  position: relative;
+}
+.u-scroll-view.data-v-4d630804 {
+  width: 100%;
+  white-space: nowrap;
+  position: relative;
+}
+.u-tab-item.data-v-4d630804 {
+  position: relative;
+  display: inline-block;
+  text-align: center;
+  transition-property: background-color, color;
+}
+.u-tab-item .modifybtn.data-v-4d630804 {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 9.058rpx;
+  width: 85%;
+  height: 100%;
+  background: RGBA(30, 120, 251, 0.7);
+}
+.u-tab-item .modifybtn .modifybtn_icon.data-v-4d630804 {
+  width: 23.551rpx;
+  height: 23.551rpx;
+}
+.u-tab-item .modifybtn .modifybtn_text.data-v-4d630804 {
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+.u-tab-bar.data-v-4d630804 {
+  position: absolute;
+  bottom: 0;
+}
+.u-tabs-scorll-flex.data-v-4d630804 {
+  display: flex;
+  justify-content: space-between;
+}
+

@@ -1,9 +1,0 @@
-{
-  "component": true,
-  "usingComponents": {
-    "t-u-i-text-message": "/components/chat/message-elements/text-message/index",
-    "t-u-i-custom-message": "/components/chat/message-elements/custom-message/index",
-    "t-u-i-system-message": "/components/chat/message-elements/system-message/index",
-    "t-u-i-file-message": "/components/chat/message-elements/file-message/index"
-  }
-}

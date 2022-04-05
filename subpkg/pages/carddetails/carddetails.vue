@@ -205,7 +205,7 @@
 										<view class="title_box">
 											<text class="text u-line-1">文件</text>
 										</view>
-										<view class="btn_box" @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')">
+										<view class="btn_box" @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')">
 											<image
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
@@ -297,7 +297,7 @@
 												mode="scaleToFill"
 											/>
 											<image
-											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')"
+											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')"
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
 												mode="scaleToFill"
@@ -335,7 +335,7 @@
 												mode="scaleToFill"
 											/>
 											<image
-											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')"
+											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')"
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
 												mode="scaleToFill"
@@ -420,7 +420,7 @@
 										<view class="title_box">
 											<text class="text u-line-1">文件</text>
 										</view>
-										<view class="btn_box" @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')">
+										<view class="btn_box" @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')">
 											<image
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
@@ -512,7 +512,7 @@
 												mode="scaleToFill"
 											/>
 											<image
-											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')"
+											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')"
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
 												mode="scaleToFill"
@@ -550,7 +550,7 @@
 												mode="scaleToFill"
 											/>
 											<image
-											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制到剪贴板')"
+											    @click.stop="downloadcopy(row.msg.content.url,'下载链接已复制，请粘贴到浏览器打开')"
 											    class="download_logo"
 												src="@/static/messge_icon/xiazhai.png"
 												mode="scaleToFill"

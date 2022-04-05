@@ -70,22 +70,21 @@
   width: 206.522rpx;
   height: 79.71rpx;
   line-height: 79.71rpx;
-  background: #FFFFFF;
-  box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-  border-radius: 57.971rpx 0px 0px 57.971rpx;
-  border: 1px solid #EDEDED;
+  box-shadow: 0px 0px 6px 0px RGBA(99, 100, 104, 0.16);
+  border-radius: 32px 0px 0px 32px;
 }
 .customer_service_box .service_icon {
-  width: 35.188rpx;
-  height: 35.279rpx;
-  margin-left: 18.116rpx;
+  width: 21.739rpx;
+  height: 30.986rpx;
+  margin-left: 22.116rpx;
   margin-right: 5.435rpx;
 }
 .customer_service_box .service_text {
+  margin-left: 5rpx;
   font-size: 25.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #000000;
   line-height: 36.232rpx;
+  color: #FFFFFF;
 }
 

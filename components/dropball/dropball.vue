@@ -8,19 +8,29 @@
 	 @tap="onTap"
 	 :animation="ballAnimation"
 	 >
-	 <button  class="invitationBtn" open-type="contact" send-message-title="联系客服" :show-message-card="true">
+	 <button  class="invitationBtn" :style="{background:bg}" open-type="contact" send-message-title="联系客服" :show-message-card="true">
 		  <image
 			  class="service_icon"
-			  src="@/static/home/kefu.png"
+			  src="@/static/my/cService1.png"
 			  mode="scaleToFill"
 		  />
-		  <text class="service_text">联系客服</text>
+		  <text class="service_text">{{ title }}</text>
 	 </button>	  
 	</view>
 </template>
 
 <script>
 export default {
+    props: {
+      title: {
+        type: String,
+        default: '配音顾问'
+      },
+	  bg: {
+		type: String,
+		default: '#FF445A'
+	  }
+    },
 	data() {
 		return {
 			diameter: 0,
@@ -36,7 +46,7 @@ export default {
 	created() {
 		let _this = this;
 		_this.modile = uni.getSystemInfoSync();
-		_this.top = _this.modile.safeArea.bottom -150;
+		_this.top = _this.modile.safeArea.bottom -270;
 		_this.left = _this.modile.safeArea.right-100;
 		_this.diameter = _this.modile.screenHeight / 15;
 	},
@@ -54,6 +64,9 @@ export default {
 			// create.translate(x).step();
 			// _this.ballAnimation = create.export();
 			// _this.overBall();
+		},
+		handleChangeDroball() {
+          this.$emit('handleChangeDroball')
 		},
 		touchmove(e) {
 			let _this = this;
@@ -145,22 +158,22 @@ export default {
 	width: 206.522rpx;
 	height: 79.71rpx;
 	line-height: 79.71rpx;
-	background: #FFFFFF;
-	box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-	border-radius: 57.971rpx 0px 0px 57.971rpx;
-	border: 1px solid #EDEDED;
+	// background: #FF445A;
+	box-shadow: 0px 0px 6px 0px RGBA(99, 100, 104, 0.16);
+	border-radius: 32px 0px 0px 32px;
 	.service_icon {
-		width: 35.188rpx;
-		height: 35.279rpx;
-		margin-left: 18.116rpx;
+		width: 21.739rpx;
+		height: 30.986rpx;
+		margin-left: 22.116rpx;
 		margin-right: 5.435rpx;
 	}
 	.service_text {
+		margin-left: 5rpx;
 		font-size: 25.362rpx;
 		font-family: PingFangSC-Regular, PingFang SC;
 		font-weight: 400;
-		color: #000000;
 		line-height: 36.232rpx;
+		color: #FFFFFF;
 	}
 
 }

@@ -80,11 +80,35 @@ export function demandFabulouslist(data) {
         data
     })
 }
-// 收藏的配音师
-// export function demandFabulousadd(data) {
-//     return request({
-//         url: '/street/demand/fabulousadd',
-//         method: 'POST',
-//         data
-//     })
-// }
+// 微信支付
+export function orderPay(data) {
+    return request({
+        url: '/street/pay/pay',
+        method: 'POST',
+        data
+    })
+}
+// 确认成品消息
+export function orderConfirm(data) {
+    return request({
+        url: '/street/order/confirm',
+        method: 'POST',
+        data
+    })
+}
+// 获取手机号
+export function getphone(data) {
+    return request({
+        url: '/street/login/getphone',
+        method: 'POST',
+        data
+    })
+}
+// 提前结束订单
+export function demandEnd(data) {
+    return request({
+        url: '/street/demand/end',
+        method: 'POST',
+        data
+    })
+}

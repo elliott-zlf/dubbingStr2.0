@@ -1,9 +1,0 @@
-{
-  "navigationStyle": "custom",
-  "usingComponents": {
-    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
-    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
-    "t-u-i-message-list": "/components/chat/message-list/index",
-    "t-u-i-message-input": "/components/chat/message-input/index"
-  }
-}

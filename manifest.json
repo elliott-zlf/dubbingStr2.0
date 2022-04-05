@@ -56,6 +56,13 @@
             "postcss" : false,
             "minified" : true
         },
-        "usingComponents" : true
+        "usingComponents" : true,
+        "permission" : {},
+        "plugins": {
+          "contactPlugin": {
+            "version": "1.4.3",
+            "provider": "wx104a1a20c3f81ec2"
+           }
+        }
     }
 }

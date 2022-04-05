@@ -68,7 +68,7 @@
           </view>
         </view>
       </view>
-      <view class="submit_btn" :data-order="form" @tap.stop="sendMessage">
+      <view v-if="btnShow" class="submit_btn" :data-order="form" @tap.stop="sendMessage">
           提交
       </view>
         <view class="prompt_box">
@@ -92,7 +92,9 @@ export default {
 					title: '',
 					description: '',
           url: '',
+          size: ''
 			},
+      btnShow: true,
       fileShow: true,
     };
   },
@@ -106,6 +108,10 @@ export default {
     conversation: {
       type: Object,
       default: () => {}
+    },
+    conversationOffer: {
+      type: Object,
+      default: () => {}
     }
   },
   watch: {
@@ -114,18 +120,46 @@ export default {
         // this.setData({
         //   display: newVal
         // });
+        console.log('dddd')
       },
       immediate: true
     },
     conversation: {
       handler: function (newVal) {
+        console.log('dddd',newVal)
         this.setData({
           conversation: newVal
         });
       },
       immediate: true,
       deep: true
-    }
+    },
+    conversationOffer: {
+      handler: function (newVal) {
+        console.log('传过来的的的第三方值',newVal)
+        if (JSON.stringify(newVal) !== "{}") {
+            this.form = {
+              title: newVal.title,
+              description: newVal.description,
+              url: newVal.url,
+			     }
+           this.btnShow = false
+        } else {
+          this.form = {
+              title: '',
+              description: '',
+              url: '',
+              size: ''
+			     }
+          this.btnShow = true
+        }
+      },
+      immediate: true,
+      deep: true
+    },
+  },
+  created() {
+
   },
   methods: {
     handleClose() {
@@ -137,8 +171,8 @@ export default {
     },
     // 计算输入框的字数
 			handleInputEvents() {
-       console.log('-------------++++++',this.conversation) 
-			this.textareanum = this.form.description.length;
+        console.log('-------------++++++',this.conversation) 
+			  this.textareanum = this.form.description.length;
 			},
     // 删除上传文件
     handleDeleteFile() {
@@ -149,32 +183,37 @@ export default {
       const {
         order
       } = e.currentTarget.dataset;
-      if(this.form.title=='' && this.form.description=='') {
+      if(this.form.title.length == 0) {
          uni.showToast({
 						title: "请先输入录制成品时的详细要求哦",
 						icon: 'none',
 						mask: true,
-						duration: 3000
+						duration: 2000
 				});
-      }else if(this.form.url=='' && this.form.title !=='' && this.form.description.length < 20){
+      }else if(this.form.url=='' && this.form.description.length < 20){
         uni.showToast({
-						title: "请输入20字以上的成品文本，或直接上传文稿",
+						title: "请输入20字以上的成品文本，\r\n或直接上传文稿",
 						icon: 'none',
 						mask: true,
-						duration: 3000
+						duration: 2000
 				});
       }else {
+        this.form.url=''
+        this.form.description = ''
+        this.form.title = ''
+        this.form.size = ''
         this.$emit('sendCustomMessage', {
           detail: {
             payload: {
               // data 字段作为表示，可以自定义
               data: 'offer',
-              description: order.description,
+              description: order.title,
               // 获取骰子点数
               extension: JSON.stringify({
                 title: order.title,
-                imageUrl: order.description,
-                url: order.url
+                description: order.description,
+                url: order.url,
+                size: order.size
               })
             }
           }
@@ -191,7 +230,7 @@ export default {
 						// nvue页面使用时请查阅nvue获取当前webview的api，当前示例为vue窗口
 						currentWebview: this.$mp.page.$getAppWebview(),
 						// #endif
-						url: "https://www.peiyinstreet.com/business/chat/upload", //替换为你的
+						url: "https://www.peiyinstreet.com/street/chat/uploadfile", //替换为你的
 						name: 'file',
 						header: {  //根据你接口需求自定义
 						userToken: this.token || ''	
@@ -218,8 +257,9 @@ export default {
 				// } else {
 				//     this.worksItem.works.push({title:res.fileName, id: res.data.data})
 				// }
-        console.log('上传成功回调',JSON.stringify(res), res);
         this.form.url = res.data.data
+        this.form.size = res.size
+        console.log('上传成功回调', this.form,res);
 				uni.showToast({
 					title: '文件上传成功',
 					icon: 'none'

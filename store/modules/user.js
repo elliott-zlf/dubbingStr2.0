@@ -1,8 +1,7 @@
-import { login, getWechatUserInfo } from 'api/index';
-import { chatSignature } from '@/api/message.js'
+import { login, getWechatUserInfo,loginStatus } from 'api/index';
+// import { chatSignature } from '@/api/message.js'
 const STORAGE_KEY = 'user-info';
 const TOKEN_KEY = 'token';
-const PHONE_NUM = 'phoneNumber'
 export default {
   namespaced: true,
   state: () => {
@@ -11,8 +10,11 @@ export default {
       token: uni.getStorageSync(TOKEN_KEY) || '',
       // 用户信息
       userInfo: uni.getStorageSync(STORAGE_KEY) || {},
-      phoneNumber: uni.getStorageSync(PHONE_NUM) || '',
-      userId: ''
+      userId: '',
+      phoneStatus: true,
+      // 首页点击的装
+      workStatus: {},
+      demandcate: ''
     };
   },
   mutations: {
@@ -22,6 +24,15 @@ export default {
     setToken(state, token) {
       state.token = token;
       this.commit('user/saveToken');
+    },
+    // 保存点击状态
+    setworkStatus(state,item) {
+      console.log('提交item的数据', item)
+      state.workStatus = item;
+    },
+    setDemandcate(state,item) {
+      console.log('提交详情页面的状态', item)
+      state.demandcate = item
     },
     /**
      * 保存 token 到 本地存储
@@ -37,14 +48,8 @@ export default {
       state.userId = userId
     },
     setPhone(state,phone) {
-      state.phoneNumber = phone;
-      this.commit('user/savePhone');
-    },
-    savePhone(state) {
-      uni.setStorage({
-        key: PHONE_NUM,
-        data: state.phoneNumber
-      });
+      state.phoneStatus = phone;
+      console.log('setIphone', state.phoneStatus)
     },
     /**
      * 删除 token
@@ -64,15 +69,25 @@ export default {
         code: userProfile,
       });
       // 登录逻辑
-      console.log('登录请求', res.data.id)
       this.commit('user/setToken', res.data.id);
-      const userIdres = await chatSignature()
-      this.commit('user/setUserId', userIdres.data.userId);
+      // const userIdres = await chatSignature()
+      // this.commit('user/setUserId', userIdres.data.userId);
     },
-
     async getWechatUserInfo(content) {
       const res = await getWechatUserInfo()
       this.commit('user/setPhone',res.data.phone)
+    },
+    async getIphoneStatus() {
+      const res = await loginStatus()
+      console.log('登录状态', res)
+      if(res.data.phone == 0) {
+        const iphonestatus = false
+        this.commit('user/setPhone', iphonestatus)
+        }else {
+        const iphonestatus = true	
+        this.commit('user/setPhone', iphonestatus)
+      }
+
     },
     /**
      * 退出登录

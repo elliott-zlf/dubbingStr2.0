@@ -7,7 +7,8 @@ export default {
   // 通过 state 声明数据
   state: () => ({
     // 优先从 storage 中读取
-    searchData: uni.getStorageSync(STORAGE_KEY) || []
+    searchData: uni.getStorageSync(STORAGE_KEY) || [],
+    // 首页点击的装
   }),
   // 更改 state 数据的唯一方式是：提交 mutations
   mutations: {

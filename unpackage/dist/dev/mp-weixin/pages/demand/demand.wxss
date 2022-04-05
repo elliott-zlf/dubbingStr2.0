@@ -10,6 +10,15 @@ page {
 .u-drawer {
 	position: absolute !important;
 }
+.defaltext {
+	margin-top: 30rpx;
+	text-align: center;
+	font-size: 24rpx;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-weight: 500;
+	color: #717171;
+	line-height: 16px;
+}
 
 @charset "UTF-8";
 /**
@@ -128,32 +137,43 @@ page {
 .teacherOrder .list_item_box.data-v-07e68366 {
   margin-top: 21.739rpx;
   width: 695.652rpx;
-  height: 173.913rpx;
-  padding: 0rpx 27.174rpx;
+  height: 345.072rpx;
+  padding: 0rpx 36.232rpx;
   background: #FFFFFF;
   border-radius: 14.493rpx;
 }
 .teacherOrder .list_item_box .item_title_box.data-v-07e68366 {
   display: flex;
-  height: 91.957rpx;
+  padding-top: 36.232rpx;
+  padding-bottom: 5.739rpx;
 }
 .teacherOrder .list_item_box .item_title_box .logo_icon_box.data-v-07e68366 {
   display: flex;
   align-items: center;
 }
 .teacherOrder .list_item_box .item_title_box .logo_icon_box .logo_icon.data-v-07e68366 {
-  width: 26.087rpx;
-  height: 32.609rpx;
+  width: 39.855rpx;
+  height: 39.855rpx;
+  border-radius: 19.928rpx;
 }
 .teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text.data-v-07e68366 {
-  width: 452.899rpx;
+  width: 419.899rpx;
   height: 39.855rpx;
-  margin-left: 19.928rpx;
-  font-size: 28.986rpx;
-  font-family: PingFangSC-Medium, PingFang SC;
-  font-weight: 500;
-  color: #000000;
-  line-height: 39.855rpx;
+  margin-left: 14.493rpx;
+  display: flex;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text .nickname.data-v-07e68366 {
+  display: flex;
+  align-items: center;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text .nicktime.data-v-07e68366 {
+  margin-left: 9.058rpx;
+  display: flex;
+  align-items: center;
 }
 .teacherOrder .list_item_box .item_title_box .apply_group_box.data-v-07e68366 {
   display: flex;
@@ -163,42 +183,54 @@ page {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 39.855rpx;
   width: 144.928rpx;
-  background: #FF445A;
-  border-radius: 12px;
-  border: 1px solid #FF445A;
+  height: 47.101rpx;
+  background: #FFFFFF;
+  border-radius: 7.246rpx;
+  color: #FF445A;
+  border: 1.812rpx solid #FF445A;
   font-size: 21.739rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #FFFFFF;
 }
-.teacherOrder .list_item_box .demand_box.data-v-07e68366 {
+.teacherOrder .list_item_box .demand_content .item_list.data-v-07e68366 {
   display: flex;
-  height: 70.957rpx;
+  margin-top: 14.493rpx;
   align-items: center;
 }
-.teacherOrder .list_item_box .demand_box .time_box.data-v-07e68366 {
-  display: flex;
-  align-items: center;
-  width: 40%;
-}
-.teacherOrder .list_item_box .demand_box .time_box .time_icon.data-v-07e68366 {
-  width: 21.739rpx;
-  height: 21.739rpx;
-}
-.teacherOrder .list_item_box .demand_box .time_box .time_title.data-v-07e68366 {
-  margin-left: 14.493rpx;
-  width: 211.957rpx;
+.teacherOrder .list_item_box .demand_content .item_list .demand_title.data-v-07e68366 {
+  width: 76.087rpx;
   height: 36.232rpx;
-  font-size: 25.362rpx;
+  font-size: 28.986rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #999999;
   line-height: 36.232rpx;
 }
+.teacherOrder .list_item_box .demand_content .item_list .demand_text.data-v-07e68366 {
+  width: 520.319rpx;
+  height: 36.232rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .placeholder_line.data-v-07e68366 {
+  position: relative;
+  margin-top: 25.362rpx;
+  margin-left: -36.232rpx;
+  width: 695.652rpx;
+  height: 1.812rpx;
+  background: #F6F7FA;
+}
+.teacherOrder .list_item_box .demand_box.data-v-07e68366 {
+  display: flex;
+  height: 80.957rpx;
+  align-items: center;
+}
 .teacherOrder .list_item_box .demand_box .instructions_box.data-v-07e68366 {
-  width: 60%;
+  width: 100%;
   text-align: right;
 }
 .teacherOrder .list_item_box .demand_box .instructions_box .status_box.data-v-07e68366 {
@@ -208,13 +240,14 @@ page {
   margin-right: 3.623rpx;
   width: 215.58rpx;
   height: 36.232rpx;
-  font-size: 25.362rpx;
+  font-size: 28.986rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #3387FB;
+  color: #FF445A;
   line-height: 36.232rpx;
 }
 .teacherOrder .list_item_box .demand_box .instructions_box .status_box .instructions_icon.data-v-07e68366 {
+  margin-left: 9.058rpx;
   width: 21.739rpx;
   height: 21.739rpx;
   margin-bottom: -3.623rpx;
@@ -223,10 +256,10 @@ page {
   margin-right: 3.623rpx;
   width: 215.58rpx;
   height: 36.232rpx;
-  font-size: 25.362rpx;
+  font-size: 28.986rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #3387FB;
+  color: #FF445A;
   line-height: 36.232rpx;
 }
 .teacherOrder .list_item_box .demand_box .instructions_box .instructions_icon.data-v-07e68366 {
@@ -300,5 +333,74 @@ page {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
+}
+.masklayer.data-v-07e68366 {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+.masklayer .coupons_box.data-v-07e68366 {
+  margin-top: 50%;
+  margin-left: 67.029rpx;
+  position: absolute;
+  -webkit-transform: calc(0%,-50%);
+          transform: calc(0%,-50%);
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .shutdown_icon.data-v-07e68366 {
+  position: absolute;
+  right: 0;
+  top: -65.899rpx;
+  width: 38.043rpx;
+  height: 38.043rpx;
+}
+.masklayer .coupons_box .coupons_icon.data-v-07e68366 {
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .coupons_content.data-v-07e68366 {
+  position: absolute;
+  top: 240rpx;
+  width: 100%;
+  left: 0px;
+  display: flex;
+}
+.masklayer .coupons_box .coupons_content .discount_box.data-v-07e68366 {
+  margin-left: 106.884rpx;
+  margin-top: 16.304rpx;
+}
+.masklayer .coupons_box .coupons_content .discount_box .discount.data-v-07e68366 {
+  font-size: 54.348rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FE445A;
+}
+.masklayer .coupons_box .coupons_content .discount_box .scope_discount.data-v-07e68366 {
+  font-size: 28.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FE445A;
+}
+.masklayer .coupons_box .coupons_content .discounts_box.data-v-07e68366 {
+  margin-left: 120rpx;
+  margin-top: 11px;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_ins.data-v-07e68366 {
+  font-size: 36rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_validity.data-v-07e68366 {
+  font-size: 26.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  margin-top: 20rpx;
 }
 

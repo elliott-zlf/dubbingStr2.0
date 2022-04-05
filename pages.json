@@ -2,21 +2,23 @@
 	"easycom": {
 		"^u-(.*)": "@/uview-ui/components/u-$1/u-$1.vue"
 	},
-	"pages": [{
-		"path": "pages/index/index",
-		"style": {
-			"navigationBarTitleText": "配音街-10分钟配出超值好声音",
-			"enablePullDownRefresh": false
+	"pages": [
+		{
+			"path" : "pages/index/index",
+			"style" :                                                                                    
+		{
+			"navigationStyle":"custom"
 		}
-	   },
-	   {
-            "path" : "pages/message/message",
-            "style" :                                                                                    
-            {
-                "navigationStyle": "custom"
-            }
-            
-        },
+		
+		},
+		{
+			"path" : "pages/dubbinglibrary/dubbinglibrary",
+			"style" :                                                                                    
+		{
+			"navigationStyle":"custom"
+		}
+		
+		},
         {
             "path" : "pages/personal/personal",
             "style" :                                                                                    
@@ -32,7 +34,15 @@
               "navigationStyle":"custom"
             }
             
-        }
+        },
+		{
+			"path" : "pages/soundlibrary/soundlibrary",
+			"style" :                                                                                    
+		{
+			"navigationStyle":"custom"
+		}
+		
+		}
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -51,22 +61,22 @@
 		"color":"#999999",
 		"list": [
 		  {
-			"pagePath": "pages/index/index",
-			"text": "发布需求",
-			"iconPath": "./static/tabbar/release.png",
-			"selectedIconPath":"./static/tabbar/releaseActive.png"
-		  },
-		  {
-			"pagePath": "pages/demand/demand",
-			"text": "我的需求",
-			"iconPath": "./static/tabbar/demand.png",
-			"selectedIconPath":"./static/tabbar/demandActive.png"
-		  },
-		  {
-			"pagePath": "pages/message/message",
-			"text": "消息",
+		    "pagePath": "pages/index/index",
+		    "text": "首页",
+		    "iconPath": "./static/tabbar/home.png",
+		    "selectedIconPath":"./static/tabbar/homeActive.png"
+		  },	
+          {
+			"pagePath": "pages/soundlibrary/soundlibrary",
+			"text": "声音库",
 			"iconPath": "./static/tabbar/message.png",
 			"selectedIconPath":"./static/tabbar/messageActive.png"
+          },
+		  {
+			"pagePath": "pages/demand/demand",
+			"text": "试音",
+			"iconPath": "./static/tabbar/syk.png",
+			"selectedIconPath":"./static/tabbar/sykActive.png"
 		  },
 		  {
 			"pagePath": "pages/personal/personal",
@@ -89,21 +99,157 @@
 			      }  
 			  }
               ,{
+				"path" : "pages/teacherlistbeifen/teacherlist",
+				"style" :                                                                                    
+				{
+				  "navigationStyle":"custom"
+				}  
+			}
+			,{
 					"path" : "pages/demanddetails/demanddetails",
 					"style" :                                                                                    
 				{
 					"navigationStyle":"custom"
 				}
-				
 				}
-				,{
-					"path" : "pages/chatpage/chatpage",
+				,
+				{
+					"path" : "pages/about/about",
+					"style" :                                                                                    
+				{
+					"navigationStyle":"custom"
+				}
+				
+				},
+				{
+					"path" : "pages/voicelist/voicelist",
+					"style" :                                                                                    
+				{
+					"navigationStyle":"custom"
+				}
+				
+				},
+				{
+					"path" : "pages/transitions/transitions",
 					"style" :                                                                                    
 				{
 					"navigationStyle":"custom"
 				}
 				
 				}
+                ,{
+                    "path" : "pages/webview/webview",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "平台规范化运营手册",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pages/cloudshare/cloudshare",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/cshare/cshare",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/myfocus/myfocus",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/integral/integral",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                },
+				{
+				    "path" : "pages/coupons/coupons",
+				    "style" :                                                                                    
+				{
+				    "navigationStyle":"custom"
+				}
+				
+				}
+                ,{
+                    "path" : "pages/myorder/myorder",
+                    "style" :                                                                                    
+                {
+					"navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/orderdetails/orderdetails",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/payment/payment",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/release/release",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/mywork/mywork",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/voicesrelease/voicesrelease",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/paymentcreate/paymentcreate",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/caseDetails/caseDetails",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
             ]
 		}
 	]

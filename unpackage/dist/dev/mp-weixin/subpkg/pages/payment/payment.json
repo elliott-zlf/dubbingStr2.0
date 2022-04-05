@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "u-checkbox": "/uview-ui/components/u-checkbox/u-checkbox",
+    "release": "/components/release/release"
+  }
+}

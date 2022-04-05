@@ -1,38 +1,31 @@
 <script>
 import { mapState, mapActions } from "vuex";
-import TIM from '@/TIM/tim-wx';
-import COS from "@/TIM/cos-wx-sdk-v5";
-import { chatSignature } from '@/api/message.js'
+// import TIM from '@/TIM/tim-wx';
+// import COS from "@/TIM/cos-wx-sdk-v5";
+// import { chatSignature,newsCount } from '@/api/message.js'
 	export default {
 		onLaunch: function() {
-          this.getUnionid()
-		  uni.setStorageSync('islogin', false);
-		  // 重点注意： 为了 uni-app 更好地接入使用 tim，快速定位和解决问题，请勿修改 uni.$TUIKit 命名。
-		  // 如果您已经接入 tim ，请将 uni.tim 修改为 uni.$TUIKit。
-		  uni.$TUIKit = TIM.create({
-		    SDKAppID: 1400535949
-		  });
-		  uni.$TUIKit.registerPlugin({
-		    'cos-wx-sdk': COS
-		  });
-		  uni.$TUIKitTIM = TIM;
-		  uni.$TUIKitEvent = TIM.EVENT;
-		  uni.$TUIKitVersion = TIM.VERSION;
-		  uni.$TUIKitTypes = TIM.TYPES; // 监听系统级事件
-		  uni.$resetLoginData = this.resetLoginData()
+        //   this.getUnionid()
+		  //uni.setStorageSync('islogin', false);
+		  // uni.$TUIKit = TIM.create({
+		  //   SDKAppID: 1400535949
+		  // });
+		  // uni.$TUIKit.registerPlugin({
+		  //   'cos-wx-sdk': COS
+		  // });
+		  // uni.$TUIKitTIM = TIM;
+		  // uni.$TUIKitEvent = TIM.EVENT;
+		  // uni.$TUIKitVersion = TIM.VERSION;
+		  // uni.$TUIKitTypes = TIM.TYPES; // 监听系统级事件
+		  // uni.$resetLoginData = this.resetLoginData()
 		  
-		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_NOT_READY, this.onSdkNotReady);
-		  uni.$TUIKit.on(uni.$TUIKitEvent.KICKED_OUT, this.onKickedOut);
-		  uni.$TUIKit.on(uni.$TUIKitEvent.ERROR, this.onTIMError);
-		  uni.$TUIKit.on(uni.$TUIKitEvent.NET_STATE_CHANGE, this.onNetStateChange);
-		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_RELOAD, this.onSDKReload);
-		  uni.$TUIKit.on(uni.$TUIKitEvent.SDK_READY, this.onSDKReady);
-		},
-		onShow: function() {
-			console.log('App Show')
-		},
-		onHide: function() {
-			console.log('App Hide')
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.SDK_NOT_READY, this.onSdkNotReady);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.KICKED_OUT, this.onKickedOut);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.ERROR, this.onTIMError);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.NET_STATE_CHANGE, this.onNetStateChange);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.SDK_RELOAD, this.onSDKReload);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.SDK_READY, this.onSDKReady);
+		  // uni.$TUIKit.on(uni.$TUIKitEvent.MESSAGE_RECEIVED, this.onMessageReceived);
 		},
 		computed: {
 		  ...mapState("user", ["token", "userId"]),
@@ -44,6 +37,13 @@ import { chatSignature } from '@/api/message.js'
 		  userProfile: null,
 		  headerHeight: 0,
 		  statusBarHeight: 0,
+		  url: ''
+		},
+		onShow: function() {
+			console.log('App Show')
+		},
+		onHide: function() {
+			console.log('App Hide')
 		},
 		methods: {
             ...mapActions("user", ["login"]),
@@ -52,52 +52,71 @@ import { chatSignature } from '@/api/message.js'
 					provider: "weixin",
 					success: async (result) => {
 					await this.login(result.code);
-					const userIdres = await chatSignature()
-					console.log('userIdD', userIdres)
-					const userID = userIdres.data.userId
-					const userSig = userIdres.data.sign
-					
-					this.setData({
-					  userID: userID,
-					})
-					uni.$TUIKit.login({
-						userID: userID,
-						userSig: userSig
-					}).then(() => {}).catch(() => {});
+					console.log('APP里面的登录')
+					// const userIdres = await chatSignature()
+					// console.log('userIdD', userIdres)
+					// const userID = userIdres.data.userId
+					// const userSig = userIdres.data.sign
+					// this.getNewsCount(userID)
+					// this.setData({
+					//   userID: userID,
+					// })
+					// uni.$TUIKit.login({
+					// 	userID: userID,
+					// 	userSig: userSig
+					// }).then(() => {}).catch(() => {});
 					},
 					fail: (error) => {
 					console.log("登录失败", error);
 					},
 				});
 			},
+			// getNewsCount(userID) {
+			//   newsCount({userId:userID}).then((res)=>{
+			// 	const allMsg = res.data.AllC2CUnreadMsgNum + ''
+			// 	if (allMsg=='0') {
+			// 		 uni.removeTabBarBadge({
+			// 			index: 2,
+			// 		})
+			// 	} else {
+			// 		uni.setTabBarBadge({
+			// 			index: 2,
+			// 			text: allMsg
+			// 		})
+			// 	}
+			//   })
+			// },
 			// TODO:
-			resetLoginData() {
-			  this.globalData.expiresIn = '';
-			  this.globalData.sessionID = '';
-			  this.globalData.userInfo = {
-			    userID: '',
-			    userSig: '',
-			    token: '',
-			    phone: ''
-			  };
-			  this.globalData.userProfile = null;
-			},
-			onTIMError() {},
-			onNetStateChange() {},
-			onSDKReload() {},
-			onSDKReady() {},
-			onSdkNotReady() {},
-			onKickedOut() {
-			  uni.showToast({
-				title: '您被踢下线',
-				icon: 'error'
-			  });
-			  uni.navigateTo({
-				url: './pages/TUI-Login/login'
-			  });
-			},
+			// resetLoginData() {
+			//   this.globalData.expiresIn = '';
+			//   this.globalData.sessionID = '';
+			//   this.globalData.userInfo = {
+			//     userID: '',
+			//     userSig: '',
+			//     token: '',
+			//     phone: ''
+			//   };
+			//   this.globalData.userProfile = null;
+			// },
+			// onTIMError() {},
+			// onNetStateChange() {
+			// },
+			// onMessageReceived(event) {
+			// 	console.log('牛逼了兄弟')
+			// 	this.getNewsCount(this.userId)
+			// },
+			// onSDKReload() {},
+			// onSDKReady() {},
+			// onSdkNotReady() {},
+			// onKickedOut() {
+			//   uni.showToast({
+			// 	title: '您被踢下线',
+			// 	icon: 'error'
+			//   });
+			// },
 		}
 	}
+	
 </script>
 
 <style>
@@ -222,4 +241,87 @@ import { chatSignature } from '@/api/message.js'
 	  border: none !important;
 	}
     }
+	// 优惠卷样式
+	.securities {
+	position: fixed;
+	bottom:295rpx;
+	right: 23.551rpx;
+	width: 123.986rpx;
+	height: 130.326rpx;
+	// animation: ghostUpdown 1s infinite alternate;
+	.shutdown_icon {
+		width: 32.986rpx;
+		height: 32.986rpx;
+		position: absolute;
+		top: -36.232rpx;
+		right: 0px;
+	}
+	.volume {
+	  width: 123.986rpx;
+	  height: 130.326rpx;
+	  animation: zy 2.5s .15s linear infinite;
+	  -moz-animation: zy 2.5s .15s linear infinite; /* Firefox */
+	  -webkit-animation: zy 2.5s .15s linear infinite; /* Safari and Chrome */
+	}
+}
+@-webkit-keyframes zy{
+  10% {
+    transform: rotate(15deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(5deg);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50%,100% {
+    transform: rotate(0deg);
+  }
+}
+@-moz-keyframes zy{
+  10% {
+    transform: rotate(15deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(5deg);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50%,100% {
+    transform: rotate(0deg);
+  }
+}
+@keyframes zy{
+  10% {
+    transform: rotate(15deg);
+  }
+  20% {
+    transform: rotate(-10deg);
+  }
+  30% {
+    transform: rotate(5deg);
+  }
+  40% {
+    transform: rotate(-5deg);
+  }
+  50%,100% {
+    transform: rotate(0deg);
+  }
+
+}
+@keyframes ghostUpdown{
+    from{right:13.551rpx;}
+    to{right:23.551rpx;}
+}
+@-webkit-keyframes ghostUpdown{
+    from{/*! bottom:110px; */}
+    to{/*! bottom:120px; */}
+}
 </style>

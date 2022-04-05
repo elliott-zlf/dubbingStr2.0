@@ -4,6 +4,7 @@
     "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
     "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
     "u-count-down": "/uview-ui/components/u-count-down/u-count-down",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
     "u-popup": "/uview-ui/components/u-popup/u-popup",
     "music-audio": "/components/audio/audioplay"
   }

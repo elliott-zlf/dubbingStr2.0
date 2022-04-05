@@ -1,496 +1,917 @@
 <template>
-    <view>
-		<u-navbar :is-back="true" title="配音师列表" title-size="36.232rpx" title-color="#000000" :border-bottom="false"></u-navbar>
-		<view class="teacherlist_box">
-		<view class="wrap">
-			<view class="u-tabs-box">
-				<view style="width:617rpx">
-                   <u-tabs
-						activeColor="#FF445A"
-						bold
-						ref="tabs"
-						bg-color="#FFFFFF" 
-						inactive-color="#666666" 
-						:bar-style="barStyle" 
-						name="value" 
-						:is-scroll="true"
-						:list="tagList.tags" 
-						:current="current" 
-						swiper-width="617rpx"
-						@change="change" 
-						font-size='28.362'
-					></u-tabs>
-				</view>
-				  <view class="screening_btn_box" @click="handleScreening">
-					  <view class="screening_btn">
-                        <text class="screening_text">筛选</text>
-						<image
-							class="screening_icon"
-							src="@/static/teacherlist/screening.png"
-							mode="scaleToFill"
-						/>
-					  </view>
-				  </view>
+  <view class="container">
+    <u-navbar
+			:is-back="true"
+			:title="dataList.nickname ? dataList.nickname + '的主页': '主页' "
+			title-size="36.232rpx"
+			title-color="#FFFFFF"
+			:border-bottom="false"
+			:background="background"
+			back-icon-color="#FFFFFF"
+		></u-navbar>
+    <!-- :custom-back="handleGoBack" -->
+    <view class="container_box">
+	 <view class="pys_popup" v-if="sharePopShow">
+        <view class="popup_conent">
+          <image
+            class="closeicon"
+            src="@/static/home/close.png"
+            mode="scaleToFill"
+            @click="handleCanceShare"
+          />
+          <view>
+            <view style="height: 17.971rpx"></view>
+            <view class="check_WeChat_test"> 申请加入 </view>
+            <view class="check_WeChat_tips">分享小程序后，即可查看配音师微信</view>
+            <view class="share_btn_box">
+              <button
+                class="cancelSharebtn"
+                hover-class="button-hover"
+                open-type="share"
+              >
+                分享好友
+              </button>
+              <button
+                class="sharebtn"
+                open-type="share"
+                hover-class="button-hover"
+              >
+                分享到群
+              </button>
+            </view>
+          </view>
+        </view>
+   </view>
+   <view class="pys_popup" v-if="erweimaShow">
+		<view class="popup_conent">
+			<image
+				class="closeicon"
+				src="@/static/home/close.png"
+				mode="scaleToFill"
+				@click="handleCanceShare"
+			/>
+			<view class="erweimabox">
+			<view class="erweima_iconbox">
+				<image
+				class="erweima_icon"
+				src="https://www.peiyinstreet.com/guidang/peiyinguwen.png"
+				mode="scaleToFill"
+				/>
+			</view>	
+			<view class="erweima_box">
+			  截图加我微信，极速帮您试音
 			</view>
-			<view class="price_screening_box">
-				<view class="price_item" :class="activeIndex==index ? 'activeClass' : ''" v-for="(item,index) in priceList" :key="index" @click="handlePriceScreening(index)">
-                 {{item}}
-				</view>
 			</view>
-				<scroll-view scroll-y style="height: 100%;width: 100%;"
-				    @refresherrefresh="handlere(current)"
-					:refresher-enabled="true" 
-					:scroll-top="scrollInto"
-					@scroll="tabScoll"
-					@scrolltolower="reachBottom"
-					:refresher-triggered="triggered">
-					<view class="page-box" v-if="defaultshow">
-						<view class="teacherOrder" v-for="orderItem in dataList" :key="orderItem.id">
-							<view class="teacher_top_Introduction">
-								<view class="top_Introduction_left">
-									<image
-										class="teacher_portrait"
-										:src="orderItem.teacher.avatar"
-										mode="scaleToFill"
-									/>
-									<!-- <view class="online"></view> -->
-								</view>
-								<view class="top_Introduction_contenr">
-								<view class="teacher_nikeName">
-									<text class="teacher_nikeName_text u-line-1">{{orderItem.teacher.nickname}}</text>
-									<image
-										v-if="orderItem.teacher.sex === 1"
-										class="teacher_sex"
-										src="@/static/teacherlist/manicon.png"
-										mode="scaleToFill"
-									/>
-									<image
-										v-else
-										class="teacher_sex"
-										src="@/static/teacherlist/woman.png"
-										mode="scaleToFill"
-									/>
-								</view>
-								<view class="price_text">
-									<text class="text_exclusive">专享价</text>
-									<text class="text_price">{{orderItem.unit_price}}元/百字</text>
-								</view>
-								</view>
-								<view class="top_Introduction_right">
-									<view v-if="!orderItem.type" class="checkWeChat" @click="handleInviteDubbing(orderItem)">邀请试音</view>
-									<!-- <view v-else class="reg_group" @click="downloadcopy(orderItem.teacher.wechat_number,'复制成功，添加时备注：小站')">复制微信</view> -->
-								</view>
-							</view>
-							<view class="teacher_bot_voices">
-								<view class="teacher_play_box" @click="playTheMusic(orderItem)">
-                                  <image
-									class="teacher_play_icon"
-									:src="orderItem.playStatus ? playActive : play"
-									mode="scaleToFill"
-									/>
-									<view class="service_name u-line-1">
-										【{{ orderItem.tags.filter(item => item.type_id === 2)[0].value }}】 {{orderItem.title}}
-									</view>
-								</view>
-								<view class="download_iconbox" @click="downloadcopy(orderItem.works[0].url,'下载链接已复制到剪贴板')">
-                                  <image
-										class="download_icon"
-										src="@/static/teacherlist/download.png"
-										mode="scaleToFill"
-									/>
-								</view>
-							</view>
-						</view>
-						<view v-if="has_next===false" class="defaltext">没有更多了</view>
-						<u-loadmore v-if="has_next===true" status="loading" bgColor="#f2f2f2"></u-loadmore>
-					</view>
-					<view v-if="!defaultshow" class="page-box">
-						<view class="defaltPage">
-							<!-- <image
+		</view>
+	 </view>	
+    <view class="banner">
+      <!-- <view class="intro">
+        <view class="goBack" @click="handleGoBack">
+          <u-icon v-if="shareSow" name="arrow-left"></u-icon>
+           <view class="homeye">
+              <image
+                class="homeye_img"
+                src="@/static/home/home_icon.png"
+                mode="scaleToFill"
+              />
+          </view>
+        </view>
+        <view class="greet u-line-1">{{ dataList.nickname || "" }}的名片</view>
+      </view> -->
+      <!-- <image
+        class="banner_bcimg"
+        src="@/static/home/homebc.png"
+        mode="scaleToFill"
+      /> -->
+    </view>
+    <view class="content">
+      <view class="business_card">
+        <view class="head_portrait">
+          <view class="head_portraitimg_box">
+            <image
+              class="head_portraitimg"
+              :src="dataList.avatar"
+              mode="scaleToFill"
+            />
+            <image
+              v-if="dataList.sex === 1"
+              class="sex_icon"
+              src="@/static/teacherlist/manicon.png"
+              mode="scaleToFill"
+            />
+            <image
+              v-else-if="dataList.sex === 2"
+              class="sex_icon"
+              src="@/static/teacherlist/woman.png"
+              mode="scaleToFill"
+            />
+            <image
+              v-else
+              class="sex_icon"
+              src="@/static/teacherlist/qi.png"
+              mode="scaleToFill"
+            />
+          </view>
+        </view>
+        <view class="nick_namebox">
+          <view class="nick_name u-line-1">
+            {{dataList.nickname || ''}}
+          </view>
+          <view
+                class="focus"
+                v-if="dataList.follow === 0"
+                @click="handleFocus(dataList.id, 0)"
+              >
+                <text>关注</text>
+            </view>
+            <view
+                v-if="dataList.follow === 1"
+                class="beenFocused"
+                @click="handleFocus(dataList.id, 1)"
+                >已关注
+            </view>
+        </view>
+        <view class="personalFile">
+          <view class="personal_list">
+            <view class="personal_title">擅长</view>
+            <view class="personal_content">
+              <view v-for="(item, index) in dataList.theme" :key="index">
+                <text v-if="item.type_id==2">{{ item.value }}</text>
+                <view
+                  v-if="dataList.theme.length - 1 !== index"
+                  class="divider_line"
+                ></view>
+              </view>
+            </view>
+          </view>
+          <view class="personal_list">
+            <view class="personal_title">风格</view>
+            <view class="personal_content">
+              <view v-for="(item, index) in dataList.style" :key="index">
+                <text>{{ item.value }}</text>
+                <view
+                  v-if="dataList.style.length - 1 !== index"
+                  class="divider_line"
+                ></view>
+              </view>
+            </view>
+          </view>
+          <view class="personal_list">
+            <view class="personal_title">地区</view>
+            <view class="personal_content">
+              <text>{{ dataList.district || "" }}</text>
+              <!-- <view class="divider_line"></view>
+              <text>{{ dataList.district[1].name || "" }}</text> -->
+            </view>
+          </view>
+          <!-- <view class="personal_list">
+            <view class="personal_title">微信</view>
+            <view class="personal_content focusBox">
+              <text v-if="false">{{ dataList.wechat_number || "" }}</text>
+              <view
+                class="WeChat"
+                v-if="dataList.share === 0"
+                @click="handleInviteDubbing"
+                >查看微信</view
+              >
+              <view
+                class="WeChat"
+                v-if="dataList.share === 1"
+                @click="
+                  downloadcopy(
+                    dataList.wxnumber,
+                    '复制成功，添加时备注：名片'
+                  )
+                "
+                >复制微信</view
+              >
+              <view
+                class="focus"
+                v-if="dataList.follow === 0"
+                @click="handleFocus(dataList.id, 0)"
+              >
+                <image
+                  class="focusaixin"
+                  src="@/static/carddetails/baiseaixin.png"
+                  mode="scaleToFill"
+                />
+                <text>关注</text>
+              </view>
+              <view
+                v-if="dataList.follow === 1"
+                class="beenFocused"
+                @click="handleFocus(dataList.id, 1)"
+                >已关注</view
+              >
+            </view>
+          </view> -->
+        </view>
+      </view>
+      <view class="business_data">
+        <view class="business_data_title">
+          <view class="title_data">简介信息</view>
+        </view>
+        <view class="data_content_introduction">
+          <view class="introduction_text">
+            <view
+              class="introduction_text_an"
+              :class="moreShow ? 'u-line-1' : ''"
+              >{{ dataList.intro }}</view
+            >
+            <view class="handlean_box" @click="handleTakeBack">
+              <image
+                class="handlean"
+                src="@/static/carddetails/an.png"
+                mode="scaleToFill"
+              />
+            </view>
+          </view>
+          <view class="tages_list_box">
+            <view
+              class="tages_list"
+              v-for="(item, index) in itemList"
+              :key="index"
+              @click="handleClick(index, item)"
+            >
+              <view class="animate-wrap" v-if="giveIndex === index">
+                <view
+                  class="aa"
+                  :class="{ bb: item.index }"
+                  v-for="(item, index) in viewList"
+                  :key="index"
+                >
+                  <image
+                    style="width: 30upx; height: 30upx"
+                    mode="widthFix"
+                    :src="item.src"
+                    :animation="item.animationData"
+                  ></image>
+                </view>
+              </view>
+              <image
+                class="tages_list_img"
+                src="@/static/home/dianzhanActive.png"
+                mode="scaleToFill"
+              />
+              <text class="tages_list_conten">{{ item.name }}</text>
+              <text class="tages_list_num">{{ item.count }}</text>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="business_data">
+        <view class="business_data_title">
+          <view class="title_data">配音作品</view>
+        </view>
+        <view class="data_content">
+          <view class="list_worksbox" v-if="!addbtnShow">
+            <view class="u-tabs-box">
+              <my-tabs
+                activeColor="#000000"
+                bold
+                ref="tabs"
+                bg-color="#FFFFFF"
+                inactive-color="#999999"
+                :bar-style="barStyle"
+                name="title"
+                :is-scroll="true"
+                :list="tabsItem"
+                :current="current"
+                @change="change"
+                font-size="28.362"
+              >
+              </my-tabs>
+            </view>
+            <scroll-view
+              scroll-y
+              style="height: 100%; width: 100%"
+              :refresher-triggered="triggered"
+            >
+              <view class="works_item_list_box" v-if="defaultshow">
+                <view
+                  class="works_item_list"
+                  v-for="(item, index) in tabsList[current].works"
+                  :key="index"
+                >
+                  <view class="list_item_paly" @click="playTheMusic(item)">
+                    <image
+                      class="paly_icon"
+                      :src="item.playStatus ? playActive : play"
+                      mode="scaleToFill"
+                    />
+                    <text class="works_title u-line-1">{{ item.title }}</text>
+                  </view>
+                  <!-- <view
+                    class="use_box "
+                    @click="handleUseOrder(item)"
+                  >
+                    <view class="use_btn">配音</view>
+                  </view> -->
+                  <view class="btn_item">
+                    <view class="voice_btn" @click="handleUseOrder(item)">下单</view>
+                    <view class="voice_img_box" @click="handleOperation(item)">
+                      <image
+                        class="voice_img"
+                        src="@/static/my/caozuo.png"
+                        mode="scaleToFill"
+                      />
+                    </view>
+                  </view>
+                </view>
+              </view>
+              <view v-if="!defaultshow" class="page-box">
+                <view class="defaltPage">
+                  <!-- <image
 								class="defaltPageimg"
 								src="@/static/ui/defaultPage/d1.png"
 								mode="scaleToFill"
 							/> -->
-							<view class="defaltext">暂无匹配数据</view>
-						</view>
-					</view>
-					<view style="height:220px"></view>
-				</scroll-view>
-		</view>
-		<u-popup v-model="screeningShow" :mask-close-able="true" mode="right" width="612.319rpx">
-		<view class="popup_content_box">
-			<scroll-view scroll-y="true" style="height: 75%;">
-				<view class="selection_listbox">
-					<view v-for="(item,index) in screenTag" :key="index">
-                      <view class="item_name">{{item.value}}</view>
-					  <view class="item_tag_box">
-						<view 
-							class="item_tag"
-							:class="{activeClass:!selectedIdObj[item.id][0]}"
-							@click="handleSubjectIndexTagAll(item.id)"
-							>
-							全部
-						</view>  
-						<view 
-							class="item_tag"
-							v-for="(tagitem,tagIndex) in item.tags"
-							:key="tagIndex" 
-							:class="{activeClass:(selectedIdObj[item.id]||[]).indexOf(tagitem.id)!==-1}"
-							@click="handleSubjectIndexTagActive(item.id,tagitem.id)"
-							>
-							{{tagitem.value}}
-						</view>
-					  </view>
-					</view>
-				</view>
-			</scroll-view>
-			<view class="confrim_btn_box">
-				<view class="cancel_btn" @click="handletagCancel">取消</view>
-				<view class="confrim_btn" @click="handletagQuery">确定</view>
-			</view>
-		</view>
-	    </u-popup>
-		<u-popup v-model="submitShow" mode="bottom" height="984.348rpx">
-			<submit-form ref="submitform" :bottomTitle="true" :teachrID="teachrID" :subTitle="false" btnText="立即邀请"></submit-form>
-	   </u-popup>
-	   <view v-if="audioShow" class="home_musicSrc_box disappear">
-        <musicAudio 
-		  ref="musicAudio"
-		  :url="dataPlay.works[0].url"
-		  :autoplay="true"
-		  :portrait="dataPlay.teacher.avatar"
-		  :music_title="dataPlay.title"
-		  @handleChangePlay="handleChangePlay"  
-		  @musicClose="musicClose"
-		  ></musicAudio>
-	  </view>
-	</view>
-	</view>
+                  <view class="defaltext">暂无匹配数据</view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+          <view v-if="addbtnShow" class="emptydata">
+            <image
+              class="emptydataimg"
+              src="@/static/carddetails/emptydata.png"
+              mode="scaleToFill"
+            />
+            <view class="emptydatatext">暂无数据</view>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view style="height: 90px"></view>
+    <!-- <view class="footer_prompt">
+      <view class="footer_dianzhan_icon">
+        <view class="sharebtn" @click="handleruku">
+          试音
+        </view>
+        <view class="laceOrder" @click="handlePlaceOrder">
+          下单
+        </view>
+      </view>
+    </view> -->
+    <view v-if="audioShow" class="home_musicSrc_box disappear">
+      <musicAudio
+        ref="musicAudio"
+        :url="dataPlay.url"
+        :autoplay="true"
+        :portrait="dataList.avatar"
+        :music_title="dataPlay.title"
+        @handleChangePlay="handleChangePlay"
+        @musicClose="musicClose"
+      ></musicAudio>
+    </view>
+    </view>
+    <!-- <view class="share_box">
+      <button class="invitationBtn sharebtn" open-type="share">
+          <image
+            class="shareicon"
+            src="@/static/carddetails/shareicon.png"
+            mode="scaleToFill"
+          />
+      </button>
+    </view> -->
+    <u-popup v-model="submitShow" mode="bottom" height="1084.348rpx"  border-radius="24">
+			<release 
+			  ref="submitform"
+			  :bottomTitle="true"
+        :data="dataObj"
+			  :subTitle="false"
+        :srstatus="true"
+        :btnText="btnText"
+			  @submitShow="getsubmitShow"
+			  >
+			</release>
+	  </u-popup>
+    <u-popup v-model="collectShow" mode="bottom" border-radius="24">
+		  <view class="collect_item" @click="handleCollectStatus">
+			  <image
+			      class="collection"
+				  :src="operationItem.work_type===0 ? shouchang : yishouchang"
+				  mode="scaleToFill"
+			  />
+			  <view :class="operationItem.work_type===0 ? 'collect_text' : 'redcollect_text'">{{operationItem.work_type===0 ? '收藏' : '已收藏'}}</view>
+		  </view>
+		  <view class="collect_item" @click="downloadcopy(operationItem.url,'下载链接已复制，请粘贴到浏览器打开')">
+			  <image
+			      class="collection"
+				  src="@/static/teacherlist/download.png"
+				  mode="scaleToFill"
+			  />
+			  <view class="collect_text">下载</view>
+		  </view>
+		  <view class="collect_item_btn" @click="hanldeCancelcoll">取消</view>
+	  </u-popup>
+    <dropball title="找我试音">
+	  </dropball>
+  </view>
 </template>
 
 <script>
-import { tagAll,getAllteacher } from "@/api/index.js"
-import submitForm from '@/components/submitform/submitform.vue'
-import musicAudio from '@/components/audio/audioplay.vue'
-import uniCopy from '@/utils/uni-copy.js'
+
+import { mapState, mapActions } from "vuex";
+import uniCopy from "@/utils/uni-copy.js";
+import musicAudio from "@/components/audio/audioplay.vue";
+import myTabs from "@/components/my-tabs/my-tabs";
+import {profileDetail,followFabulous} from "@/api/carddetails.js";
+import man from "@/static/teacherlist/manicon.png";
+import female from "@/static/teacherlist/woman.png";
+import qi from "@/static/teacherlist/woman.png";
+import dianzhan from "@/static/home/dianzhanActive.png";
+import { changeFocus } from "@/api/carddetails.js";
+import shouchang from '@/static/img/shouchang.png'
+import yishouchang from '@/static/img/yishouchang.png'
+import { collection } from "@/api/voice.js"
+import dropball from '@/components/dropball/dropball.vue'
 export default {
-	components: {
-		submitForm,
-		musicAudio
-	},
-	data() {
-		return {
-			dataList: [],
-			play: 'https://www.peiyinstreet.com/guidang/play.png',
-			playActive: "https://www.peiyinstreet.com/guidang/palyActive.gif",
-			tagList: [],
-			screenTag: [],
-			scrollInto: 0,
-			scrollTop: 0,
-			tagParameter: {
-				sort: {},
-				page: 1,
-				size: 10,
-				type: 1,
-				tag_data: {}
+  components: {
+    myTabs,
+    musicAudio,
+    dropball
+  },
+  data() {
+    return {
+      titleList: ["宣传片", "专题片", "有声小说"],
+      viewList: [],
+      pageDate: new Date(), //全局时间用于函数节流
+      man: man,
+      female: female,
+      qi: qi,
+      sharePopShow: false,
+      checkeChat: true,
+      moreShow: true,
+      addbtnShow: false,
+      currentIndex: 0,
+      triggered: false,
+      defaultshow: true,
+      erweimaShow: false,
+	    shareSow: true,
+      giveIndex: null,
+      play: 'https://www.peiyinstreet.com/guidang/play.png',
+      playActive: "https://www.peiyinstreet.com/guidang/palyActive.png",
+      woekslist: [],
+      background: {
+				backgroundColor: '#21283B',
 			},
-			priceList: [
-				'不限',
-                '中级≤20元',
-				'高级30元-40元',
-				'特级≥50元',
-			],
-			current: 0,
-			swiperCurrent: 0,
-			tabsHeight: 0,
-			playStatus: false,
-			activeIndex: 0,
-			selectedIdObj: {},
-			tagDatas: {},
-			barStyle: {
-				backgroundColor: '#FF445A',
-			},
-			countdown:[],
-            defaultshow: true,
-			loadmore: false,
-			screeningShow: false,
-			triggered: false,
-			submitShow: false,
-			audioShow: false,
-			has_next: '',
-			dataPlay: {
-				works: [{
-                  url: ''
-				}	
-				]
-			},
-			teachrID: '',
-		};
-	},
-	onLoad(options) {
-		this.handleList()
-	},
-	onHide() {
-	  this.musicClose()	
-	},
-	methods: {
-		// 价格筛选
-		handlePriceScreening(index) {
-          this.activeIndex = index
-		  this.tagParameter.page=1
-		  this.getOrderList(this.tagParameter,this.current)
-		},
-		handleScreening() {
-		  this.screeningShow = true
-		},
-		async handleList() {
-		  const res = await tagAll()
-		  this.screenTag = res.data
-		  const tagListArr = res.data.filter(item=>{
-			  this.$set(this.selectedIdObj,item.id,[])
-              return item.value == '题材'
-		  })
-		  console.log('这是啥',tagListArr)
-		  var allList = {
-			    created_at: "2021-05-26 21:37:08",
-				filter: 0,
-				id: 0,
-				sort: 0,
-				type_id: 0,
-				value: "全部"
-		  }
-		  const a = this.$u.deepClone(tagListArr[0])
-		  a.tags.unshift(allList)
-		  console.log('tags', a)
-		  this.tagList = a
-		  this._freshing = false;
-		  setTimeout(() => {
-			this.triggered = true;
-		  }, 1000)
-		},
-		handlere(idx) {
-		 this.triggered = true
-		 if (idx === 0) {
-			var tagData = {
-
-		     }
-		 } else {
-			 var tagData = {
-                 '2': [this.tagList.tags[idx].id]
-		     }
-		 }
-		  this.tagParameter = {
-				sort: {},
-				page: 1,
-				size: 10,
-				type: 1,
-				tag_data: tagData
-			}
-		 this.getOrderList(this.tagParameter,idx)
-		},
-		// 点击所有标签
-		handleSubjectIndexTagAll(index) {
-		  this.$set(this.selectedIdObj, index, [])
-		  this.$forceUpdate()
-		},
-		// 标签点击事件
-		handleSubjectIndexTagActive(index,id) {
-			const selectTags = this.selectedIdObj[index] || []
-			const num = selectTags.indexOf(id)
-			if (num === -1) { // 该分类未选择该标签
-				selectTags.push(id)
-				this.$set(this.selectedIdObj, index, selectTags)
-				console.log(this.selectedIdObj)
-				this.tagDatas = this.selectedIdObj
-				return
-			}
-			console.log(selectTags,num)
-			// 该分类已选，需要剔除
-			selectTags.splice(num, 1)
-			this.$set(this.selectedIdObj, index, selectTags)
-			this.tagDatas = this.selectedIdObj
-			console.log(this.selectedIdObj)
-			this.$forceUpdate()
-		},
-		// 邀请试音
-		handleInviteDubbing(item) {
-			// console.log('配音师资源ID',item)
-			this.teachrID=item.teacher_id
-			this.submitShow = true
-			this.$refs.submitform.hadleUpdate()
-		},
-		handletagQuery() {
-		this.screeningShow = false
-		this.triggered = true
-		  this.tagParameter = {
-				sort: {},
-				page: 1,
-				size: 10,
-				type: 1,
-				tag_data: this.selectedIdObj
-		  }
-		  this.current = 0
-		  this.getOrderList(this.tagParameter,this.current)
-		},
-		// 取消选择，收回弹窗
-		handletagCancel(){
-		  this.screeningShow = false
-		},
-		// 下拉刷新
-		async reachBottom() {
-			if (this.has_next) {
-				var pages = this.tagParameter.page+1;
-				console.log('上拉加载', pages)
-				this.tagParameter = {
-					sort: {},
-					page: pages,
-					size: 10,
-					type: this.activeIndex +1,
-					tag_data: this.tagDatas
-				}
-				// const res = await getDemandList({
-				// 	state: this.list[idx].id
-				// })
-				const res = await getAllteacher(this.tagParameter)
-				this.triggered = false
-				this.has_next = res.data.has_next
-				res.data.data.map((item)=>{
-					item.playStatus = false
-					this.dataList.push(item)
+      woekslist1: [
+        {
+          name: "品牌广告",
+          id: 1,
+        },
+        {
+          name: "专题片",
+          id: 2,
+        },
+        {
+          name: "促销广告",
+          id: 3,
+        },
+        {
+          name: "纪录片",
+          id: 4,
+        },
+        {
+          name: "影视广告",
+          id: 5,
+        },
+        {
+          name: "影视广告",
+          id: 6,
+        },
+      ],
+      barStyle: {
+        backgroundColor: "#000000",
+      },
+      dataList: [],
+      tabsList: [],
+	    tabsItem: [],
+      audioList: [],
+      current: 0,
+      modifyShow: false,
+      audioShow: false,
+      dataPlay: {
+        url: "",
+      },
+      itemList: [],
+      // 发布框
+      submitShow: false,
+      dataObj: {
+        teacher_id: '',
+				service_id: '',
+				status: 1,
+				filename: '',
+				content_url_escape: '',
+				work_id: null,
+        avatar: '',
+			  nickname: '',
+        offer_price: '',
+      },
+      btnText: '按作品效果下单',
+      // 收藏的作品  
+			collectShow: false,
+			// 操作item
+			operationItem: {},
+      shouchang:shouchang,
+			yishouchang:yishouchang
+    };
+  },
+  onLoad(options) {
+    this.cardId = options.id;
+    this.dataObj.teacher_id = options.id;
+    uni.showLoading({
+        title: '加载中'
+    });
+    this.getUnionid();
+  },
+  onShow() {
+	  this.shareSow = true
+  },
+  computed: {
+    ...mapState("user", ["token", "userInfo"]),
+  },
+  onHide() {
+    //   this.musicClose()
+  },
+  onShareAppMessage(res) {
+    if (res.from === "button") {
+      // 来自页面内分享按钮
+      console.log(res.target);
+    }
+    return {
+      // title: '这是'+this.dataList.nickname + "的声音主页，点击在线试听样音",
+      title: '听一听这个配音师的声音，报价比市场价低一半',
+      path: "/subpkg/pages/teacherlistbeifen/teacherlist?id="+this.cardId,
+      imageUrl: "",
+      complete: function (res) {
+        console.log("分享成功", res);
+      },
+    };
+  },
+  methods: {
+    ...mapActions("user", ["login"]),
+    getUnionid() {
+      uni.login({
+        provider: "weixin",
+        success: async (result) => {
+          await this.login(result.code);
+          this.woekslist = this.woekslist1;
+          this.handleProfileDetail();
+          // this.followFabuloulistData();
+        },
+        fail: (error) => {
+          console.log("登录失败", error);
+        },
+      });
+    },
+    handleProfileDetail() {
+      profileDetail({ id: this.cardId }).then((res) => {
+        console.log("名片数据", res);
+        this.dataList = res.data.data;
+        const itemworks = res.data.list;
+        uni.hideLoading();
+          this.itemList = res.data.row;
+          itemworks.map((item) => {
+            item.works.map((items) => {
+              items.playStatus = false;
+            });
+          });
+        console.log('传过来的值', itemworks)
+        this.tabsItem = this.$u.deepClone(itemworks)
+        var test = uni.getStorageSync('current')
+        if(test !=='') {
+          this.tabsItem.map((item,index) => {
+            if(item.tags[0].value === test){
+                this.current = index
+            }
+          })
+          this.dataObj.service_id  = this.tabsItem[this.current].id
+        }else {
+          this.dataObj.service_id  = this.tabsItem[this.current].id
+        }
+        this.tabsList = itemworks
+        if (this.tabsList.length === 0) {
+          this.addbtnShow = true;
+        } else {
+          this.addbtnShow = false;
+        }
+      });
+    },
+    followFabuloulistData() {
+      this.handleProfileDetail();
+    },
+    // 查看微信
+    handleInviteDubbing(item) {
+      this.sharePopShow = true;
+    },
+    handleCanceShare() {
+      this.sharePopShow = false;
+      this.erweimaShow = false
+      uni.showShareMenu({
+        title: "配音师资源",
+      });
+    },
+    handleShowQrcode() {
+      this.erweimaShow = true 
+    },
+    // handleGoBack() {
+    //   this.$store.commit('user/setworkStatus', {}) 
+    //   console.log('返回上一页传空值')
+    //   uni.switchTab({ url: '/pages/soundlibrary/soundlibrary' })
+    // },
+     // 操作事件
+		  handleOperation(item) {
+			  this.operationItem = item
+        console.log("点击操作打印数据---", item, this.operationItem);
+        this.collectShow = true
+		  },  
+		  //  取消操作事件
+		  hanldeCancelcoll() {
+			  this.collectShow = false
+		  },
+		  // 收藏   
+		  handleCollectStatus() {
+        var coData = {
+          work_id: this.operationItem.id,
+          type:this.operationItem.work_type
+        }  
+              collection(coData).then((res)=>{
+                console.log(res)
+          if (this.operationItem.work_type ===1) {
+            this.operationItem.work_type = 0
+          } else {
+            this.operationItem.work_type = 1
+          }
+        }).catch((err)=>{
+        })
+		  },
+    // 查看更多
+    handleTakeBack() {
+      this.moreShow = !this.moreShow;
+    },
+    // 关注和已关注
+    handleFocus(id, type) {
+      changeFocus({ teacher_id: id, type: type }).then((res) => {
+          console.log(res);
+          if (type) {
+            uni.showToast({
+            title: '取消关注成功',
+            icon: 'none',
+            duration: 2000
+          })
+          } else {
+            uni.showToast({
+            title: '关注成功',
+            icon: 'none',
+            duration: 2000
+          })
+          }
+          this.handleProfileDetail();
+      });
+      console.log("关注点击事件");
+    },
+    // 下单
+    // handlePlaceOrder() {
+    //   this.dataObj.filename = ''
+    //   this.dataObj.content_url_escape = ''
+    //   this.submitShow = true
+    //   this.btnText="填写需求，按样音录制"
+    //   this.$nextTick(() => { 
+    //     this.$refs.submitform.handlertextarea()
+    //   });
+    // },
+     // 使用样音下单
+    handleUseOrder(item) {
+      console.log('使用样音下单service_id',item, item.id)
+      if(item.admin_price) {
+        this.dataObj.service_id = item.service_id
+        this.dataObj.teacher_id = item.teacher_id
+        this.dataObj.filename = item.title
+        this.dataObj.content_url_escape = item.url
+        this.dataObj.work_id = item.id
+        this.dataObj.avatar = this.dataList.avatar
+        this.dataObj.nickname = this.dataList.nickname
+        this.dataObj.offer_price = item.offer_price
+        this.btnText="按作品效果下单"
+				uni.setStorageSync('dataObj',this.dataObj)
+				uni.navigateTo({ url: '/subpkg/pages/voicesrelease/voicesrelease' })
+        // this.submitShow = true
+        // this.btnText="按作品效果试音"
+        // this.$nextTick(() => { 
+        //   this.$refs.submitform.handlertextarea()
+        // });
+      } else {
+				uni.showToast({
+					title: '该服务暂不支持在线下单，请联系客服',
+					icon: 'none'
 				})
-				if (this.dataList.length===0) {
-					this.defaultshow = false
-				} else {
-					this.defaultshow = true
-					this.loadmore = true
-				}
-				
-			}else {
+			}
+    },
+    getsubmitShow() {
+			this.submitShow = false
+		},
+    // tab栏切换
+    change(index) {
+      this.current = index;
+      // this.dataObj.service_id = this.tabsItem[this.current].id
+    },
+    // 显示连续
+    handleruku() {
+				uni.previewImage({
+					urls: ['https://www.peiyinstreet.com/guidang/peiyinguwen.png'],
+					longPressActions: {
+						itemList: ['发送给朋友', '保存图片', '收藏'],
+						success: function(data) {
+							console.log('选中了第' + (data.tapIndex + 1) + '个按钮,第' + (data.index + 1) + '张图片');
+						},
+						fail: function(err) {
+							console.log(err.errMsg);
+						}
+					}
+				});
+    }, 
+    // 音乐播放按钮
+    playTheMusic(orderItem) {
+      this.audioShow = true;
+      if (this.dataPlay.url === orderItem.url) {
+        this.tabsList.map((item) => {
+          item.works.map((items) => {
+            if (this.dataPlay === items) {
+              orderItem.playStatus = !orderItem.playStatus;
+            } else {
+              items.playStatus = false;
+            }
+          });
+        });
+      } else {
+        this.tabsList.map((item) => {
+          item.works.map((items) => {
+            items.playStatus = false;
+          });
+        });
+        orderItem.playStatus = true;
+        this.dataPlay = orderItem;
+      }
+      setTimeout(() => {
+        this.$refs.musicAudio.preStartPlay();
+      }, 0);
+    },
+    handleChangePlay(status) {
+      this.tabsList.map((item) => {
+        item.works.map((items) => {
+          if (this.dataPlay === items) {
+            items.playStatus = status;
+          } else {
+            items.playStatus = false;
+          }
+        });
+      });
+    },
+    downloadcopy(groupNum, title) {
+      uniCopy({
+        content: groupNum,
+        success: (res) => {
+          uni.showToast({
+            title: title,
+            icon: "none",
+			duration: 2000
+          });
+        },
+        error: (e) => {},
+      });
+    },
+    musicClose() {
+      this.tabsList.map((item) => {
+        item.works.map((items) => {
+          items.playStatus = false;
+        });
+      });
+      this.audioShow = false;
+      this.dataPlay = {
+        url: "",
+      };
+    },
+    random() {
+      let r = Math.floor(Math.random() * 256),
+        g = Math.floor(Math.random() * 256),
+        b = Math.floor(Math.random() * 256);
+      return `rgb(${r},${g},${b})`;
+    },
+    // 点赞动画
+    handleClick(index, listItem) {
+      const par = {
+        id: this.cardId,
+        type: index,
+      };
+      followFabulous(par)
+        .then((res) => {
+          this.followFabuloulistData();
+          this.giveIndex = index;
+          let that = this;
+          let arr = ["-", ""];
+          let arrImg = [dianzhan];
+          let randomImg = Math.floor(Math.random() * arrImg.length);
+          let arrPush = {
+            src: arrImg[randomImg], //用于随机图标
+            back: this.random(), //可删除
+            index: index, //可删除
+            time: 5000, //动画时间
+            animationData: {}, //每个盒子独立动画不可全局
+            x: Math.ceil(Math.random() * 50), //方向间距
+            q: Math.floor(Math.random() * arr.length), //用于随机方向
+            lastIndex: 1, //用于删除数组
+            timer: null, //定时器
+            lastTime: 100, //删除的倒计时
+          };
+          //函数节流限制用户频繁快速点击
+          if (new Date() - this.pageDate < 300) return; //如果点击的时间小于初始时间300
+          this.pageDate = new Date(); //同步全局时间
+          //------------
+          this.viewList.push(arrPush);
 
-			}
-		},
-		// 音乐播放按钮
-		playTheMusic(orderItem) {
-		  console.log('音乐播放', orderItem, this.dataPlay)
-		  this.audioShow = true
-		  if(this.dataPlay.works[0].url === orderItem.works[0].url) {
-			  this.dataList.map((item)=>{
-				  if(this.dataPlay===item){
-                     orderItem.playStatus = !orderItem.playStatus
-				  }else {
-                    item.playStatus = false
-				  }
-		      })
-		  }else {
-             this.dataList.map((item)=>{
-			   item.playStatus = false
-		     })
-			  orderItem.playStatus = true
-			  this.dataPlay = orderItem
-		  }
-		  setTimeout(()=>{
-			this.$refs.musicAudio.preStartPlay()
-		  },0)
-		},
-		handleChangePlay(status) {
-            this.dataList.map((item)=>{
-				  if(this.dataPlay===item){
-					 console.log('子组件改变播放状态', status) 
-                     item.playStatus = status
-				  }else {
-                     item.playStatus = false
-				  }
-		    })
-
-		},
-		// 页面数据
-		async getOrderList(item,idx) {
-			const tagParameter = {
-				sort: item.sort,
-				page: item.page,
-				size: item.size,
-				type: this.activeIndex +1,
-				tag_data: item.tag_data
-			}
-			// const res = await getDemandList({
-			// 	state: this.list[idx].id
-			// })
-			const res = await getAllteacher(tagParameter)
-			this.triggered = false
-			this.has_next = res.data.has_next
-			res.data.data.map((item)=>{
-				item.playStatus = false
-			})
-			this.dataList = res.data.data
-			if (this.dataList.length===0) {
-				this.defaultshow = false
-			} else {
-				this.defaultshow = true
-				this.loadmore = true
-			}
-			this.scrollInto = this.scrollTop
-			setTimeout(()=>{
-              this.scrollInto = 0
-			},0)
-		},
-		musicClose() {
-          this.dataList.map((item)=>{
-                item.playStatus = false
-		    })
-		  this.audioShow = false	
-		  this.dataPlay =  {
-				works: [{
-                  url: ''
-				}	
-				]
-			}
-		},
-		// tab栏切换
-		change(index) {
-			console.log('scrollInto', this.scrollInto)
-			this.current = index;
-				if (index === 0) {
-					var tagData = {}
-				} else {
-				var tagData = {
-					'2': [this.tagList.tags[index].id]
-				}
-			}
-			this.tagDatas = tagData
-			this.tagParameter = {
-					sort: {},
-					page: 1,
-					size: 10,
-					type: 1,
-					tag_data: tagData
-				}
-			this.getOrderList(this.tagParameter,index)
-		},
-		tabScoll(e) {
-		  this.scrollTop = e.detail.scrollTop;
-		},
-		downloadcopy(groupNum,title) {
-			uniCopy({
-				content:groupNum,
-				success:(res)=>{
-					uni.showToast({
-						title: title,
-						icon: 'none'
-					})
-				},
-				error:(e)=>{
-				}
-			})
-		}
-	}
+          //核心动画
+          this.viewList.forEach((i, o, v) => {
+            var animate = uni.createAnimation({
+              duration: i.time,
+              timingFunction: "ease-out",
+            });
+            that.animation = animate;
+            let time = arr[i.q] + i.x; //随机的方向和间距
+            setTimeout(() => {
+              that.animation.translateY(-100).step();
+              that.animation.opacity(0).step();
+              that.animation.translateX(Number(time)).step();
+              i.animationData = that.animation.export();
+              //函数防抖
+              clearInterval(i.timer);
+              i.timer = setInterval(() => {
+                i.lastIndex--; //每个图标的倒计时到0删除
+                if (i.lastIndex < 0) {
+                  v.splice(i, 1);
+                  clearInterval(i.timer);
+                }
+              }, i.lastTime);
+            }, 100);
+          });
+        })
+        .catch((err) => {
+          uni.showToast({
+            title: err.errmsg,
+            icon: "none",
+            duration: 2000,
+          });
+        });
+    },
+  },
 };
 </script>
 <style lang="scss">
-page{
-	min-height: 100%;
-	overflow: hidden;
-	width: 100%;
+/* #ifdef MP-WEIXIN */
+page {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
 }
+.cellTa {
+	position: relative;
+  font-size: 32.609rpx;
+  margin-left: 7.246rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 20px;
+  	.cell {
+	     position: absolute;
+	     left: 0;
+       height: 79.71rpx;
+	     width: 543.478rpx;
+       background: RGBA(245, 44, 90, 0.00);
+       border-radius: 32px 0px 0px 32px;
+	.wrapper {
+	    height: 79.71rpx !important;
+      line-height: 79.71rpx !important;	
+	}
+	.cell--bubble {
+	   height: 79.71rpx !important;
+	   width: 543.478rpx !important;
+     display: flex;
+	   align-items: center;
+	   background: RGBA(245, 44, 90, 0.00) !important;
+	}
+	.light_without_border {
+		 margin-left: 20rpx !important;
+	}
+	.cell--light_without_border {
+		display: none;
+		margin-left: 20rpx !important;
+		width: 18px;
+    height: 16px;
+	}
+}	
+}
+/* #endif */
 .textarea-placeholder {
   font-size: 25.362rpx;
   font-family: PingFangSC-Regular, PingFang SC;
@@ -500,450 +921,767 @@ page{
 }
 /* #ifdef MP-WEIXIN */
 scroll-view ::v-deep ::-webkit-scrollbar {
-   width: 0;
-   height: 0;
-   color: transparent
+  width: 0;
+  height: 0;
+  color: transparent;
 }
 .u-mask {
-	position: absolute !important;
+  position: absolute !important;
 }
 .u-drawer {
-	position: absolute !important;
+  position: absolute !important;
 }
 /* #endif */
 </style>
 <style lang="scss" scoped>
-.defaltext {
-	margin-top: 30rpx;
-	text-align: center;
-	font-size: 24rpx;
-	font-family: PingFangSC-Medium, PingFang SC;
-	font-weight: 500;
-	color: #717171;
-	line-height: 16px;
-}
-.teacherlist_box {
-	position: relative;
-	.home_musicSrc_box {
-		position: absolute;
-		bottom: 240rpx;
+.container {
+  position: relative;
+  height: 100%;
+  .container_box {
+		position: relative;
+		height: 100%;
+		top: -144.928rpx;
+		overflow-y: auto;
 	}
-}
-.erweimabox {
-	position: relative;
-	.close_iconbox{
-	    position: absolute;
-		background: #000000;
-		right: 0rpx;
-		width: 50rpx;
-		height: 50rpx;
-		top: 0rpx;
-		border-radius: 50%;
-      .close_icon {
-		width: 50rpx;
-		height: 50rpx;
-	  }
-	}
-	.erweima_iconbox {
-		margin-left: 34.478rpx;
-	}
-	.erweima_icon {
-		width: 491.014rpx;
-		height: 491.014rpx;
-		
-	}
-	.erweima_box {
-		width: 471.014rpx;
-		height: 36.232rpx;
-		text-align: center;
-		font-size: 25.362rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #999999;
-		line-height: 36.232rpx;
-		margin-left: 43.478rpx;
-
-	}
-}
-.u-tabs-box {
-	min-height: 88.768rpx;
-    background: white;
+  .banner {
     position: relative;
-    width: 617.754rpx;
-	.screening_btn_box {
-	  background: #FFFFFF;
-	  height: 100%;
-      position: absolute;
-	  right: -142.246rpx;
-	  top: 0;
-	  display: flex;
-	  align-items: center;
-	  width: 143.246rpx;
-	  .screening_btn {
-		     width: 100rpx;
-			height: 50rpx;
-			display: -webkit-box;
-			display: -webkit-flex;
-			display: flex;
-			margin-top: -10rpx;
-			margin-left: 10rpx;
+    width: 750rpx;
+    height: 503.623rpx;
+    text-align: center;
+    background-color: #21273A;
+    .banner_bcimg {
+      width: 750rpx;
+      height: 503.623rpx;
+    }
+    .intro {
+		position: absolute;
+		width: 100%;
+		top: calc(50rpx + var(--status-bar-height));
+		align-items: center;
+		left: 0rpx;
+		color: #ffffff;
+		display: flex;
+		flex-direction: column;
+      .goBack {
+        width: 20%;
+        text-align: left;
+        position: absolute;
+        left: 18.116rpx;
+        font-size: 32.609rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+      }
+	  .homeye {
+		    display: flex;
+			width: 57.971rpx;
+			height: 57.971rpx;
+			border-radius: 32.609rpx;
 			justify-content: center;
 			align-items: center;
-			text-align: center;
-			-webkit-box-pack: center;
-			-webkit-justify-content: center;
-			justify-content: center;
-			border-radius: 30rpx;
-			border: #2E2E2E 1px solid;
-	  }
-	//   top: 50%;
-	//   align-items: center;
-    //   transform: translate(-50%, -50%); 
-	  .divider {
-		  margin-left: 5rpx;
-		  width: 9.058rpx;
-		  height: 47.101rpx;
-	  }
-	  .screening_text {
-		// margin-left: 16.304rpx;  
-		width: 50.725rpx;
-		height: 36.232rpx;
-		font-size: 25.362rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-		line-height: 36.232rpx;
-	  }
-	  .screening_icon {
-		  margin-left: 7.246rpx;
-		  width: 21.739rpx;
-		  height: 21.739rpx;
-		  font-size: 36.232rpx;
-	  }
-	}
-}
-.price_screening_box {
-  width: 100%;
-  padding: 27.174rpx;
-  display: flex;
-  justify-content: space-between;
-  .price_item{
-	padding: 0 23.551rpx;
-	height: 50.725rpx;
-	line-height: 50.725rpx;
-	background: #FFFFFF;
-	border-radius: 25.362rpx;
-	font-size: 21.739rpx;
-	font-family: PingFangSC-Regular, PingFang SC;
-	font-weight: 400;
-	color: #666666;
+			background: white;
+		}
+		.homeye_img {
+			width: 28.986rpx;
+			height: 28.986rpx;
+		}
+      .greet {
+        font-size: 32.609rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        width: 500rpx;
+        color: #ffffff;
+      }
+    }
   }
-  .activeClass {
-	background: #FF445A ;
-	color: #FFFFFF;
-  }
-}
-.teacherOrder {
-	margin-left: 27.174rpx;
-	padding: 36.232rpx 27.174rpx;
-    width: 695.652rpx;
-	height: 264.493rpx;
-	background: #FFFFFF;
-	border-radius: 25.362rpx;
-	margin-bottom: 21.739rpx;
-    .teacher_top_Introduction{
-		display: flex;
-		.top_Introduction_left{
-			position: relative;
-			width: 76.087rpx;
-			height: 76.087rpx;
-			.teacher_portrait {
-			  width: 76.087rpx;
-			  height: 76.087rpx;	
-			  border-radius: 38.043rpx;
-			}
-			.online {
-				position: absolute;
-				bottom: 0;
-				right: 0;
-				width: 21.739rpx;
-				height: 21.739rpx;
-				border-radius: 10.87rpx;
-				background: #26DA52;
-				border: 3.623rpx solid #FFFFFF;
-			}
-		}
-		.top_Introduction_contenr{
-			margin-left: 18.116rpx;
-			width: 387.681rpx;
-		.teacher_nikeName_text{
-			max-width: 300rpx;
-			height: 22px;
-			font-size: 16px;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #000000;
-			line-height: 22px;
-		}
-		.teacher_sex {
-			width: 25.362rpx;
-			height: 25.362rpx;
-		}
-
-	    }
-		.top_Introduction_right {
-			.checkWeChat {
-                margin-top: 5.058rpx;
-				text-align: center;
-				width: 159.42rpx;
-				height: 65.217rpx;
-				background: #FF445A;
-				border-radius: 32.609rpx;
-				font-size: 25.362rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #FFFFFF;
-				line-height: 65.217rpx;
-			}
-			.reg_group {
-				 margin-top: 5.058rpx;
-				text-align: center;
-				width: 159.42rpx;
-				height: 65.217rpx;
-				background: #F3F4F9;
-				border-radius: 32.609rpx;
-				font-size: 25.362rpx;
-				font-family: PingFangSC-Medium, PingFang SC;
-				font-weight: 500;
-				color: #000000;
-				line-height: 65.217rpx;
-			}
-		}
-	}
-	.teacher_bot_voices {
-	  margin-top: 25.362rpx;	
-	  width: 639.493rpx;
-	  height: 90.58rpx;
-	  display: flex;
-	  align-items: center;
-	//   padding: 0 23.551rpx;
-	  position: relative;
-	  background: #F1F3F7;
-	  border-radius: 6px;
-	  .teacher_play_box {
-		 height: 100%;
-		 padding-left: 23.551rpx; 
-		 display: flex;
-	     align-items: center;
-	  }
-	  .teacher_play_icon {
-		  width: 47.101rpx;
-		  height: 47.101rpx;
-	  }
-	  .service_name {
-        width: 513.304rpx;
-		height: 36.232rpx;
-		// margin-left: 16.304rpx;
-		margin-top: 5rpx;
-		font-size: 25.362rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
-		color: #000000;
-		line-height: 36.232rpx;
-	  }
-	  .download_iconbox {
-		height: 100%;
-		width: 54.609rpx;
-		height: 28.986rpx; 
-	  }
-	  .download_icon{
-		  width: 32.609rpx;
-		  height: 28.986rpx;
-	  }
-	}
-}
-.wrap {
-	display: flex;
-	flex-direction: column;
-	height: calc(100vh - var(--window-top));
-	width: 100%;
-	background: #F2F2F2;
-}
-.swiper-box {
-	flex: 1;
-}
-.swiper-item {
-	height: 100%;
-}
-.popup_content_box {
-	height: 100%;
-	.selection_listbox {
-		padding:0rpx 18.116rpx 0rpx 32.609rpx;
-	  .item_name {
-		margin-top: 43.478rpx;  
-		width: 28px;
-		height: 20px;
-		font-size: 14px;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #000000;
-		line-height: 20px;
-	  }
-	  .item_tag_box {
+  .content {
+    padding: 0 27.174rpx;
+    .business_card {
+      position: relative;
+      margin-top: -193.841rpx;
+      width: 695.652rpx;
+      height: 430.072rpx;
+      background: #ffffff;
+      border-radius: 30rpx;
+      box-shadow: 0px 3.623rpx 36.232rpx 0px rgba(0, 0, 0, 0.07);
+      .head_portrait {
+        position: relative;
+        height: 85.145rpx;
+        .head_portraitimg_box {
+          position: absolute;
+          top: -110.507rpx;
+          left: 50%;
+          transform: translate(-50%, 0);
+          width: 195.652rpx;
+          height: 195.652rpx;
+          border-radius: 97.826rpx;
+          .head_portraitimg {
+            width: 195.652rpx;
+            height: 195.652rpx;
+            border-radius: 97.826rpx;
+            box-shadow: 0px 3.623rpx 30.797rpx 0px rgba(0, 0, 0, 0.17);
+            border: 5.623rpx solid RGBA(242, 242, 242, 1);
+          }
+          .sex_icon {
+            position: absolute;
+            bottom: 0;
+            right: 28.986rpx;
+            width: 32.609rpx;
+            height: 32.609rpx;
+          }
+        }
+      }
+      .nick_namebox {
+        position: relative;
+        margin-top: 32.609rpx;
         display: flex;
-		flex-wrap: wrap;
-		justify-content: flex-start;
-		.item_tag {
-			margin-top: 21.739rpx;
-			margin-right: 18.116rpx;
-			// margin: 21.739rpx ;
-			text-align: center;
-			font-size: 21.739rpx;
-			font-family: PingFangSC-Regular, PingFang SC;
-			font-weight: 400;
-			color: #000000;
-			width: 123.188rpx;
-			height: 50.725rpx;
-			line-height: 50.725rpx;
-			background: #F3F4F9;
-			border-radius: 27.174rpx;
-		}
-		 .activeClass {
-			background: #FF445A;
-			color: #FFFFFF;
-		}
-	  }
-	}
-	.confrim_btn_box {
-		margin-top: 36.232rpx;
-		display: flex;
-		.cancel_btn {
-			margin-left: 32.609rpx;
-			text-align: center;
-			font-size: 28.986rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #999999;
-			width: 264.493rpx;
-			height: 79.71rpx;
-			line-height: 79.71rpx;
-			background: #FFFFFF;
-			border-radius: 39.855rpx;
-			border: 1px solid #DEDEDE;
-		}
-		.confrim_btn {
-			margin-left: 18.116rpx;
-			text-align: center;
-			width: 264.493rpx;
-			height: 79.71rpx;
-			line-height: 79.71rpx;
-			background: #FF445A;
-			border-radius: 39.855rpx;
-            font-size: 28.986rpx;
-			font-family: PingFangSC-Medium, PingFang SC;
-			font-weight: 500;
-			color: #FFFFFF;
-		}
-	}
+        justify-content: center;
+        align-items: center;
+        .nick_name {
+          position: relative;
+          text-align: center;
+          display: inline-block;
+          width: 199.275rpx;
+          height: 50.725rpx;
+          font-size: 36.232rpx;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #000000;
+          line-height: 50.725rpx;
+        }
+        .name_certified {
+          margin-left: 9.058rpx;
+          position: absolute;
+          right: -80.841rpx;
+          top: 8rpx;
+          width: 68.841rpx;
+          height: 36.232rpx;
+          background: #ffffff;
+          text-align: center;
+          border-radius: 7.246rpx;
+          border: 1.812rpx solid #cecece;
+          font-size: 18.116rpx;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #999999;
+          line-height: 36.232rpx;
+        }
+      }
+      .personalFile {
+        position: relative;
+        padding: 11.681rpx 30.797rpx;
+        margin-top: 25.362rpx;
+        margin-left: 27.174rpx;
+        width: 641.304rpx;
+        height: 199.058rpx;
+        background: #fcfbfc;
+        border-radius: 14.493rpx;
+        .travel_to {
+          position: absolute;
+          top: 50%;
+          right: 36.232rpx;
+          width: 36.232rpx;
+          height: 36.232rpx;
+          transform: translate(0%, -50%);
+        }
+        .personal_list {
+          display: flex;
+          margin-top: 18.116rpx;
+          .personal_title {
+            width: 105.072rpx;
+            height: 36.232rpx;
+            font-size: 25.362rpx;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #999999;
+            line-height: 36.232rpx;
+          }
+          .personal_content {
+            width: 507.246rpx;
+            height: 36.232rpx;
+            font-size: 25.362rpx;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            display: flex;
+            color: #000000;
+            line-height: 36.232rpx;
+            .divider_line {
+              display: inline-block;
+              margin: 0 10px;
+              width: 2.717rpx;
+              height: 25.362rpx;
+              line-height: 36.232rpx;
+              background-color: #e7e6e7;
+            }
+          }
+        }
+      }
+    }
+    .business_data {
+      margin-top: 36.232rpx;
+      .business_data_title {
+        display: flex;
+        justify-content: space-between;
+        .title_data {
+          width: 173.913rpx;
+          height: 39.855rpx;
+          font-size: 28.986rpx;
+          font-family: PingFangSC-Medium, PingFang SC;
+          font-weight: 500;
+          color: #000000;
+          line-height: 39.855rpx;
+        }
+      }
+      .data_content {
+        padding: 20rpx 0px 0px 0px;
+        margin-top: 25.362rpx;
+        width: 695.652rpx;
+        min-height: 259.058rpx;
+        background: #ffffff;
+        box-shadow: 0px 3.623rpx 36.232rpx 0px rgba(0, 0, 0, 0.07);
+        border-radius: 21.739rpx;
+        .add_work {
+          padding-top: 57.971rpx;
+          .add_icon_box {
+            text-align: center;
+            .add_icon {
+              width: 83.333rpx;
+              height: 83.333rpx;
+            }
+          }
+          .add_text {
+            text-align: center;
+            height: 36.232rpx;
+            font-size: 25.362rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #666666;
+            line-height: 36.232rpx;
+          }
+        }
+        .works_item_list_box {
+          .works_item_list {
+            display: flex;
+            width: 100%;
+            height: 119.565rpx;
+            border-top: 1px solid #f4f4f4;
+          }
+          .list_item_paly {
+            width: 493.565rpx;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            .paly_icon {
+              width: 40.826rpx;
+              height: 40.826rpx;
+              border-radius: 48.913rpx;
+              margin-left: 30.493rpx;
+            }
+            .works_title {
+              margin-left: 25.362rpx;
+              width: 398rpx;
+              font-size: 28.986rpx;
+              font-family: PingFangSC-Regular, PingFang SC;
+              font-weight: 400;
+              color: #666666;
+            }
+          }
+          .download_box {
+            display: flex;
+            align-items: center;
+            width: 70rpx;
+            .download_icon {
+              width: 30.797rpx;
+              height: 28.986rpx;
+            }
+          }
+          .btn_item {
+            display: flex;
+            align-items: center;
+            margin-left: 20rpx;
+            .voice_btn {
+              display: flex;
+              align-items: center;
+              justify-content: center; 
+              width: 108.696rpx;
+              height: 50.725rpx;
+              background: #FFFFFF;
+              border-radius: 25.362rpx;
+              border: 1.812rpx solid #FF4F64;
+              font-size: 21.739rpx;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #FF445A;
+            }
+            .voice_img_box{
+              width: 76.232rpx;
+              height: 100%;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+                    .voice_img {
+              margin-left: 9.058rpx;
+              width: 7.246rpx;
+              height: 32.609rpx;
+              }
+            }
+          }
+          // .use_box {
+          //   display: flex;
+          //   align-items: center;
+          //   .use_btn {
+          //     display: flex;
+          //     align-items: center;
+          //     justify-content: center;
+          //     width: 94.203rpx;
+          //     height: 50.725rpx;
+          //     background: #FFFFFF;
+          //     border-radius: 7.246rpx;
+          //     border: 1.812rpx solid #000000;
+          //     font-size: 21.739rpx;
+          //     font-family: PingFangSC-Medium, PingFang SC;
+          //     font-weight: 500;
+          //     color: #000000;
+          //   }
+          // }
+        }
+      }
+      .data_content_introduction {
+        margin-top: 18.116rpx;
+        padding: 28.986rpx;
+        width: 695.652rpx;
+        min-height: 195.652rpx;
+        background: #ffffff;
+        box-shadow: 0px 3.623rpx 36.232rpx 0px rgba(0, 0, 0, 0.07);
+        border-radius: 21.739rpx;
+        .introduction_text {
+          width: 641.377rpx;
+          font-size: 25.362rpx;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #000000;
+          position: relative;
+          line-height: 43.478rpx;
+          display: flex;
+          .introduction_text_an {
+            width: 600.377rpx;
+            min-height: 43.478rpx;
+            font-size: 25.362rpx;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #000000;
+          }
+          .handlean_box {
+            width: 70rpx;
+            height: 40rpx;
+          }
+          .handlean {
+            position: absolute;
+            top: 18.058rpx;
+            right: 0;
+            width: 19.928rpx;
+            height: 10.493rpx;
+          }
+        }
+        .tages_list_box {
+          margin-top: 28.986rpx;
+          display: flex;
+          .tages_list {
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 0 18.116rpx;
+            height: 30px;
+            margin-right: 18.116rpx;
+            background: #ffffff;
+            border-radius: 7.246rpx;
+            border: 1.812rpx solid #ffa53d;
+            .tages_list_img {
+              width: 21.739rpx;
+              height: 21.739rpx;
+            }
+            .tages_list_conten {
+              margin-left: 5.435rpx;
+              font-size: 21.739rpx;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #ffa53d;
+            }
+            .tages_list_num {
+              margin-left: 5.435rpx;
+              font-size: 21.739rpx;
+              font-family: PingFangSC-Medium, PingFang SC;
+              font-weight: 500;
+              color: #ffa53d;
+            }
+          }
+        }
+      }
+    }
+  }
+  .home_musicSrc_box {
+    position: fixed;
+    bottom: 36.232rpx;
+  }
+  .footer_prompt {
+    padding: 0px 36.232rpx;
+    position: fixed;
+    bottom: 36.232rpx;
+    width: 750rpx;
+    justify-content: center;
+    height: 97.826rpx;
+    display: flex;
+    .footer_dianzhan_icon {
+      display: flex;
+      align-items: center;
+      .sharebtn {
+        width: 333.333rpx;
+        height: 90.58rpx;
+        background: #FFECEE;
+        border-radius: 54.348rpx;
+        font-size: 32.609rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #FF445A;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .laceOrder {
+        width: 333.333rpx;
+        margin-left: 28.986rpx;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32.609rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #FFFFFF;
+        height: 90.58rpx;
+        background: #FF445A;
+        border-radius: 54.348rpx;
+      }
+      .give_like_icon {
+        width: 39.855rpx;
+        height: 39.855rpx;
+      }
+      .give_like_text {
+        width: 112px;
+        height: 20px;
+        font-size: 32.609rpx;
+        margin-left: 7.246rpx;
+        font-family: PingFangSC-Medium, PingFang SC;
+        font-weight: 500;
+        color: #ffffff;
+        line-height: 20px;
+      }
+    }
+    .travel_to_box {
+      display: flex;
+      align-items: center;
+      .travel_to_text {
+        width: 394.928rpx;
+        height: 36.232rpx;
+        font-size: 25.362rpx;
+        text-align: right;
+        margin-right: 9.058rpx;
+        font-family: PingFangSC-Regular, PingFang SC;
+        font-weight: 400;
+        color: #ffffff;
+        line-height: 36.232rpx;
+      }
+      .travel_to_img {
+        width: 13.428rpx;
+        height: 17.935rpx;
+      }
+    }
+  }
 }
-.defaltPage {
-	.defaltPageimg {
-		margin-top: 200rpx;
-		margin-left: 225rpx;
-		width: 300rpx;
-		height: 300rpx;
-	}
-	.defaltext {
-		margin-top: 70rpx;
-		text-align: center;
-		font-size: 24rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #717171;
-		line-height: 16px;
-	}
-
+.editor_icon_box {
+  position: absolute;
+  top: 32.609rpx;
+  right: 32.609rpx;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  .editor_icon {
+    width: 25.362rpx;
+    height: 25.362rpx;
+  }
+  .editor_text {
+    margin-left: 9.058rpx;
+    font-size: 25.362rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+  }
 }
-.margintop10 {
-	margin-top: 18.116rpx;
+.editorbox {
+  display: flex;
+  align-items: center;
+  margin-right: 32.609rpx;
+  .editor_icon {
+    width: 25.362rpx;
+    height: 25.362rpx;
+  }
+  .editor_text {
+    margin-left: 9.058rpx;
+    font-size: 25.362rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+  }
+  .additem {
+    margin-left: 57.971rpx;
+    display: flex;
+    align-items: center;
+  }
+  .edititem {
+    display: flex;
+    align-items: center;
+  }
+}
+.animate-wrap {
+  display: inline-block;
+  margin-right: 10px;
+  position: absolute;
+  top: -20rpx;
+  left: 0rpx;
+  width: 100upx;
+}
+.logo {
+  display: inline-block;
+  position: absolute;
+  left: 0;
+  width: 70upx;
+  height: 70upx;
+}
+.aa {
+  position: absolute;
+  font-size: 30upx;
+  color: white;
+  text-align: center;
+  line-height: 50upx;
+  width: 80upx;
+  transform: translateY(0);
+}
+.focusBox {
+  display: flex;
+  .WeChat {
+    text-align: center;
+    width: 114.058rpx;
+    height: 43.478rpx;
+    line-height: 43.478rpx;
+    background: #1274ff;
+    box-shadow: 0px 9.058rpx 12.681rpx 0rpx rgba(18, 70, 255, 0.18);
+    border-radius: 21.739rpx;
+    font-size: 21.739rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #ffffff;
+  }
+}
+.pys_popup {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999999;
+  .popup_conent {
+    position: absolute;
+    padding: 36.232rpx;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 500.71rpx;
+    min-height: 326.087rpx;
+    background: #ffffff;
+    border-radius: 28.986rpx;
+    .closeicon {
+      position: absolute;
+      width: 50.725rpx;
+      height: 50.725rpx;
+      top: -66.232rpx;
+      right: 0;
+    }
+  }
 }
 .check_WeChat_test {
-    text-align: center;
-	height: 39.855rpx;
-	font-size: 28.986rpx;
-	font-family: PingFangSC-Medium, PingFang SC;
-	font-weight: 500;
-	color: #000000;
-	line-height: 39.855rpx;
+  text-align: center;
+  height: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 39.855rpx;
 }
 .check_WeChat_tips {
-	margin-top: 28.986rpx;
-	margin-bottom: 36.232rpx;
-	height: 36.232rpx;
-	text-align: center;
-	font-size: 25.362rpx;
-	font-family: PingFangSC-Regular, PingFang SC;
-	font-weight: 400;
-	color: #000000;
-	line-height: 36.232rpx;
+  margin-top: 28.986rpx;
+  margin-bottom: 36.232rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
 }
 .share_btn_box {
+  display: flex;
+  .cancelSharebtn {
+    width: 213.768rpx;
+    height: 79.71rpx;
+    background: #ffffff;
+    border-radius: 39.855rpx;
+    border: 1.812rpx solid #dedede;
+    font-size: 28.986rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #999999;
+  }
+  .cancelSharebtn::after {
+    border: none !important;
+  }
+  .sharebtn {
+    width: 213.768rpx;
+    height: 79.71rpx;
+    margin-left: 36.232rpx;
+    background: #1274ff;
+    border-radius: 39.855rpx;
+    font-size: 28.986rpx;
+    font-family: PingFangSC-Medium, PingFang SC;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 79.71rpx;
+  }
+  .sharebtn::after {
+    border: none !important;
+  }
+}
+.emptydata {
+  text-align: center;
+  position: relative;
+  .emptydataimg {
+    width: 431.159rpx;
+    height: 387.681rpx;
+  }
+  .emptydatatext {
+    top: 300rpx;
+    width: 100%;
+    text-align: center;
+    position: absolute;
+    text-align: center;
+    font-size: 25.362rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #666666;
+  }
+}
+.nick_nameT {
+		max-width: 450rpx;
+		display: inline-block;
+}
+.share_box {
+  position: fixed;
+  bottom: 443.478rpx;
+  right: 0rpx;
+  width: 90.58rpx;
+  height: 90.58rpx;
+  border-radius: 45.29rpx;
+  .invitationBtn {
+     width: 90.58rpx;
+     height: 90.58rpx;
+     padding: 0 !important;
+     margin: 0 !important;
+     border: none !important;
+     background-color: RGBA(241, 243, 246, 0) !important;
+     display: flex;
+     align-items: center;
+     justify-content: center;
+     border-radius: 45.29rpx;
+  }
+  .invitationBtn::after {
+      border: none !important;
+  }
+  .shareicon {
+    position: absolute;
+    top: 0;
+    left: 0;
+     width: 90.58rpx;
+     height: 90.58rpx;
+  }
+}
+.collect_item {
+	height: 108.696rpx;
+	border-bottom: 1px solid #F7F7F7;
 	display: flex;
-	.cancelSharebtn {
-		width: 213.768rpx;
-		height: 79.71rpx;
-		background: #FFFFFF;
-		border-radius: 39.855rpx;
-		border: 1.812rpx solid #DEDEDE;
-		font-size: 28.986rpx;
+	align-items: center;
+	.collection {
+		margin-left: 43.478rpx;
+		width: 39.855rpx;
+		height: 39.855rpx;
+	}
+	.collect_text {
+		margin-left: 14.493rpx;
+		font-size: 16px;
 		font-family: PingFangSC-Medium, PingFang SC;
 		font-weight: 500;
-		color: #999999;
-	}
-	.cancelSharebtn::after {
-	  border: none !important;
-	}
-	.sharebtn {
-		width: 213.768rpx;
-		height: 79.71rpx;
-		background:#FF445A;
-		border-radius: 39.855rpx;
-		font-size: 28.986rpx;
-		font-family: PingFangSC-Medium, PingFang SC;
-		font-weight: 500;
-		color: #FFFFFF;
-		line-height: 79.71rpx;
-	}
-	.sharebtn::after {
-	  border: none !important;
-	}
-}
-.customer_service_box {
-	position: absolute;
-	top: 1014.493rpx;
-	right: 0;
-	text-align: center;
-	width: 206.522rpx;
-	height: 79.71rpx;
-	line-height: 79.71rpx;
-	background: #FFFFFF;
-	box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.15);
-	border-radius: 57.971rpx 0px 0px 57.971rpx;
-	border: 1px solid #EDEDED;
-	.service_icon {
-		width: 35.188rpx;
-		height: 35.279rpx;
-		margin-right: 5.435rpx;
-		margin-bottom: -5.623rpx;
-
-	}
-	.service_text {
-		font-size: 25.362rpx;
-		font-family: PingFangSC-Regular, PingFang SC;
-		font-weight: 400;
 		color: #000000;
-		line-height: 36.232rpx;
 	}
-
+	.redcollect_text {
+		margin-left: 14.493rpx;
+		font-size: 16px;
+		font-family: PingFangSC-Medium, PingFang SC;
+		font-weight: 500;
+		color: #000000;
+	}
 }
+.collect_item_btn {
+	height: 134.058rpx;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 16px;
+	font-family: PingFangSC-Regular, PingFang SC;
+	font-weight: 400;
+	color: #999999;
+}
+.focus {
+    position: absolute;
+    right: 163.043rpx;
+    margin-left: 7.101rpx;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 94.058rpx;
+    height: 43.478rpx;
+    border-radius: 21.739rpx;
+    font-size: 21.739rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    border: 1.812rpx solid #FF4F64;
+    color: #FF4F64;
+    .focusaixin {
+      width: 27.174rpx;
+      height: 23.551rpx;
+      margin-left: 5.435rpx;
+      color: #FF4F64;
+    }
+  }
+  .beenFocused {
+    position: absolute;
+    right: 163.043rpx;
+    text-align: center;
+    margin-left: 7.101rpx;
+    width: 94.058rpx;
+    height: 43.478rpx;
+    line-height: 43.478rpx;
+    background: #ffffff;
+    border-radius: 21.739rpx;
+    border: 1.812rpx solid #cecece;
+    font-size: 21.739rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #999999;
+  }
 </style>

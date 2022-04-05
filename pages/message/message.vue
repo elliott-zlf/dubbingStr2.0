@@ -8,7 +8,6 @@
 			:border-bottom="true"
 			:background="background"
 			back-icon-color="#000000"
-			@custom-back="handleGoBack"
 		></u-navbar>
 		<view class="content">
 		 <scroll-view 
@@ -28,7 +27,7 @@
 						  :src="item.userProfile.avatar"
 						  mode="scaleToFill"
 					  />
-					  <view class="online"></view>
+					  <!-- 在线状态 <view class="online"></view> -->
 				  </view>
 				  <view class="message_content">
                      <view class="message_body">
@@ -103,7 +102,8 @@ import { caculateTimeago } from '@/utils/common';
 		},
 		methods: {
 		handleRoute(id) {
-			console.log('会话的ID是多少',id)
+			console.log('会话的ID是多少和userID',id,this.userId,this)
+			// this.App.getNewsCount(userId)
 			const url = `/subpkg/pages/chatpage/chatpage?conversationID=${id}`;
 			uni.navigateTo({
 				url
@@ -132,18 +132,16 @@ import { caculateTimeago } from '@/utils/common';
 
 				if (item.lastMessage.type === 'TIMCustomElem') {
 					if (item.lastMessage.payload.data==="offer") {
-						return "[订单] " + item.lastMessage.payload.description
+						return "[请求报价单] " + item.lastMessage.payload.description
 					} else if(item.lastMessage.payload.data==="file"){
 						return "[文件] " + item.lastMessage.payload.description
-					} else if(item.lastMessage.payload.data==="zuopin"){
+					} else if(item.lastMessage.payload.data==="works"){
 						return "[作品] " + item.lastMessage.payload.description
-					}else if(item.lastMessage.payload.data==="chengping"){
+					}else if(item.lastMessage.payload.data==="finished"){
 						return "[成品] " + item.lastMessage.payload.description
-					}else if(item.lastMessage.payload.data==="wodexuqiu"){
+					}else if(item.lastMessage.payload.data==="demand"){
 						return "[我的需求] " + item.lastMessage.payload.description
-					}else if(item.lastMessage.payload.data==="请求报价单"){
-						return "[请求报价单] " + item.lastMessage.payload.description
-					}else if(item.lastMessage.payload.data==="配音报价单"){
+					}else if(item.lastMessage.payload.data==="order"){
 						return "[配音报价单] " + item.lastMessage.payload.description
 					}
 				}

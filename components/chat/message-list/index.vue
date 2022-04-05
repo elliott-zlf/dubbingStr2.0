@@ -15,7 +15,7 @@
 				<view class="system">
 					<!-- 文字消息 -->
 					<view v-if="index%6==0" class="text">
-						{{getcaculateTimeago(item.time)}}
+						{{getcaculateTimeago(item.time) || '刚刚'}}
 					</view>
 				</view>
 				<!-- 自己发出的消息 -->
@@ -37,8 +37,8 @@
 					</view>
 				</view>
 				<view class="system">
-				  <view v-if="item.payload.data=='offer'" class="red-envelope">
-					【平台提醒】先填写请求报价单，配音效率会
+				  <view v-if="item.payload.data=='demand'" class="red-envelope">
+					【平台提醒】先填写请求报价单，配音效率会更高哦
 				  </view>
 				</view>
 			</block>
@@ -71,7 +71,6 @@
         scrollToView: ''
       };
     },
-
     components: {
       TUITextMessage,
       TUICustomMessage,
@@ -152,7 +151,11 @@
             this.$handleMessageRender(this.messageList, messageList);
             //这段代码很重要，不然每次加载历史数据都会跳到顶部
             this.$nextTick(function() {
-              this.scrollToView = res.data.messageList[res.data.messageList.length-1].ID;//跳转上次的第一行信息位置
+              if (res.data.messageList.length === 0) {
+                  return;
+              } else {
+                  this.scrollToView = res.data.messageList[res.data.messageList.length-1].ID;//跳转上次的第一行信息位置
+              }
             });
           });
         }

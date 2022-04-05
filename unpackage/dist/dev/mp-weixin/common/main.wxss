@@ -101,6 +101,25 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 .home_musicSrc_box {
 	width: 675.725rpx;
@@ -191,9 +210,7 @@ text {
   font-size: 34rpx;
 }
 .u-flex {
-
   display: flex;
-
   flex-direction: row;
   align-items: center;
 }
@@ -237,9 +254,7 @@ text {
   text-align: right;
 }
 .u-flex-col {
-
   display: flex;
-
   flex-direction: column;
 }
 .u-flex-0 {
@@ -3215,9 +3230,7 @@ page {
 .u-border-top-bottom:after,
 .u-border-top:after,
 .u-border:after {
-
   content: ' ';
-
   position: absolute;
   left: 0;
   top: 0;
@@ -3254,9 +3267,7 @@ page {
 /* start--clearfix--start */
 .u-clearfix:after,
 .clearfix:after {
-
   content: '';
-
   display: table;
   clear: both;
 }
@@ -3269,14 +3280,6 @@ page {
 }
 /* end--高斯模糊tabbar底部处理--end */
 /* start--提升H5端uni.toast()的层级，避免被uView的modal等遮盖--start */
-
-
-
-
-
-
-
-
 /* end--提升H5端uni.toast()的层级，避免被uView的modal等遮盖--end */
 /* start--去除button的所有默认样式--start */
 .u-reset-button {
@@ -3290,13 +3293,6 @@ page {
   border: none;
 }
 /* end--去除button的所有默认样式--end */
-
-
-
-
-
-
-
 /* start--微信小程序编译后页面有组件名的元素，特别处理--start */
 u-td, u-th {
   flex: 1;
@@ -3323,30 +3319,8 @@ u-switch {
 u-dropdown {
   flex: 1;
 }
-
 /* end-微信小程序编译后页面有组件名的元素，特别处理--end */
-
-
-
-
-
 /* start--头条小程序编译后页面有组件名的元素，特别处理--start */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /* end-头条小程序编译后页面有组件名的元素，特别处理--end */
 .pys_popup {
   position: fixed;
@@ -3453,5 +3427,88 @@ u-dropdown {
 }
 .share_btn_box .sharebtn::after {
   border: none !important;
+}
+.securities {
+  position: fixed;
+  bottom: 295rpx;
+  right: 23.551rpx;
+  width: 123.986rpx;
+  height: 130.326rpx;
+}
+.securities .shutdown_icon {
+  width: 32.986rpx;
+  height: 32.986rpx;
+  position: absolute;
+  top: -36.232rpx;
+  right: 0px;
+}
+.securities .volume {
+  width: 123.986rpx;
+  height: 130.326rpx;
+  animation: zy 2.5s .15s linear infinite;
+  -moz-animation: zy 2.5s .15s linear infinite;
+  /* Firefox */
+  -webkit-animation: zy 2.5s .15s linear infinite;
+  /* Safari and Chrome */
+}
+@-webkit-keyframes zy {
+10% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+}
+20% {
+    -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+}
+30% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+}
+40% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+}
+50%, 100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+}
+@keyframes zy {
+10% {
+    -webkit-transform: rotate(15deg);
+            transform: rotate(15deg);
+}
+20% {
+    -webkit-transform: rotate(-10deg);
+            transform: rotate(-10deg);
+}
+30% {
+    -webkit-transform: rotate(5deg);
+            transform: rotate(5deg);
+}
+40% {
+    -webkit-transform: rotate(-5deg);
+            transform: rotate(-5deg);
+}
+50%, 100% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+}
+}
+@keyframes ghostUpdown {
+from {
+    right: 13.551rpx;
+}
+to {
+    right: 23.551rpx;
+}
+}
+@-webkit-keyframes ghostUpdown {
+from {
+    /*! bottom:110px; */
+}
+to {
+    /*! bottom:120px; */
+}
 }
 

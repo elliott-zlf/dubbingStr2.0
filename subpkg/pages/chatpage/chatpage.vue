@@ -8,7 +8,7 @@
 	:border-bottom="false"
 	:background="background"
 	back-icon-color="#000000"
-	@custom-back="goBack"
+	:custom-back="goBack"
  >
    <view slot="right">  
 	 <view class="homeye">
@@ -22,20 +22,22 @@
 	 </view>	
    </view>
 </u-navbar>
-<view class="notice" v-if="noticeShow">
-	<u-notice-bar mode="vertical" :volume-icon="false" :autoplay="false" :duration="5000" bg-color="#FF445A" color="#FFFFFF" font-size="25.362rpx" :list="listtext"></u-notice-bar>
-	<image
-		class="closeicon"
-		src="@/static/home/close.png"
-		mode="scaleToFill"
-		@click="handleclosenoticeShow"
-	/>
-</view>
-  <view class="message-list content" @tap="triggerClose">
-    <TUI-message-list  ref="messageList" id="message-list" :conversation="conversation"></TUI-message-list>
+ <view class="notice" v-if="noticeShow">
+    <u-notice-bar mode="vertical" :volume-icon="false" :autoplay="false" :duration="5000" bg-color="#FF445A" color="#FFFFFF" font-size="25.362rpx" :list="listtext"></u-notice-bar>
+    <image
+      class="closeicon"
+      src="@/static/home/close.png"
+      mode="scaleToFill"
+      @click="handleclosenoticeShow"
+    />
   </view>
-  <view class="message-input" v-if="showChat">
-    <TUI-message-input ref="messageInput"  id="message-input" :conversation="conversation" @sendMessage="sendMessage"></TUI-message-input>
+  <view class="contents" :style="{bottom:keybottom + 'px'}">
+    <view class="message-list content" @tap="triggerClose">
+      <TUI-message-list  ref="messageList" id="message-list" :conversation="conversation"></TUI-message-list>
+    </view>
+    <view class="message-input" v-if="showChat">
+      <TUI-message-input ref="messageInput"  id="message-input" :conversation="conversation" @sendMessage="sendMessage" @keybottm="handleKeybottom"></TUI-message-input>
+    </view>
   </view>
 </view>
 </template>
@@ -43,6 +45,8 @@
 <script>
 import TUIMessageList from "@/components/chat/message-list/index";
 import TUIMessageInput from "@/components/chat/message-input/index";
+import { newsCount } from '@/api/message.js'
+import { mapState } from "vuex";
 export default {
   data() {
     return {
@@ -51,11 +55,12 @@ export default {
       messageList: [],
       isShow: false,
       showChat: true,
+      keybottom: 0,
       conversationID: '',
       videoMessage: {},
 	  //  自定义数据
 	  listtext: [
-			'请勿交换个人联系方式或私下联系！否则将会',
+			'请勿交换个人联系方式或私下联系！否则将会封号处罚！',
 	  ],
 	  background: {
 		backgroundColor: '#ffffff',
@@ -71,7 +76,10 @@ export default {
   props: {},
   created(){
   },
+  computed: {
+			...mapState("user", ["token","userId"]),
 
+	},
   /**
    * 生命周期函数--监听页面加载
    */
@@ -82,10 +90,6 @@ export default {
     } = options;
     this.setData({
       conversationID
-    });
-    uni.$TUIKit.setMessageRead({
-      conversationID
-    }).then(() => {
     });
     uni.$TUIKit.getConversationProfile(conversationID).then(res => {
       const {
@@ -98,7 +102,30 @@ export default {
       });
     });
   },
-
+  onShow() {
+    console.log('进入页面')
+  },
+  onUnload() {
+   console.log('返回触发',this.conversationID)
+   const _thia = this
+   uni.$TUIKit.setMessageRead({
+      conversationID: this.conversationID
+    }).then(() => {
+      newsCount({userId:this.userId}).then((res)=>{
+				const allMsg = res.data.AllC2CUnreadMsgNum + ''
+				if (allMsg=='0') {
+					 uni.removeTabBarBadge({
+						index: 2
+					})
+				} else {
+					uni.setTabBarBadge({
+						index: 2,
+						text: allMsg
+					})
+				}
+			})
+    });
+  },
   methods: {
     getConversationName(conversation) {
       if (conversation.type === '@TIM#SYSTEM') {
@@ -116,6 +143,9 @@ export default {
         return conversation.groupProfile.name || conversation.groupProfile.groupID;
       }
     },
+    handleKeybottom(eh) {
+      this.keybottom = eh
+    },
     sendMessage(event) {
       // 将自己发送的消息写进消息列表里面
       this.$refs.messageList.updateMessageList(event.detail.message);
@@ -129,7 +159,6 @@ export default {
 
     goBack() {
       const pages = getCurrentPages(); // 当前页面栈
-
       if (pages[pages.length - 2].route === 'pages/TUI-Conversation/create-conversation/create' || pages[pages.length - 2].route === 'pages/TUI-Group/create-group/create' || pages[pages.length - 2].route === 'pages/TUI-Group/join-group/join') {
         uni.navigateBack({
           delta: 2
@@ -143,6 +172,20 @@ export default {
       uni.$TUIKit.setMessageRead({
         conversationID: this.conversationID
       }).then(() => {});
+      newsCount({userId:this.userId}).then((res)=>{
+        console.log('res.data.AllC2CUnreadMsgNum',res.data.AllC2CUnreadMsgNum )
+				const allMsg = res.data.AllC2CUnreadMsgNum + ''
+				if (allMsg=='0') {
+					 uni.removeTabBarBadge({
+						index: 2
+					})
+				} else {
+					uni.setTabBarBadge({
+						index: 2,
+						text: allMsg
+					})
+				}
+			})
     },
 	// 关闭通知
 	handleclosenoticeShow() {
@@ -171,4 +214,11 @@ export default {
 </style>
 <style lang="scss">
 @import "@/static/css/style.scss"; 
+.contents {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
 </style>

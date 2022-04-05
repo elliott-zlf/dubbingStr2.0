@@ -1,5 +1,4 @@
 {
-  "setting": {},
   "condition": {
     "plugin": {
       "list": []
@@ -13,33 +12,9 @@
     "miniprogram": {
       "list": [
         {
-          "name": "subpkg/pages/teacherlist/teacherlist",
-          "pathName": "subpkg/pages/teacherlist/teacherlist",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/personal/personal",
-          "pathName": "pages/personal/personal",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "subpkg/pages/demanddetails/demanddetails",
-          "pathName": "subpkg/pages/demanddetails/demanddetails",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "pages/message/message",
-          "pathName": "pages/message/message",
-          "query": "",
-          "scene": null
-        },
-        {
-          "name": "subpkg/pages/chatpage/chatpage",
-          "pathName": "subpkg/pages/chatpage/chatpage",
-          "query": "",
+          "name": "",
+          "pathName": "subpkg/pages/payment/payment",
+          "query": "id=113&status=0&teacher_id=24",
           "scene": null
         }
       ]

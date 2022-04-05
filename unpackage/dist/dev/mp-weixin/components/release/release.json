@@ -1,0 +1,7 @@
+{
+  "component": true,
+  "usingComponents": {
+    "l-file": "/uni_modules/l-file/components/l-file/l-file",
+    "u-switch": "/uview-ui/components/u-switch/u-switch"
+  }
+}

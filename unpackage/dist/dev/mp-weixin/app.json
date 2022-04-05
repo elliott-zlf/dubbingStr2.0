@@ -1,17 +1,35 @@
 {
   "pages": [
     "pages/index/index",
-    "pages/message/message",
+    "pages/dubbinglibrary/dubbinglibrary",
     "pages/personal/personal",
-    "pages/demand/demand"
+    "pages/demand/demand",
+    "pages/soundlibrary/soundlibrary"
   ],
   "subPackages": [
     {
       "root": "subpkg",
       "pages": [
         "pages/teacherlist/teacherlist",
+        "pages/teacherlistbeifen/teacherlist",
         "pages/demanddetails/demanddetails",
-        "pages/chatpage/chatpage"
+        "pages/about/about",
+        "pages/voicelist/voicelist",
+        "pages/transitions/transitions",
+        "pages/webview/webview",
+        "pages/cloudshare/cloudshare",
+        "pages/cshare/cshare",
+        "pages/myfocus/myfocus",
+        "pages/integral/integral",
+        "pages/coupons/coupons",
+        "pages/myorder/myorder",
+        "pages/orderdetails/orderdetails",
+        "pages/payment/payment",
+        "pages/release/release",
+        "pages/mywork/mywork",
+        "pages/voicesrelease/voicesrelease",
+        "pages/paymentcreate/paymentcreate",
+        "pages/caseDetails/caseDetails"
       ],
       "name": "sub-1"
     }
@@ -31,21 +49,21 @@
     "list": [
       {
         "pagePath": "pages/index/index",
-        "text": "发布需求",
-        "iconPath": "./static/tabbar/release.png",
-        "selectedIconPath": "./static/tabbar/releaseActive.png"
+        "text": "首页",
+        "iconPath": "./static/tabbar/home.png",
+        "selectedIconPath": "./static/tabbar/homeActive.png"
+      },
+      {
+        "pagePath": "pages/soundlibrary/soundlibrary",
+        "text": "声音库",
+        "iconPath": "./static/tabbar/message.png",
+        "selectedIconPath": "./static/tabbar/messageActive.png"
       },
       {
         "pagePath": "pages/demand/demand",
-        "text": "我的需求",
-        "iconPath": "./static/tabbar/demand.png",
-        "selectedIconPath": "./static/tabbar/demandActive.png"
-      },
-      {
-        "pagePath": "pages/message/message",
-        "text": "消息",
-        "iconPath": "./static/tabbar/message.png",
-        "selectedIconPath": "./static/tabbar/messageActive.png"
+        "text": "试音",
+        "iconPath": "./static/tabbar/syk.png",
+        "selectedIconPath": "./static/tabbar/sykActive.png"
       },
       {
         "pagePath": "pages/personal/personal",
@@ -55,6 +73,12 @@
       }
     ]
   },
-  "usingComponents": {},
-  "sitemapLocation": "sitemap.json"
+  "permission": {},
+  "plugins": {
+    "contactPlugin": {
+      "version": "1.4.3",
+      "provider": "wx104a1a20c3f81ec2"
+    }
+  },
+  "usingComponents": {}
 }

@@ -1,6 +1,31 @@
 import store from "../store";
 // const BASE_URL = 'http://42.192.120.145:8001'
-const BASE_URL = 'https://www.peiyinstreet.com'
+let url = ''
+ // #ifdef MP-WEIXIN
+const accountInfo = wx.getAccountInfoSync();
+		   switch (accountInfo.miniProgram.envVersion) {
+			case 'develop':
+				console.log('测试环境')
+				url = 'https://street.peiyinstreet.com';
+        // url = 'https://www.peiyinstreet.com';
+				break;
+			case 'trial':
+			  url = 'https://www.peiyinstreet.com';
+				break;
+			case 'release':
+				console.log('正式环境环境')
+				url = 'https://www.peiyinstreet.com';
+				break;
+			default:
+				console.log('默认环境环境环境')
+				url = 'https://www.peiyinstreet.com';
+				break;
+			}
+ // #endif  
+ // #ifdef  H5   
+  url = 'https://www.peiyinstreet.com';
+ // #endif  
+const BASE_URL = url
 function request({ url, data, method }) {
   return new Promise((resolve, reject) => {
     uni.request({
@@ -11,11 +36,10 @@ function request({ url, data, method }) {
         UserToken: store.state.user.token || ''
       },
       success: ({ data }) => {
-        console.log('接口返回数据', data)
         if (data.errcode===0) {
           resolve(data);
         } else {
-          reject(data.message);
+          resolve(data);
         }
       },
       fail: (error) => {

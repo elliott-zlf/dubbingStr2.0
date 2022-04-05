@@ -108,7 +108,6 @@ page {
 /* 文章场景相关 */
 .invitationBtn {
   width: 100%;
-  height: 113.678rpx;
   display: flex;
   justify-content: space-between;
   border-radius: 8rpx;
@@ -135,7 +134,7 @@ page {
   margin-top: 27.174rpx;
   margin-left: 27.174rpx;
   width: 695.652rpx;
-  height: 344.203rpx;
+  height: 289.855rpx;
 }
 .teacherlist_box .head_card_box .background_icon {
   width: 100%;
@@ -146,18 +145,21 @@ page {
   left: 0;
 }
 .teacherlist_box .head_card_box .my_avatar {
-  text-align: center;
+  display: flex;
+  align-items: center;
+  padding-top: 38.043rpx;
   z-index: 99;
 }
 .teacherlist_box .head_card_box .my_avatar .avatar_icon {
-  margin-top: 38.043rpx;
-  width: 177.536rpx;
-  height: 177.536rpx;
-  border-radius: 88.768rpx;
+  margin-left: 43.478rpx;
+  width: 108.696rpx;
+  height: 108.696rpx;
+  border-radius: 181.58rpx;
+  border: 2px solid #FFFFFF;
 }
 .teacherlist_box .head_card_box .my_avatar .nick_name {
+  margin-left: 27.174rpx;
   text-align: center;
-  margin-top: 18.116rpx;
   height: 43.478rpx;
   font-size: 32.609rpx;
   font-family: PingFangSC-Medium, PingFang SC;
@@ -165,11 +167,31 @@ page {
   color: #ffffff;
   line-height: 43.478rpx;
 }
+.teacherlist_box .head_card_box .integral {
+  display: flex;
+  justify-content: space-between;
+  margin: 43.478rpx 0rpx 0px 0rpx;
+}
+.teacherlist_box .head_card_box .integral .item {
+  width: 50%;
+  text-align: center;
+}
+.teacherlist_box .head_card_box .integral .item .digital {
+  font-size: 32.609rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+}
+.teacherlist_box .head_card_box .integral .item .digital_text {
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
 .teacherlist_box .my_list_cell_box {
   margin-top: 21.739rpx;
   margin-left: 27.174rpx;
   width: 695.652rpx;
-  height: 454.71rpx;
   background: #FFFFFF;
   border-radius: 14.493rpx;
 }
@@ -427,5 +449,94 @@ page {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
+}
+.group_content_box {
+  width: 100%;
+  text-align: center;
+}
+.activity {
+  margin-left: 27.174rpx;
+  width: 695.652rpx;
+  height: 217.391rpx;
+  background: #FFFFFF;
+  border-radius: 14.493rpx;
+  margin-top: 21.739rpx;
+  margin-bottom: 21.739rpx;
+}
+.activity .activity_title_box {
+  padding: 25.362rpx 30.797rpx;
+  display: flex;
+  justify-items: center;
+  justify-content: space-between;
+}
+.activity .activity_title_box .activity_title {
+  height: 36.232rpx;
+  font-size: 26.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.activity .activity_title_box .activity_all {
+  display: flex;
+  justify-items: center;
+  align-items: center;
+}
+.activity .activity_title_box .activity_all .activity_all_title {
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  margin-right: 8.246rpx;
+}
+.activity .activity_title_box .activity_all .activity_all_img {
+  width: 10.87rpx;
+  height: 19.928rpx;
+}
+.activity .item_list_box {
+  margin-top: 15rpx;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+.activity .item_list_box .orderitem_list {
+  position: relative;
+  text-align: center;
+  width: 50%;
+}
+.activity .item_list_box .orderitem_list .item_icon {
+  width: 59.783rpx;
+  height: 50.725rpx;
+}
+.activity .item_list_box .orderitem_list .item_title {
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.activity .item_list_box .item_list {
+  display: flex;
+  justify-content: center;
+  width: 50%;
+}
+.activity .item_list_box .item_list .img_icon_box {
+  position: relative;
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+}
+.activity .item_list_box .item_list .img_icon_box .img_icon {
+  width: 100rpx;
+  height: 100rpx;
+  border-radius: 50rpx;
+}
+.activity .item_list_box .item_list .img_icon_box .add_text {
+  position: absolute;
+  top: 48%;
+  left: 52%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  font-size: 47.101rpx;
+  color: #D3D3D3;
 }
 

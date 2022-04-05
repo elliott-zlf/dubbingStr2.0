@@ -111,11 +111,13 @@ export default {
 			// #endif
 		},
 		wxChooseFile(param) {
+			console.log('微信上传的文件名', param)
 			wx.chooseMessageFile({
 				count: 1,
 				type: 'file',
 				success: ({tempFiles}) => {
 					this.setdefUI();
+					console.log('微信上传返回的参数', tempFiles)
 					this.handleWXUpload(param,tempFiles[0]);
 				},
 				fail: () => this.errorHandler('文件选择失败',this.upErr)
@@ -178,6 +180,7 @@ export default {
 			formData['fileName'] = tempFile.name;
 			let opt = {url,name,formData,header,filePath:tempFile.path};
 			let fileName = tempFile.name;
+			let size = tempFile.size
 			opt['fail'] = (e) => {
 				this.showTip = false;
 				return this.errorHandler('文件上传失败',this.upErr)
@@ -186,7 +189,7 @@ export default {
 				if (res.statusCode==200) {
 					let data = JSON.parse(res.data);
 					//可自行添加后台返回状态验证
-					return this.onCommit(this.$emit('up-success',{fileName,data}));
+					return this.onCommit(this.$emit('up-success',{fileName,data,size}));
 				}
 				return this.errorHandler('文件上传失败',this.upErr);
 			};
