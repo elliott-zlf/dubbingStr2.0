@@ -1,7 +1,7 @@
 {
-  "navigationStyle": "custom",
+  "navigationBarTitleText": "我的配音师",
+  "enablePullDownRefresh": false,
   "usingComponents": {
-    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
     "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
     "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
     "accesslist": "/components/accesslist/accesslist",

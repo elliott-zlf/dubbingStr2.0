@@ -1,0 +1,9 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
+    "cardball": "/components/cardball/cardball"
+  }
+}

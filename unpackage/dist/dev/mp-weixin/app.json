@@ -4,7 +4,8 @@
     "pages/dubbinglibrary/dubbinglibrary",
     "pages/personal/personal",
     "pages/demand/demand",
-    "pages/soundlibrary/soundlibrary"
+    "pages/soundlibrary/soundlibrary",
+    "pages/messageChat/messageChat"
   ],
   "subPackages": [
     {
@@ -29,7 +30,15 @@
         "pages/mywork/mywork",
         "pages/voicesrelease/voicesrelease",
         "pages/paymentcreate/paymentcreate",
-        "pages/caseDetails/caseDetails"
+        "pages/caseDetails/caseDetails",
+        "pages/caseDetailsshare/caseDetailsshare",
+        "pages/music/music",
+        "pages/utility/utility",
+        "pages/asresources/asresources",
+        "pages/asresourcesshare/asresourcesshare",
+        "pages/utilityshaer/utilityshaer",
+        "pages/samplevoices/samplevoices",
+        "pages/voicesshare/voicesshare"
       ],
       "name": "sub-1"
     }
@@ -60,10 +69,10 @@
         "selectedIconPath": "./static/tabbar/messageActive.png"
       },
       {
-        "pagePath": "pages/demand/demand",
-        "text": "试音",
-        "iconPath": "./static/tabbar/syk.png",
-        "selectedIconPath": "./static/tabbar/sykActive.png"
+        "pagePath": "pages/messageChat/messageChat",
+        "text": "消息",
+        "iconPath": "./static/tabbar/messagechat.png",
+        "selectedIconPath": "./static/tabbar/messagechatActive.png"
       },
       {
         "pagePath": "pages/personal/personal",
@@ -80,5 +89,6 @@
       "provider": "wx104a1a20c3f81ec2"
     }
   },
-  "usingComponents": {}
+  "usingComponents": {},
+  "sitemapLocation": "sitemap.json"
 }

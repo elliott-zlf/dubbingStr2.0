@@ -118,7 +118,7 @@ page {
 /* 透明度 */
 /* 文章场景相关 */
 .container.data-v-626a1bcf {
-  background: #F2F2F2;
+  background: #f2f2f2;
   display: flex;
   height: 100%;
   flex-direction: column;
@@ -142,12 +142,12 @@ page {
   align-items: center;
   width: 579.71rpx;
   height: 90.58rpx;
-  background: #FF445A;
+  background: #ff445a;
   border-radius: 50.725rpx;
   font-size: 18px;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 .defaltext.data-v-626a1bcf {
   margin-top: 30rpx;
@@ -182,7 +182,7 @@ page {
   align-items: center;
   width: 695.652rpx;
   height: 181.159rpx;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 14.493rpx;
   margin-top: 25.362rpx;
   margin-left: 27.174rpx;
@@ -228,13 +228,13 @@ page {
   justify-content: center;
   width: 108.696rpx;
   height: 50.725rpx;
-  background: #FFFFFF;
+  background: #ffffff;
   border-radius: 25.362rpx;
-  border: 1.812rpx solid #FF4F64;
+  border: 1.812rpx solid #ff4f64;
   font-size: 21.739rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #FF445A;
+  color: #ff445a;
 }
 .jisuangaodu .scroll_view .works_item .btn_item .voice_img_box.data-v-626a1bcf {
   width: 66.232rpx;
@@ -278,11 +278,11 @@ page {
   width: 80.464rpx;
   height: 32.609rpx;
   border-radius: 4.623rpx;
-  border: 1.812rpx solid #FF445A;
+  border: 1.812rpx solid #ff445a;
   font-size: 21.739rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #FF445A;
+  color: #ff445a;
 }
 .jisuangaodu .scroll_view .works_item .works_name_item .price_item .price_box.data-v-626a1bcf {
   display: flex;
@@ -290,7 +290,7 @@ page {
   font-size: 23.551rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #FF445A;
+  color: #ff445a;
 }
 .jisuangaodu .scroll_view .works_item .works_name_item .price_item .price_line_box.data-v-626a1bcf {
   position: relative;
@@ -534,7 +534,7 @@ page {
 }
 .collect_item.data-v-626a1bcf {
   height: 108.696rpx;
-  border-bottom: 1px solid #F7F7F7;
+  border-bottom: 1px solid #f7f7f7;
   display: flex;
   align-items: center;
 }
@@ -549,6 +549,38 @@ page {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #000000;
+}
+.collect_item .cloudsharebox.data-v-626a1bcf {
+  display: flex;
+  align-items: center;
+  width: 650rpx;
+  justify-content: space-between;
+}
+.collect_item .cloudsharebox .collect_text.data-v-626a1bcf {
+  margin-left: 14.493rpx;
+  font-size: 16px;
+  width: 50%;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.collect_item .cloudsharebox .cloud_btn.data-v-626a1bcf {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 50%;
+}
+.collect_item .cloudsharebox .cloud_btn .collect_text1.data-v-626a1bcf {
+  margin-left: 14.493rpx;
+  font-size: 16px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.collect_item .cloudsharebox .cloud_btn .rightarr_icon.data-v-626a1bcf {
+  width: 19.928rpx;
+  height: 21.739rpx;
+  margin: 0 13.551rpx;
 }
 .collect_item .redcollect_text.data-v-626a1bcf {
   margin-left: 14.493rpx;

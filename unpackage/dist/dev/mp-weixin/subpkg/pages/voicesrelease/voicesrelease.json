@@ -2,6 +2,8 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
-    "l-file": "/uni_modules/l-file/components/l-file/l-file"
+    "l-file": "/uni_modules/l-file/components/l-file/l-file",
+    "u-notice-bar": "/uview-ui/components/u-notice-bar/u-notice-bar",
+    "prompt": "/components/prompt/prompt"
   }
 }

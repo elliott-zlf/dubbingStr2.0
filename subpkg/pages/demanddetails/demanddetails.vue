@@ -463,6 +463,7 @@ import {
 } from "@/api/myneeds.js";
 import { loginStatus, profileUpdate } from "@/api/index.js";
 import { collection } from "@/api/voice.js";
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 // 复制
 import uniCopy from "@/utils/uni-copy.js";
 // 播放组件
@@ -1086,6 +1087,7 @@ export default {
 
         orderItem.playStatus = true;
         this.dataPlay = orderItem;
+        buriedSomeStatistical(0)
       }
       setTimeout(() => {
         this.$refs.musicAudio.preStartPlay();

@@ -121,6 +121,9 @@ page {
 .invitationBtn::after {
   border: none !important;
 }
+.orderitem_btn::after {
+  border: none !important;
+}
 .teacherlist_box {
   height: 100%;
   overflow-y: auto;
@@ -218,6 +221,17 @@ page {
   color: #000000;
   line-height: 45.29rpx;
 }
+.teacherlist_box .my_list_cell_box .list_cell .cell_logo_box .hotbtn {
+  background-color: #FF445A;
+  font-size: 18.116rpx;
+  height: 32.609rpx;
+  line-height: 30.609rpx;
+  font-family: PingFangSC-Semibold, PingFang SC;
+  color: #FFFFFF;
+  margin-left: 10.87rpx;
+  border-radius: 6rpx;
+  padding: 3.623rpx 9.058rpx;
+}
 .teacherlist_box .my_list_cell_box .list_cell .travel_to_iconbox {
   line-height: 113.678rpx;
   text-align: right;
@@ -249,9 +263,9 @@ page {
 }
 .teacherlist_box .weChat_card .title_group_box .group_text {
   margin-left: 19.928rpx;
-  width: 521.739rpx;
+  width: 551.739rpx;
   height: 45.29rpx;
-  font-size: 32.609rpx;
+  font-size: 31.609rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #000000;
@@ -503,6 +517,15 @@ page {
   position: relative;
   text-align: center;
   width: 50%;
+}
+.activity .item_list_box .orderitem_list .orderitem_btn {
+  position: relative;
+  text-align: center;
+  border: none;
+  padding: 0 !important;
+  background: RGBA(247, 247, 247, 0);
+  width: 100%;
+  line-height: 34.42rpx;
 }
 .activity .item_list_box .orderitem_list .item_icon {
   width: 59.783rpx;

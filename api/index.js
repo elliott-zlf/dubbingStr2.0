@@ -156,3 +156,91 @@ export function servicehot(data) {
         data
     })
 }
+// 平台保障
+export function profilePlatform(data) {
+    return request({
+        url: '/street/profile/platform',
+        method: 'POST',
+        data
+    })
+}
+// 埋点
+export function statisticsIndex(data) {
+    return request({
+        url: '/street/statistics/index',
+        method: 'POST',
+        data
+    })
+}
+// 首页banner
+export function bannerIndex(data) {
+    return request({
+        url: '/street/banner/index',
+        method: 'POST',
+        data
+    })
+}
+// 配音师主页链接
+export function teacherdetail(data) {
+    return request({
+        url: '/street/url/teacherdetail',
+        method: 'POST',
+        data
+    })
+}
+// 节假日弹框
+export function holidaypopup(data) {
+    return request({
+        url: '/street/service/holidaypopup',
+        method: 'POST',
+        data 
+    })
+}
+// 加入云分享
+export function shareAdd(data) {
+    return request({
+        url: '/street/share/add',
+        method: 'POST',
+        data 
+    })
+}
+// 移除云分享
+export function shareDel(data) {
+    return request({
+        url: '/street/share/del',
+        method: 'POST',
+        data 
+    })
+}
+// 云分享列表
+export function shareServicedata(data) {
+    return request({
+        url: '/street/share/servicedata',
+        method: 'POST',
+        data
+    })
+}
+// 点击拿ID
+export function shareid(data) {
+    return request({
+        url: '/street/share/shareid',
+        method: 'POST',
+        data
+    })
+}
+// 分享后的列表ID
+export function sharelist(data) {
+    return request({
+        url: '/street/share/sharelist',
+        method: 'POST',
+        data
+    })
+}
+// 作品播放量数据
+export function serviceWorknum(data) {
+    return request({
+        url: '/street/service/worknum',
+        method: 'POST',
+        data
+    })
+}

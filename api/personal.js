@@ -97,3 +97,27 @@ export function profileinformation(data) {
         data
     })
 }
+// 甲方资源群
+export function streetresourcegroup(data) {
+    return request({
+        url: '/street/resource/group',
+        method: 'POST',
+        data
+    })
+}
+// 实用工具标签
+export function resourceLable(data) {
+    return request({
+        url: '/street/resource/lable',
+        method: 'POST',
+        data
+    })
+}
+// 实用工具
+export function resourceWebsite(data) {
+    return request({
+        url: '/street/resource/website',
+        method: 'POST',
+        data
+    })
+}

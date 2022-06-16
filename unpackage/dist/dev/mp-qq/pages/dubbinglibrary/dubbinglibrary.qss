@@ -1,0 +1,552 @@
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+.p-line-1 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}
+.text_exclusive {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30.797rpx;
+}
+.text_price {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FF445A;
+  line-height: 30.797rpx;
+}
+/* uni.scss */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+page {
+  height: 100%;
+}
+.lianxikefu {
+  position: fixed;
+  bottom: 125rpx;
+  right: 0;
+  display: flex;
+  text-align: center;
+  width: 206.522rpx;
+  height: 79.71rpx;
+  line-height: 79.71rpx;
+  z-index: 9999;
+  background: #ff445a;
+  border-radius: 32px 0px 0px 32px;
+}
+.lianxikefu .service_box {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.lianxikefu .service_box .lianxikefu_text {
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  margin-left: 15rpx;
+}
+.lianxikefu .service_box .service_icon {
+  width: 25.362rpx;
+  height: 28.986rpx;
+  margin-left: 25.116rpx;
+}
+.container {
+  height: 100%;
+  background: #f2f2f2;
+}
+.content {
+  background: #f2f2f2;
+}
+.invitationBtn {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  background: rgba(0, 0, 0, 0);
+  /* justify-content: space-between; */
+  border: none;
+  padding: 0 !important;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+}
+.invitationBtn::after {
+  border: none !important;
+}
+
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+.p-line-1.data-v-04d07f86 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}
+.text_exclusive.data-v-04d07f86 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30.797rpx;
+}
+.text_price.data-v-04d07f86 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FF445A;
+  line-height: 30.797rpx;
+}
+/* uni.scss */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.count_box.data-v-04d07f86 {
+  margin-top: 18.116rpx;
+  width: 695.652rpx;
+  height: 144.928rpx;
+  margin-left: 27.174rpx;
+  background: #1274ff;
+  border-radius: 14.493rpx;
+  display: flex;
+}
+.count_box .count_box_img.data-v-04d07f86 {
+  width: 100%;
+  height: 100%;
+}
+.count_box .count_item.data-v-04d07f86 {
+  width: 33%;
+}
+.count_box .count_item .number.data-v-04d07f86 {
+  width: 100%;
+  text-align: center;
+  height: 54.348rpx;
+  font-size: 39.855rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 54.348rpx;
+}
+.count_box .count_item .number_title.data-v-04d07f86 {
+  width: 100%;
+  text-align: center;
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 30.797rpx;
+}
+.count_box .vertical_line.data-v-04d07f86 {
+  height: 100%;
+  width: 1px;
+  background: #ffffff;
+  opacity: 0.11;
+}
+.type_name.data-v-04d07f86 {
+  padding: 0rpx 27.174rpx 27.174rpx 27.174rpx;
+  display: flex;
+  justify-content: space-between;
+}
+.type_name .type_title.data-v-04d07f86 {
+  height: 22px;
+  font-size: 17px;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 22px;
+}
+.type_name .look_all.data-v-04d07f86 {
+  display: flex;
+  align-items: center;
+}
+.type_name .look_all .all_text.data-v-04d07f86 {
+  height: 30.797rpx;
+  font-size: 25.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  line-height: 30.797rpx;
+}
+.type_name .look_all .arrorRight.data-v-04d07f86 {
+  margin-left: 9.058rpx;
+  width: 10.246rpx;
+  height: 15.681rpx;
+}
+.home_swiper_list.data-v-04d07f86 {
+  margin-top: 43.478rpx;
+}
+.home_swiper_list .swiper_item.data-v-04d07f86 {
+  width: 216.377rpx;
+  height: 268.116rpx;
+}
+.home_swiper_list .swiper_item .swiper_item_list.data-v-04d07f86 {
+  position: relative;
+  width: 216.377rpx;
+  height: 268.116rpx;
+  border-radius: 8px;
+  background: #ffffff;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_content.data-v-04d07f86 {
+  width: 216.377rpx;
+  height: 144.928rpx;
+  border-top-left-radius: 14.493rpx;
+  border-top-right-radius: 14.493rpx;
+  text-align: center;
+  overflow: hidden;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_content .portrait_img.data-v-04d07f86 {
+  width: 216.377rpx;
+  height: 216.377rpx;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_content .home_play.data-v-04d07f86 {
+  position: absolute;
+  top: 58rpx;
+  left: 96.224rpx;
+  width: 23.551rpx;
+  height: 28.986rpx;
+  z-index: 9;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_content .head_portrait_meng.data-v-04d07f86 {
+  position: absolute;
+  left: 0px;
+  top: 0;
+  border-top-left-radius: 14.493rpx;
+  border-top-right-radius: 14.493rpx;
+  width: 216.377rpx;
+  height: 144.928rpx;
+  background: rgba(0, 0, 0, 0.1);
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .nick_name.data-v-04d07f86 {
+  padding: 19.928rpx 18.116rpx 0px 18.116rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .nick_name .nick_name_text.data-v-04d07f86 {
+  display: inline-block;
+  max-width: 80%;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .nick_name .sex.data-v-04d07f86 {
+  width: 19.928rpx;
+  height: 19.928rpx;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .home_portrait.data-v-04d07f86 {
+  margin-top: 12.681rpx;
+  padding: 0 18.116rpx;
+  height: 25.362rpx;
+  font-size: 19.928rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 25.362rpx;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .home_portrait .zuopin.data-v-04d07f86 {
+  display: inline-block;
+  width: 50%;
+}
+.home_swiper_list .swiper_item .swiper_item_list .card_dibu .home_portrait .bofang.data-v-04d07f86 {
+  display: inline-block;
+  width: 50%;
+}
+.home_swiper_list .swiper_item .swiper_item_list .swiper_bg_img.data-v-04d07f86 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  width: 215.899rpx;
+  height: 231.884rpx;
+}
+.container.data-v-04d07f86 {
+  position: relative;
+}
+.container .home_musicSrc_box.data-v-04d07f86 {
+  position: fixed;
+  bottom: 100rpx;
+  z-index: 9999;
+}
+.footer_prompt.data-v-04d07f86 {
+  padding: 0px 30.232rpx;
+  position: fixed;
+  bottom: 0;
+  width: 750rpx;
+  height: 79.71rpx;
+  background: #000000;
+  display: flex;
+  opacity: 0.66;
+}
+.footer_prompt .footer_dianzhan_icon.data-v-04d07f86 {
+  width: 680.203rpx;
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+.footer_prompt .footer_dianzhan_icon .give_like_icon.data-v-04d07f86 {
+  width: 32.609rpx;
+  height: 32.609rpx;
+}
+.footer_prompt .footer_dianzhan_icon .give_like_text.data-v-04d07f86 {
+  height: 36.232rpx;
+  text-align: left;
+  font-size: 23.551rpx;
+  margin-left: 25.362rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffb70a;
+  line-height: 36.232rpx;
+}
+.footer_prompt .travel_to_box.data-v-04d07f86 {
+  display: flex;
+  align-items: center;
+  padding-right: 5.116rpx;
+}
+.footer_prompt .travel_to_box .travel_to_text.data-v-04d07f86 {
+  width: 430.928rpx;
+  height: 36.232rpx;
+  font-size: 25.362rpx;
+  text-align: right;
+  margin-right: 9.058rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #ffffff;
+  line-height: 36.232rpx;
+}
+.footer_prompt .travel_to_box .travel_to_img.data-v-04d07f86 {
+  width: 13.428rpx;
+  height: 17.935rpx;
+}
+.pys_popup.data-v-04d07f86 {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 999999;
+}
+.pys_popup .popup_conent.data-v-04d07f86 {
+  position: absolute;
+  padding: 36.232rpx;
+  top: 40%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  min-width: 500.71rpx;
+  min-height: 326.087rpx;
+  background: #ffffff;
+  border-radius: 28.986rpx;
+}
+.pys_popup .popup_conent .closeicon.data-v-04d07f86 {
+  position: absolute;
+  width: 50.725rpx;
+  height: 50.725rpx;
+  top: -66.232rpx;
+  right: 0;
+}
+.erweimabox.data-v-04d07f86 {
+  position: relative;
+}
+.erweimabox .close_iconbox.data-v-04d07f86 {
+  position: absolute;
+  background: #000000;
+  right: 0rpx;
+  width: 50rpx;
+  height: 50rpx;
+  top: 0rpx;
+  border-radius: 50%;
+}
+.erweimabox .close_iconbox .close_icon.data-v-04d07f86 {
+  width: 50rpx;
+  height: 50rpx;
+}
+.erweimabox .erweima_icon.data-v-04d07f86 {
+  width: 491.014rpx;
+  height: 491.014rpx;
+}
+.erweimabox .erweima_box.data-v-04d07f86 {
+  width: 471.014rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 36.232rpx;
+}
+.check_WeChat_test.data-v-04d07f86 {
+  text-align: center;
+  height: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 39.855rpx;
+}
+.check_WeChat_tips.data-v-04d07f86 {
+  margin-top: 28.986rpx;
+  margin-bottom: 36.232rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.share_btn_box.data-v-04d07f86 {
+  display: flex;
+}
+.share_btn_box .cancelSharebtn.data-v-04d07f86 {
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #ffffff;
+  border-radius: 39.855rpx;
+  border: 1.812rpx solid #dedede;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
+}
+.share_btn_box .cancelSharebtn.data-v-04d07f86::after {
+  border: none !important;
+}
+.share_btn_box .sharebtn.data-v-04d07f86 {
+  margin-left: 36.232rpx;
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #1274ff;
+  border-radius: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #ffffff;
+  line-height: 79.71rpx;
+}
+.share_btn_box .sharebtn.data-v-04d07f86::after {
+  border: none !important;
+}
+.masklayer.data-v-04d07f86 {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+.masklayer .coupons_box.data-v-04d07f86 {
+  position: relative;
+  margin-top: 50%;
+  margin-left: 67.029rpx;
+  position: relative;
+  -webkit-transform: calc(0%, -50%);
+          transform: calc(0%, -50%);
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .shutdown_icon.data-v-04d07f86 {
+  position: absolute;
+  right: 0;
+  top: -65.899rpx;
+  width: 38.043rpx;
+  height: 38.043rpx;
+}
+.masklayer .coupons_box .coupons_icon.data-v-04d07f86 {
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .coupons_content.data-v-04d07f86 {
+  position: absolute;
+  top: 240rpx;
+  width: 100%;
+  left: 0px;
+  display: flex;
+}
+.masklayer .coupons_box .coupons_content .discount_box.data-v-04d07f86 {
+  margin-left: 106.884rpx;
+  margin-top: 16.304rpx;
+}
+.masklayer .coupons_box .coupons_content .discount_box .discount.data-v-04d07f86 {
+  font-size: 54.348rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #fe445a;
+}
+.masklayer .coupons_box .coupons_content .discount_box .scope_discount.data-v-04d07f86 {
+  font-size: 28.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #fe445a;
+}
+.masklayer .coupons_box .coupons_content .discounts_box.data-v-04d07f86 {
+  margin-left: 120rpx;
+  margin-top: 11px;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_ins.data-v-04d07f86 {
+  font-size: 36rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_validity.data-v-04d07f86 {
+  font-size: 26.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  margin-top: 20rpx;
+}
+

@@ -58,11 +58,14 @@
         },
         "usingComponents" : true,
         "permission" : {},
-        "plugins": {
-          "contactPlugin": {
-            "version": "1.4.3",
-            "provider": "wx104a1a20c3f81ec2"
-           }
+        "plugins" : {
+            "contactPlugin" : {
+                "version" : "1.4.3",
+                "provider" : "wx104a1a20c3f81ec2"
+            }
         }
+    },
+    "mp-qq" : {
+        "appid" : "1112125657"
     }
 }

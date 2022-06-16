@@ -143,7 +143,7 @@
 				   src="@/static/coupons/zuopin.png"
 				   mode="scaleToFill"
 			   />
-			   <view class="item_title">作品</view>
+			   <view class="item_title">样音</view>
 			 </view>
 			  <view class="orderitem_list" @click="handleMyFocus">	  
 			   <image
@@ -154,14 +154,16 @@
 			   />
 			   <view class="item_title">配音师</view>
 			 </view>
-			  <view class="orderitem_list">	  
-			   <!-- <image
-			       style="width: 70.652rpx;height: 59.725rpx;"
-			       class="item_icon"
-				   src="@/static/coupons/yunfenxiang.png"
-				   mode="scaleToFill"
-			   />
-			   <view class="item_title">云分享</view> -->
+			  <view class="orderitem_list">	
+			    <button  class="orderitem_btn" open-type="contact" send-message-title="建议反馈" :show-message-card="true">	  
+					<image
+						style="width: 57.971rpx;height: 59.783rpx;"
+						class="item_icon"
+						src="@/static/coupons/fapiao.png"
+						mode="scaleToFill"
+					/>
+					<view class="item_title">发票</view>
+				</button>	
 			 </view>
 		   </view>
 	   </view>
@@ -199,14 +201,36 @@
 		   </view>
 	  </view>	 -->
       <view class="my_list_cell_box">
-	    <!-- <view class="list_cell" @click="handleMyFocus">
+		<view class="list_cell">
+			<button  
+			  class="invitationBtn" 
+			  hover-class="button-hover"
+              open-type="share"> 
+			<view class="cell_logo_box">
+				<image
+					class="cell_logo"
+					src="@/static/img/sharechum.png"
+					mode="scaleToFill"
+				/>
+				<text class="cell_text">分享好友</text>
+			</view>
+		   </button>
+		   <view class="travel_to_iconbox">
+			  <image
+				class="travel_to_icon"
+				src="@/static/my/traveltoicon.png"
+				mode="scaleToFill"
+			  />
+	        </view>
+	   </view>  
+	    <view class="list_cell" @click="handleasreSources">
 		   <view class="cell_logo_box">
              <image
 			     class="cell_logo"
-				 src="@/static/home/guanzhu.png"
+				 src="@/static/img/jiafangziyuan.png"
 				 mode="scaleToFill"
 			 />
-			 <text class="cell_text">我的关注</text>
+			 <text class="cell_text">甲方资源</text>
 		   </view>
 		   <view class="travel_to_iconbox">
 			  <image
@@ -215,16 +239,33 @@
 				mode="scaleToFill"
 			  />
 		   </view>
-	   </view>   -->
+	   </view>
+	   <view class="list_cell" @click="handleUtility">
+		   <view class="cell_logo_box">
+             <image
+			     class="cell_logo"
+				 src="@/static/img/yingrengongju.png"
+				 mode="scaleToFill"
+			 />
+			 <text class="cell_text">影人工具</text>
+		   </view>
+		   <view class="travel_to_iconbox">
+			  <image
+				class="travel_to_icon"
+				src="@/static/my/traveltoicon.png"
+				mode="scaleToFill"
+			  />
+		   </view>
+	   </view> 
        <view class="list_cell">
-		    <button  class="invitationBtn" open-type="contact" send-message-title="联系客服" :show-message-card="true">
+		    <button  class="invitationBtn" open-type="contact" send-message-title="建议反馈" :show-message-card="true">
 				 <view class="cell_logo_box">
 					<image
 						class="cell_logo"
 						src="@/static/my/cService.png"
 						mode="scaleToFill"
 					/>
-					<text class="cell_text">联系客服</text>
+					<text class="cell_text">建议反馈</text>
 				</view>	  
 			</button>
 		   <view class="travel_to_iconbox">
@@ -261,6 +302,7 @@
 				 mode="scaleToFill"
 			 />
 			 <text class="cell_text">配音师入驻</text>
+			 <text class="hotbtn">hot</text>
 		   </view>
 		  </button>
 		   <view class="travel_to_iconbox">
@@ -272,7 +314,8 @@
 		   </view>
 	   </view>
 	  </view>
-      <view class="weChat_card">
+	  <view style="height:30px"></view>
+      <!-- <view class="weChat_card">
 		  <view class="title_group_box">
             <image
 			      class="group_icon"
@@ -295,7 +338,7 @@
 			  </view>
 			</button>  
 		  </view>
-	  </view>
+	  </view> -->
 	 </scroll-view>	
     </view>
   </view>
@@ -306,6 +349,7 @@ import { loginStatus,profileIndex,profileUpdate } from '@/api/index.js'
 import { followList, profileinformation } from '@/api/personal.js'
 import { mapState } from "vuex";
 import uniCopy from '@/utils/uni-copy.js'
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
   data() {
     return {
@@ -331,14 +375,24 @@ export default {
   },
   onShareAppMessage(res) {
 	if (res.from === 'button') {// 来自页面内分享按钮
-		console.log(res.target)
-	}
-	return {
-		title: '全国影视宣传片甲方资源置换群入口',
-		desc: '',
-		complete: function(res) {
-			console.log('分享成功', res)
-		},
+		console.log('来自button', res.target)
+		return {
+			title: '推荐一个专业真人配音平台，配音只需成本价。点击收藏',
+			desc: '',
+			imageUrl: 'https://www.peiyinstreet.com/guidang/personalshare.png',
+			path: "pages/index/index",
+			complete: function(res) {
+				console.log('分享成功', res)
+			},
+	    }
+	}else {
+        return {
+			title: '全国影视宣传片甲方资源置换群入口',
+			desc: '',
+			complete: function(res) {
+				console.log('分享成功', res)
+			},
+	   }
 	}
   },
   computed: {
@@ -424,6 +478,14 @@ export default {
 	handleJumpmyOrder(index) {
 	  uni.navigateTo({ url: '/subpkg/pages/myorder/myorder?type='+ index })
 	},
+	// 跳转甲方置换群
+	handleasreSources() {
+	  uni.navigateTo({ url: '/subpkg/pages/asresources/asresources' })
+	},
+	// 跳转甲方置换群
+	handleUtility() {
+	  uni.navigateTo({ url: '/subpkg/pages/utility/utility' })
+	},
 	handlJumpCard() {
 		uni.previewImage({
             urls: ['https://www.peiyinstreet.com/guidang/qiyewechat.png'],
@@ -437,6 +499,8 @@ export default {
                 }
             }
         });
+		//统计极速试音埋点 
+		buriedSomeStatistical(7)
 		// console.log('配音师弹窗',this.erweimaShow)
 		// this.erweimaShow = true
 			/* #ifdef MP-WEIXIN */
@@ -549,6 +613,9 @@ page {
 .invitationBtn::after {
   border: none !important;
 }
+.orderitem_btn::after {
+  border: none !important;
+}
 .teacherlist_box {
   height: 100%;
   overflow-y: auto;
@@ -642,6 +709,17 @@ page {
 				color: #000000;
 				line-height: 45.29rpx;
 			}
+			.hotbtn {
+			  background-color: #FF445A;
+			  font-size: 18.116rpx;
+			  height: 32.609rpx;
+              line-height: 30.609rpx;
+			  font-family: PingFangSC-Semibold, PingFang SC;
+			  color: #FFFFFF;
+			  margin-left: 10.87rpx;
+			  border-radius: 6rpx;
+			  padding: 3.623rpx 9.058rpx;
+		    }
 		}
 		.travel_to_iconbox {
 			line-height: 113.678rpx;
@@ -674,9 +752,9 @@ page {
 		}
 		.group_text {
 			margin-left: 19.928rpx;
-			width: 521.739rpx;
+			width: 551.739rpx;
 			height: 45.29rpx;
-			font-size: 32.609rpx;
+			font-size: 31.609rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #000000;
@@ -935,6 +1013,15 @@ page {
 		position: relative;
 		text-align: center;
 		width: 50%;
+		.orderitem_btn {
+		  position: relative;
+		  text-align: center;
+		  border: none;
+		  padding: 0 !important;
+		  background: RGBA(247, 247, 247, 0);
+		  width: 100%;
+		  line-height: 34.42rpx;
+		}
 		.item_icon {
 			width: 59.783rpx;
 			height: 50.725rpx;

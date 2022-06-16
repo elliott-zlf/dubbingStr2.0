@@ -1,0 +1,10 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
+    "dropball": "/components/dropball/dropball",
+    "music-audio": "/components/audio/audioplay"
+  }
+}

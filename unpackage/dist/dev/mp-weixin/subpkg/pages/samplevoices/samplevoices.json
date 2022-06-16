@@ -1,0 +1,14 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-dropdown": "/uview-ui/components/u-dropdown/u-dropdown",
+    "u-dropdown-item": "/uview-ui/components/u-dropdown-item/u-dropdown-item",
+    "u-icon": "/uview-ui/components/u-icon/u-icon",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "release": "/components/release/release",
+    "dropball": "/components/dropball/dropball",
+    "music-audio": "/components/audio/audioplay"
+  }
+}

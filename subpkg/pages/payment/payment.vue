@@ -29,7 +29,7 @@
           />
           <view class="payment">向配音师下单</view>
         </view>
-        <view class="score_text">短稿2h内交付，长稿当天可出</view>
+        <view class="score_text">成品交付后会短信通知您来下载，若有问题售后客服一对一服务</view>
       </view>
     </view>
     <view class="demandinfo_box">
@@ -58,6 +58,17 @@
           <view class="content" style="margin-right: 38rpx"
             >{{ paymentData.service.offer_price }}</view
           >
+        </view>
+         <view class="item_list">
+          <view class="title">交付时间</view>
+          <view class="content" @click="handlePrompt">
+            <text class="nickname">工作时段2h内交付，点击查看详情</text>
+            <image
+              class="yhjright"
+              src="@/static/coupons/yhjright.png"
+              mode="scaleToFill"
+            />
+          </view>
         </view>
       </view>
     </view>
@@ -90,9 +101,10 @@
         <view class="item_list">
           <view class="title">订单金额</view>
           <view class="content">
-            <text class="nickname" style="margin-right: 38rpx"
+            <text class="nickname"
               >{{ paymentData.price }}元</text
             >
+            <u-icon class="yhjright" @click="handlepricePopups" style="padding-right:9.058rpx" color="#B1B1B1" name="question-circle"></u-icon>
           </view>
         </view>
       </view>
@@ -100,8 +112,12 @@
     <view class="voice_teacher_box">
       <view class="voice_teacher">
         <view class="item_list">
-          <view class="title">优惠券</view>
-          <view class="content" @click="handleShowCoupons">
+          <view class="title">自主下单折扣</view>
+          <view class="content">
+             <text class="red_text">{{paymentData.discount}}</text>
+             <view class="yhjright"></view>
+          </view>
+          <!-- <view class="content" @click="handleShowCoupons">
             <text class="red_text" v-if="paymentData.couponlist === 0"
               >暂无可用</text
             >
@@ -116,7 +132,7 @@
               src="@/static/coupons/yhjright.png"
               mode="scaleToFill"
             />
-          </view>
+          </view> -->
         </view>
         <view class="item_list">
           <view class="title">积分({{ paymentData.score }})</view>
@@ -290,6 +306,11 @@
         resBtn="确认"
       ></release>
     </u-popup>
+    <div v-show="promptShow" class="custom_popup" @tap.stop="handleCloseSubmitShow">
+			<div class="masklayer" @click.stop="!handleCloseSubmitShow">
+				<prompt ref="submitform" btnText="需求详情" @handleCloseSubmitShow="handleCloseSubmitShow"></prompt>
+			</div>
+		</div>
   </view>
 </template>
 
@@ -298,9 +319,11 @@ import { couponPaylist, orderavailable } from "@/api/personal.js";
 import release from "@/components/release/release.vue";
 // 引入需求详情api
 import { demandDetail, orderPay } from "@/api/myneeds.js";
+import prompt from "@/components/prompt/prompt.vue";
 export default {
   components: {
     release,
+    prompt
   },
   data() {
     return {
@@ -332,6 +355,7 @@ export default {
       demandProfile: {},
       score_price: 0,
       submitShow: false,
+      promptShow: false,
     };
   },
   onLoad(options) {
@@ -346,8 +370,10 @@ export default {
       }).then((res) => {
         console.log("订单数据", res);
         this.paymentData = res.data;
-        this.payPrice =
-          Number(this.paymentData.price) - this.paymentData.score_price;
+        var num1 = Number(this.paymentData.price)*((9 * 10) / 100)
+        var num = Math.floor(num1 * 100) / 100;
+        this.payPrice = num - this.paymentData.score_price;
+        // this.payPrice = Number(this.paymentData.price)*((9 * 10) / 100) - this.paymentData.score_price;
         this.selCoupon = {};
       });
     },
@@ -465,15 +491,20 @@ export default {
           success: function (res) {
             console.log("success:" + JSON.stringify(res));
             console.log("fail返回的参数", res);
+            uni.requestSubscribeMessage({
+              tmplIds: ['EKGq56oSCMqh1bslBtr01L9ELuL7PjWhFb7vuoJuySk','L1BpikjyiraC4mZKTYm_YS5T4PRCp-9uW7DjWKlM8M8'],
+              success (res) {
+                console.log(res)
+              }
+            })
             uni.redirectTo({
-              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id,
+                url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id+'&&type=index',
             });
           },
           fail: function (err) {
             console.log("fail返回的参数", err);
-            console.log("fail:" + JSON.stringify(err));
             uni.redirectTo({
-              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id,
+              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id+'&&type=index',
             });
           },
         });
@@ -488,6 +519,20 @@ export default {
       var num = Math.floor(num1 * 100) / 100;
       this.creditAmount = Math.floor((this.payPrice - num) * 100) / 100;
       this.payPrice = num - this.paymentData.score_price;
+    },
+    // 展示弹窗
+    handlePrompt() {
+      this.promptShow = true
+    },
+    handlepricePopups() {
+      uni.showToast({
+					title: '等于起步价或字数取整*单价',
+					icon: 'none'
+			})
+    },
+    // 关闭提示弹窗
+    handleCloseSubmitShow() {
+        this.promptShow = false
     },
     handleGoBack() {
       uni.switchTab({ url: "/pages/index/index" });
@@ -1077,6 +1122,25 @@ page {
       font-weight: 400;
       color: #000000;
     }
+  }
+}
+.custom_popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 100024;
+  background-color: rgba(0, 0, 0, 0.6);
+  .masklayer {
+    width: 100%;
+    position: fixed;
+    height: 984rpx;
+    bottom: 0px;
+    border-top-right-radius: 24.493rpx;
+    border-top-left-radius: 24.493rpx;
+    background: #ffffff;
   }
 }
 </style>

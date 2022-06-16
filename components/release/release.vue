@@ -17,7 +17,7 @@
 			</view>
 		  <view class="release_form">
               <view class="form_item">
-                    <input
+                    <!-- <input
 					   v-if="editor"
 						v-model="form.content"
 						:disabled="!editor"
@@ -25,6 +25,16 @@
 						style="text-align:left"
 						type="text"
 						placeholder="输入配音要求，或注意事项"
+						placeholder-class="textarea-placeholder"
+					/> -->
+					<textarea
+					    v-if="editor"
+						class="note_text_pading "
+						v-model="form.content"
+						:disabled="!editor"
+						:disable-default-padding="true"
+						placeholder="输入配音要求，或注意事项"
+						:maxlength="-1"
 						placeholder-class="textarea-placeholder"
 					/>
 				  <div v-if="!editor" class="input_text_box">
@@ -46,57 +56,34 @@
 						   />
 					</view>
 					<view class="statistical_box">
+						<view class="home_upload_box">
+							<view
+							    v-for="(item,index) in form.audition_url"
+                                :key="index"
+								class="upload_successful_box"
+								@click="editor ? handleDeleteFile(index) : ''"
+							>
+								<image
+									class="deletefile_img"
+									src="@/static/home/deletefile.png"
+									mode="scaleToFill"
+								/>
+								<image
+								class="successful_img"
+								src="@/static/home/wordicon.png"
+								mode="scaleToFill"
+								/>
+							</view>
+							<view v-if="form.audition_url.length <= 2 && editor" class="home_upload_hot" @click="onUpload('file')">
+								<image
+									class="add_icon"
+									src="@/static/coupons/tianjia.png"
+									mode="scaleToFill"
+								/>
+							</view>
+						</view>
 						<view class="textarea_num">
-						<text>{{ textareanum }}</text>
-						</view>
-						<view class="home_upload_box" v-if="editor">
-							<view v-if="fileShow" class="home_upload_hot" @click="onUpload('file')">
-								<image
-									class="add_icon"
-									src="@/static/coupons/tianjia.png"
-									mode="scaleToFill"
-								/>
-							</view>
-							<view
-								v-else
-								class="upload_successful_box"
-								@click="handleDeleteFile('file')"
-							>
-								<image
-								class="deletefile_img"
-								src="@/static/home/deletefile.png"
-								mode="scaleToFill"
-								/>
-								<image
-								class="successful_img"
-								src="@/static/home/wordicon.png"
-								mode="scaleToFill"
-								/>
-							</view>
-						</view>
-						<view class="home_upload_box" v-else>
-							<view v-if="fileShow" class="home_upload_hot">
-								<image
-									class="add_icon"
-									src="@/static/coupons/tianjia.png"
-									mode="scaleToFill"
-								/>
-							</view>
-							<view
-								v-else
-								class="upload_successful_box"
-							>
-								<image
-								class="deletefile_img"
-								src="@/static/home/deletefile.png"
-								mode="scaleToFill"
-								/>
-								<image
-								class="successful_img"
-								src="@/static/home/wordicon.png"
-								mode="scaleToFill"
-								/>
-							</view>
+						  <text>{{ textareanum }}</text>
 						</view>
 					</view>
 					</view>
@@ -220,7 +207,7 @@ import { mapState, mapActions } from "vuex";
 				status: 0,  
                 content: '',
 				audition_text: '',
-				audition_url: '',
+				audition_url: [],
 				draft_word_count: Number,
 				budget: null,
 				discuss: false,
@@ -326,9 +313,6 @@ import { mapState, mapActions } from "vuex";
 				console.log('传到发布页面的数据', this.data)
 				if (JSON.stringify(this.data) !== "{}") {
 					// 修改需求赋值
-					if (this.data.audition_url) {
-						this.fileShow = false
-					}
 					this.form = {
 							status: this.data.status || 0, 
 							content: this.data.content || '',
@@ -472,11 +456,8 @@ import { mapState, mapActions } from "vuex";
 				}  
 			},
 			 // 删除文件事件
-			handleDeleteFile(item) {
-				if(item==='file') {
-					this.fileShow = true;
-					this.form.audition_url = ''
-				}
+			handleDeleteFile(index) {
+				this.form.audition_url.splice(index,1)
 			},
 			// 选择优惠卷
 			handleCheckboxchange(item) {
@@ -514,8 +495,7 @@ import { mapState, mapActions } from "vuex";
 			onSuccess(res) {
 			console.log('上传成功回调',JSON.stringify(res), res);
 				if(this.uploaditem==='file') {
-					this.fileShow = false;
-					this.form.audition_url = res.data.data
+					this.form.audition_url.push(res.data.data)
 				}else {
 					this.musicShow = false;
 					console.log('上传成功回调文件名称', this.form,res.fileName)
@@ -582,9 +562,10 @@ page {
 			  .input_text_box {
 				flex: 1;
 				margin: 0px 27.174rpx;
-				white-space: nowrap;
+				padding-top: 18.116rpx;
 				overflow: auto;
 				text-align: left;
+				height: 122.464rpx;
 				font-size: 28.986rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
@@ -594,6 +575,17 @@ page {
 				flex: 1;
 				margin: 0px 27.174rpx;  
 				text-align: left;
+				font-size: 28.986rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #000000;
+			  }
+			  .note_text_pading {
+				flex: 1;
+				margin: 0px 27.174rpx;
+				padding-top: 18.116rpx;
+				text-align: left;
+				height: 122.464rpx;
 				font-size: 28.986rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
@@ -680,21 +672,23 @@ page {
 					font-size: 28.986rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
+					text-align: right;
 					color: #999999;
 				}
 				.home_upload_box {
-					width: 76.087rpx;
-					width: 138rpx;
+					// width: 76.087rpx;
+					// width: 138rpx;
 					text-align: right;
+					display: flex;
 					// margin-right: 18.116rpx;
 					.home_upload_hot {
-						width: 138rpx;
-						height: 54.348rpx;
+						// width: 138rpx;
+						height: 64.348rpx;
 						display: flex;
 						justify-content: flex-end;
 					.add_icon {
-                      width: 54.348rpx;
-					  height: 54.348rpx;
+                      width: 64.348rpx;
+					  height: 64.348rpx;
 					}
 					.home_upload {
 						text-align: center;
@@ -714,13 +708,14 @@ page {
 					width: 100%;
 					height: 36.232rpx;
 					.successful_img {
-						width: 46.232rpx;
-						height: 46.232rpx;
+						width: 66.232rpx;
+						height: 66.232rpx;
+						margin-right: 10px;
 					}
 					.deletefile_img {
 						position: absolute;
 						top: -7rpx;
-						right: -7rpx;
+						right: 16rpx;
 						width: 18.116rpx;
 						height: 18.116rpx;
 					}
@@ -780,7 +775,7 @@ page {
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		margin-top: 101.739rpx;
+		margin-top: 70.739rpx;
 		.release_btn {
 			display: flex;
 			align-items: center;

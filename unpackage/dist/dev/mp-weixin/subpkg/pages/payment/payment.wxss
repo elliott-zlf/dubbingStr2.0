@@ -613,4 +613,23 @@ page {
   font-weight: 400;
   color: #000000;
 }
+.custom_popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 100024;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.custom_popup .masklayer {
+  width: 100%;
+  position: fixed;
+  height: 984rpx;
+  bottom: 0px;
+  border-top-right-radius: 24.493rpx;
+  border-top-left-radius: 24.493rpx;
+  background: #ffffff;
+}
 

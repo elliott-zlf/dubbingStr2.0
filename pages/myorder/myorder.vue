@@ -184,7 +184,7 @@ import { orderList } from '@/api/personal.js'
 
 			},
 			handleJumporderdetails(index,id) {
-			  uni.navigateTo({ url: '/subpkg/pages/orderdetails/orderdetails?id='+id+'&&type='+ index })
+			  uni.navigateTo({ url: '/subpkg/pages/orderdetails/orderdetails?id='+id+'&&type=index' })
 			}
 		}
 	}

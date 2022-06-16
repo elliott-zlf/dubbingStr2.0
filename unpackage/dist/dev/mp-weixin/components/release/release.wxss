@@ -100,9 +100,10 @@ page {
 .container_res .content .release_form .form_item .input_text_box.data-v-3a7f3bd8 {
   flex: 1;
   margin: 0px 27.174rpx;
-  white-space: nowrap;
+  padding-top: 18.116rpx;
   overflow: auto;
   text-align: left;
+  height: 122.464rpx;
   font-size: 28.986rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -112,6 +113,17 @@ page {
   flex: 1;
   margin: 0px 27.174rpx;
   text-align: left;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+}
+.container_res .content .release_form .form_item .note_text_pading.data-v-3a7f3bd8 {
+  flex: 1;
+  margin: 0px 27.174rpx;
+  padding-top: 18.116rpx;
+  text-align: left;
+  height: 122.464rpx;
   font-size: 28.986rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
@@ -193,22 +205,21 @@ page {
   font-size: 28.986rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
+  text-align: right;
   color: #999999;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box.data-v-3a7f3bd8 {
-  width: 76.087rpx;
-  width: 138rpx;
   text-align: right;
+  display: flex;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot.data-v-3a7f3bd8 {
-  width: 138rpx;
-  height: 54.348rpx;
+  height: 64.348rpx;
   display: flex;
   justify-content: flex-end;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot .add_icon.data-v-3a7f3bd8 {
-  width: 54.348rpx;
-  height: 54.348rpx;
+  width: 64.348rpx;
+  height: 64.348rpx;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot .home_upload.data-v-3a7f3bd8 {
   text-align: center;
@@ -228,13 +239,14 @@ page {
   height: 36.232rpx;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .upload_successful_box .successful_img.data-v-3a7f3bd8 {
-  width: 46.232rpx;
-  height: 46.232rpx;
+  width: 66.232rpx;
+  height: 66.232rpx;
+  margin-right: 10px;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .upload_successful_box .deletefile_img.data-v-3a7f3bd8 {
   position: absolute;
   top: -7rpx;
-  right: -7rpx;
+  right: 16rpx;
   width: 18.116rpx;
   height: 18.116rpx;
 }
@@ -287,7 +299,7 @@ page {
   align-items: center;
   justify-content: center;
   width: 100%;
-  margin-top: 101.739rpx;
+  margin-top: 70.739rpx;
 }
 .container_res .release_btnbox .release_btn.data-v-3a7f3bd8 {
   display: flex;

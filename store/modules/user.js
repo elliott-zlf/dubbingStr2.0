@@ -14,7 +14,10 @@ export default {
       phoneStatus: true,
       // 首页点击的装
       workStatus: {},
-      demandcate: ''
+      demandcate: '',
+      // 订单状态
+      order_status: '',
+      speedPrompt_status: ''
     };
   },
   mutations: {
@@ -49,6 +52,11 @@ export default {
     },
     setPhone(state,phone) {
       state.phoneStatus = phone;
+      console.log('setIphone', state.phoneStatus)
+    },
+    setOrderStatus(state,data) {
+      state.order_status = data.order_status;
+      state.speedPrompt_status = data.popup_count
       console.log('setIphone', state.phoneStatus)
     },
     /**
@@ -87,7 +95,7 @@ export default {
         const iphonestatus = true	
         this.commit('user/setPhone', iphonestatus)
       }
-
+      this.commit('user/setOrderStatus',res.data)
     },
     /**
      * 退出登录

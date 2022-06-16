@@ -1,0 +1,8 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "l-file": "/uni_modules/l-file/components/l-file/l-file",
+    "u-checkbox": "/uview-ui/components/u-checkbox/u-checkbox"
+  }
+}

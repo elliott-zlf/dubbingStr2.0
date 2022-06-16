@@ -99,10 +99,14 @@
 							mode="scaleToFill"
 						/>
 						<view class="head_portrait_meng"></view>
+						<!-- 在线状态  -->
+					  <view class="online"></view>
 					</view>
 					<view class="works_name_item" @click="handleVisitorsJump(item)">
 						<view class="works_name u-line-1">{{item.works.title}}</view>
 						<view class="works_style u-line-1">
+							<span v-if="item.teacher.grade_text!=='无'">{{item.teacher.grade_text}}</span>
+							<span v-if="item.teacher.grade_text!=='无'" style="margin-left:10rpx;margin-right:10rpx">|</span>
 							<span>{{item.tags[0].value}}</span>
 							<span style="margin-left:10rpx;margin-right:10rpx">|</span>
 							<span>{{ transformsex(item.teacher.sex)}}</span>
@@ -125,7 +129,9 @@
 						</view>	
 					</view>
 					<view class="btn_item">
-						<view class="voice_btn" @click="handleUseOrder(item)">下单</view>
+						<!-- <view class="voice_btn" v-if="order_status==0" @click="handlefirstTimeUseOrder(item)">下单</view> -->
+						<!-- <view class="voice_btn" @click="handleUseOrder(item)">下单</view> -->
+						<view class="voice_btn" @click="downloadcopySampleVoices(item,'复制样音信息成功')">复制</view> 
 						<view class="voice_img_box" @click="handleOperation(item)">
                           <image
 						    class="voice_img"
@@ -139,6 +145,7 @@
 			<view v-if="currentStatus==1">
                 <view class="voice_item" v-for="(item,index) in dataList" :key="index">
 					<view class="head_portrait_box" @click="playTheMusic(item)">
+						<div v-if="item.teacher.grade_text!=='无'" class="video_label">{{item.teacher.grade_text}}</div>
 						<image
 							class="head_portrait_img"
 							:src="item.teacher.avatar"
@@ -150,11 +157,12 @@
 							mode="scaleToFill"
 						/>
 						<view class="head_portrait_meng"></view>
+						<view class="online"></view>
 					</view>
 					<view class="voice_introduce">
 						<view class="voice_name">
-							<view class="rank" v-if="index < 9">{{'0' + (index+1)}}</view>
-							<view class="rank" v-else>{{ index+1}}</view>
+							<!-- <view class="rank" v-if="index < 9">{{'0' + (index+1)}}</view>
+							<view class="rank" v-else>{{ index+1}}</view> -->
 							<view class="name u-line-1"  @click="handleVisitorsJump(item)">{{item.teacher.nickname}}</view>
 							<image
 								v-if="item.teacher.sex===1"
@@ -197,12 +205,12 @@
 				</view>
 			</view>
 			<view v-if="currentStatus==2">
-                <view class="video_item" v-for="(item,index) in dataList" :key="index">
+                <view class="video_item" v-for="(item,index) in dataList" :key="index" @click="handlecaseDetails(item)">
 					<div class="video_box">
-						<div class="video_label">宣传片</div>
+						<div class="video_label">{{item.tags[0].value}}</div>
 						<image
 						    class="video_cover"
-							src="@/static/anli/anli1.png"
+							:src="item.head_img"
 							mode="scaleToFill"
 						/>
 						<div class="video_palybox">
@@ -212,26 +220,26 @@
 									src="@/static/anli/anliplay.png"
 									mode="scaleToFill"
 								/>
-								<span class="play_Num">128</span>
+								<span class="play_Num">{{item.play_num}}</span>
 							</div>
-							<div class="broadcasttime">06:34</div>
+							<div class="broadcasttime">{{item.works[0].time}}</div>
 						</div>
 					</div>
 					<div class="video_desc">
-						<div class="video_title">士兵要的不是望远镜</div>
-						<div class="video_style">成熟稳重男声配音</div>
-						<div class="video_by">
+						<div class="video_title u-line-1">{{item.works[0].title}}</div>
+						<div class="video_style u-line-1">{{item.title}}</div>
+						<div class="video_by" @click.stop="handleVisitorsJump(item)">
 							<image
 							    class="video_icon"
-								src="https://pyj2021.oss-cn-shanghai.aliyuncs.com/project/voice/2021/06/17/60cb29e69c5ff.jpg"
+								:src="item.teacher.avatar"
 								mode="scaleToFill"
 							/>
-							<span class="video_name">Martin Love</span>
+							<span class="video_name u-line-1">配音：{{item.teacher.nickname}}</span>
 						</div>
 					</div>
 				</view>
 			</view>
-			<view v-if="has_next===false" class="defaltext">没有更多了</view>
+			<view v-if="has_next===false" class="defaltext">暂无更多，可点【人工客服】进行匹配</view>
 			<u-loadmore v-if="has_next===true" style="margin-top: 30px;" status="loading" bgColor="#f2f2f2"></u-loadmore>
 			<view v-if="defaultshow" class="page_box">
 				<view class="defaltPage">
@@ -240,7 +248,7 @@
 						src="@/static/demand/defaulticon.png"
 						mode="scaleToFill"
 					/>
-					<view class="defaltext">暂无匹配数据</view>
+					<view class="defaltext">暂无数据，可点【人工客服】进行匹配</view>
 				</view>
 			</view>
 			<view style="height:240px"></view>
@@ -270,6 +278,14 @@
 			</release>
 	  </u-popup>
 	  <u-popup v-model="collectShow" mode="bottom" border-radius="24">
+		  <view class="collect_item" @click="handleUseOrder(operationItem)">
+			  <image
+			      class="collection"
+				  src="@/static/teacherlist/copyicon.png"
+				  mode="scaleToFill"
+			  />
+			  <view class="collect_text">按样下单</view>
+		  </view>
 		  <view class="collect_item" @click="handleCollectStatus">
 			  <image
 			      class="collection"
@@ -286,16 +302,60 @@
 			  />
 			  <view class="collect_text">下载</view>
 		  </view>
+		   <view class="collect_item">
+			  <image
+			      class="collection"
+				  :src="operationItem.share_type===0 ? shouchang : yishouchang"
+				  mode="scaleToFill"
+			  />
+			  <view class="cloudsharebox">
+				<view class="collect_text" @click="operationItem.share_type===0 ? handlejoincloudAdd(operationItem) :  handlejoincloud(operationItem)">{{operationItem.share_type===0 ? '加入云分享' : '移除云分享'}}</view>
+                <view class="cloud_btn" @click="handleCloudShare(operationItem)">
+					<span class="collect_text1">进入</span>
+					<image
+					    class="rightarr_icon"
+						src="@/static/coupons/rightarr.png"
+						mode="scaleToFill"
+					/>
+				</view>
+			  </view>
+		  </view>
 		  <view class="collect_item_btn" @click="hanldeCancelcoll">取消</view>
 	  </u-popup>
-	  <dropball  title="找我试音">
+	  <dropball  title="极速试音">
 	  </dropball>
+	  <view v-if="orderPromptShow" class="masklayer">
+		  <view class="coupons_box">
+			<image
+				class="shutdown_icon"
+				src="../../static/coupons/shutdownC.png"
+				mode="scaleToFill"
+				@click="handlecloseCoupons"
+			/>
+			<image
+				class="coupons_icon"
+				src="@/static/img/orderpro.png"
+				mode="scaleToFill"
+			/>
+			<view class="coupons_content">
+				<view class="content_text">
+					<view class="text">1、更快速：交付<text class="red_text">速度翻倍</text></view>
+					<view class="text">2、更便捷：告别<text class="red_text">频繁沟通</text></view>
+					<view class="text">3、更省钱：成本价上<text class="red_text">再9折</text></view>
+					<view class="text">4、质量保障：<text class="red_text">所听即所得</text></view>
+					<view class="text">5、售后无忧：<text class="red_text">一对一</text>修改补录</view>
+				</view>
+				<view class="know_btn" @click="handlejupumUseOrder">我知道了</view>
+			</view>
+		</view>
+	  </view>	  
 	</view>
 </template>
 
 <script>
 import { mapState, mapActions } from "vuex";
 import { servicetag, servicsecList, collection } from "@/api/voice.js"
+import { teacherdetail, shareAdd,shareDel } from "@/api/index.js";
 import play from '@/static/teacherlist/paly2.png'
 import dropball from '@/components/dropball/dropball.vue'
 import musicAudio from '@/components/audio/audioplay.vue'
@@ -304,6 +364,8 @@ import shouchang from '@/static/img/shouchang.png'
 import yishouchang from '@/static/img/yishouchang.png'
 // 复制
 import uniCopy from '@/utils/uni-copy.js'
+// 埋点统计
+import { buriedSomeStatistical,statisticalnum } from '@/utils/encapsulation.js'
 	export default {
 		components: {
 			dropball,
@@ -317,12 +379,13 @@ import uniCopy from '@/utils/uni-copy.js'
 			 barStyle: {
 				backgroundColor: '#FF445A',
 			 },
+			 orderPromptShow: false,
 			  current: 0,
 			  play: play,
 			  playActive: playActive,
 			  list: [
 				{
-                  name: '找作品',
+                  name: '找样音',
 				  id: 0
 				},
 				{
@@ -343,7 +406,10 @@ import uniCopy from '@/utils/uni-copy.js'
 				  status: 0,
 				  price: 0,
 				  sex: 0,
-				  search: ''
+				  cate: 0,
+				  search: '',
+				  search_type: 0,
+				  grade: 9999
 			  },
 			  objData: {},
 			  subTitle: '题材',
@@ -384,11 +450,13 @@ import uniCopy from '@/utils/uni-copy.js'
 				avatar: '',
 				nickname: '',
 				offer_price: '',
+				subjecttype: ''
 			  },
+			  firstItem: {},
 			  triggered: false,
 			  _freshing: false,
-			  btnText: '按作品效果试音',
-			  placeholderText: '搜索作品关键词',
+			  btnText: '按样音效果试音',
+			  placeholderText: '搜索样音关键词',
 			  defaultshow: false
 			}
 		},
@@ -404,57 +472,73 @@ import uniCopy from '@/utils/uni-copy.js'
 				},
 			}
 		},
+		onShareTimeline(res) {
+			return {
+				title: '5000+样音在线试听，报价比市场价低一半',
+				desc: '',
+				complete: function(res) {
+					console.log('分享成功', res)
+				},
+			}
+		},
 		computed: {
-		  ...mapState("user", ["token", "userInfo","workStatus"]),
+		  ...mapState("user", ["token", "userInfo","workStatus","order_status"]),
 		},
 		onLoad(options) {
 			this.current = 0
-			console.log('this.currue的值0',this.current)  
 			this.getUnionid()
 		},
 		onShow() {
-		  console.log('多少', uni.getStorageSync('worksType'),this.workStatus)
 		  if (uni.getStorageSync('worksType')==1) {
-			console.log('this.currue的值1',this.current)  
 			this.current = parseInt(uni.getStorageSync('worksType'))
 			this.getUnionid()
-		  } else if(uni.getStorageSync('worksType')==2){
-			console.log('this.currue的值2',this.current)    
+		  }
+		  if (uni.getStorageSync('worksType')==3) {
+			this.current = 2
+			this.getUnionid()
+		  }
+		  else if(uni.getStorageSync('worksType')==2){  
             this.current = 0
 			this.getUnionid()
 		  } else {
-			 console.log('哈哈')
 			 this.current = this.current 
+			 this.getUnionid()
 		  }
 		  if (JSON.stringify(this.workStatus) !=='{}') {
 			  this.tagParameter.tag_data[2] = this.workStatus.tag_id
-			  this.subTitle = this.workStatus.name
+			  if (this.workStatus.name == '影视动画配音') {
+				  this.subTitle = '动漫配音'
+			  } else {
+				this.subTitle = this.workStatus.name 
+			  }
 			  this.getUnionid()
 			//   this.$store.commit('user/setworkStatus', {}) 
 		  }else {
 			//   this.subTitle = "题材"
 			//   this.tagParameter.tag_data[2] = ''
 		  }
-		  console.log('this.currue的值3',this.current)  
 		},
 		onHide() {
 		 this.musicClose()
 		 uni.setStorageSync('worksType', '')
 		},
 		methods: {
-		  ...mapActions("user", ["login"]),
+		  ...mapActions("user", ["login", "getIphoneStatus"]),
 		  getUnionid() {
 			uni.login({
 				provider: "weixin",
 				success: async (result) => {
-				console.log('this.currue的值4',this.current)
 				await this.login(result.code);
+				await this.getIphoneStatus();
 				this.handleServicetag()
 				this.tagParameter.status = this.current
 				this.getVoicelist()
 				},
 				fail: (error) => {
-				console.log("登录失败", error);
+					console.log("登录失败", error);
+					this.handleServicetag()
+					this.tagParameter.status = this.current
+					this.getVoicelist()
 				},
 			});
 		  },
@@ -471,11 +555,9 @@ import uniCopy from '@/utils/uni-copy.js'
 		  handlerefre() {
 			this.triggered = true;
 			this._freshing = true;
-			console.log('测试下来刷新复位问题', this.triggered,this._freshing)  
 			this.getVoicelist()
 		  },
 		  change(tabs) {
-            console.log('点击的tabs',tabs)
 			this.current = tabs
 			this.tagParameter = {
 				  page: 1,
@@ -486,7 +568,10 @@ import uniCopy from '@/utils/uni-copy.js'
 				  status: 0,
 				  price: 0,
 				  sex: 0,
-				  search: ''
+				  cate: 0,
+				  search: '',
+				  search_type: 1,
+				  grade: 9999
 			  },
 			this.subTitle = "题材"
 			this.sexTitle = "性别"
@@ -497,11 +582,19 @@ import uniCopy from '@/utils/uni-copy.js'
 		  },
 		  handleServicetag() {
 				servicetag({cate:this.cate}).then((res)=>{
-				  console.log('标签数据', res.data)
-				  this.entTitle = '价格'
 				  this.options1 = res.data.tag_data
-				  this.options3 = res.data.price
                   this.options2 = res.data.sex
+				  console.log('等级数据', res)
+				  if (this.current == 2) {
+					  this.entTitle = '个企'
+					  this.options3 = res.data.cate
+				  } else if(this.current == 1) {
+                      this.entTitle = '等级'
+					  this.options3 = res.data.grade
+				  } else {
+					  this.entTitle = '价格'
+					  this.options3 = res.data.price
+				  }
 				  this.userStatus = res.data.status
 				  this.navTitle = res.data.catename
 				})
@@ -510,9 +603,11 @@ import uniCopy from '@/utils/uni-copy.js'
 		  async getVoicelist() {
 				this.tagParameter.page = 1
 				if (this.current===0) {
-					this.placeholderText = "搜索作品关键词"
-				} else {
+					this.placeholderText = "搜索样音关键词"
+				} else if(this.current===1) {
 					this.placeholderText = "搜索配音师昵称"
+				}else {
+					this.placeholderText = "搜索案例关键词"
 				}
 				const res = await servicsecList(this.tagParameter)
 				this.$store.commit('user/setworkStatus', {}) 
@@ -523,19 +618,107 @@ import uniCopy from '@/utils/uni-copy.js'
 				this.scrollInto = this.scrollTop
 				this.currentStatus = this.current
 				if (this.dataList.length===0) {
-						this.has_next = ''
-						this.defaultshow = true
-					} else {
-						this.has_next = res.has_next
-						this.defaultshow = false
-					}
+					this.has_next = ''
+					this.defaultshow = true
+				} else {
+					this.has_next = res.has_next
+					this.defaultshow = false
+				}
 				setTimeout(()=>{
 					this.scrollInto = 0
 				},0)
 		   },
+		   // 进入云分享页面  
+		   handleCloudShare(item) {
+             console.log('进入云分享',item)
+			  uni.navigateTo({
+				url:
+				"/subpkg/pages/voicesshare/voicesshare"
+			  });
+			  this.collectShow = false
+		   },
+		   // 加入云分享
+		   handlejoincloudAdd(item) {
+			 console.log('加入云分享',item)
+			 shareAdd({work_id: item.works.id}).then((res)=>{
+				console.log()
+				if (this.operationItem.share_type ===1) {
+					this.operationItem.share_type = 0
+					uni.showToast({
+						title: '移除成功',
+						icon: 'none'
+				    })
+				} else {
+					this.operationItem.share_type = 1
+				}
+			 })
+		   },
+		    // 移除云分享
+		   handlejoincloud(item) {
+			 console.log('移除云分享',item)
+			 let _this = this
+			 shareDel({work_id: item.works.id}).then((res)=>{
+				console.log()
+				if (this.operationItem.share_type ===1) {
+					this.operationItem.share_type = 0
+					uni.showToast({
+						title: '移除成功',
+						icon: 'none'
+				    })
+				} else {
+					this.operationItem.share_type = 1
+				}
+			 })
+		   },
+		   //  提示弹窗打开
+		   handlefirstTimeUseOrder(item) {
+              this.firstItem = item
+			  this.orderPromptShow = true
+			  // 下单button埋点统计  
+			  buriedSomeStatistical(3)
+			  // 弹窗展示埋点统计次数
+			  buriedSomeStatistical(4)
+		   },
+		   handlejupumUseOrder() {
+			//    this.handleUseOrder(this.firstItem)
+			   let item = this.firstItem
+			   console.log('下单的数据',item)
+			   if (item.admin_price) {
+				this.dataObj.service_id = item.service_id
+				this.dataObj.teacher_id = item.teacher_id
+				this.dataObj.filename = item.works.title
+				this.dataObj.content_url_escape = item.url
+				this.dataObj.work_id = item.works.id
+				this.dataObj.avatar = item.teacher.avatar
+				this.dataObj.nickname = item.teacher.nickname
+				this.dataObj.offer_price = item.offer_price
+				this.dataObj.subjecttype = item.tags[0].value
+				// this.submitShow = true
+				this.btnText="按样音效果试音"
+				uni.setStorageSync('dataObj',this.dataObj)
+				uni.navigateTo({ url: '/subpkg/pages/voicesrelease/voicesrelease' })
+				// this.$nextTick(() => { 
+				// 	this.$refs.submitform.handlertextarea()
+				// });
+			} else {
+				uni.showToast({
+					title: '该服务暂不支持在线试音，请联系客服',
+					icon: 'none'
+				})
+			}
+			this.orderPromptShow = false
+				// 点击我知道了埋点统计
+				buriedSomeStatistical(5)
+		   },
+		    // 提示弹窗关闭
+			handlecloseCoupons() {
+			   this.orderPromptShow = false
+		   },
 		   // 使用样音下单
 		   handleUseOrder(item) {
-			console.log('使用样音下单',item)
+			console.log('使用样音下单,用户下单状态',item,this.order_status)
+			// 统计在线下单埋点信息
+			buriedSomeStatistical(3)
 			if (item.admin_price) {
 				this.dataObj.service_id = item.service_id
 				this.dataObj.teacher_id = item.teacher_id
@@ -545,8 +728,9 @@ import uniCopy from '@/utils/uni-copy.js'
 				this.dataObj.avatar = item.teacher.avatar
 				this.dataObj.nickname = item.teacher.nickname
 				this.dataObj.offer_price = item.offer_price
+				this.dataObj.subjecttype = item.tags[0].value
 				// this.submitShow = true
-				this.btnText="按作品效果试音"
+				this.btnText="按样音效果试音"
 				uni.setStorageSync('dataObj',this.dataObj)
 				uni.navigateTo({ url: '/subpkg/pages/voicesrelease/voicesrelease' })
 				// this.$nextTick(() => { 
@@ -559,9 +743,12 @@ import uniCopy from '@/utils/uni-copy.js'
 				})
 			}
 		  },
+		  // 跳转案例详情
+		  handlecaseDetails(item) {
+            uni.navigateTo({ url: '/subpkg/pages/caseDetails/caseDetails?id='+item.id})
+		  },
 		  // 操作事件
 		  handleOperation(item) {
-			console.log('点击操作打印数据',item)  
 			this.operationItem = item
             this.collectShow = true
 		  },  
@@ -634,7 +821,13 @@ import uniCopy from '@/utils/uni-copy.js'
               console.log('价格数据',item,index)
 			  this.entvalue = index
               this.entTitle = item.value
-              this.tagParameter.price = item.id
+			  if (this.current==2) {
+				this.tagParameter.cate = item.id 
+			  } else if(this.current==1) {
+				  this.tagParameter.grade = item.id
+			  }else { 
+				this.tagParameter.price = item.id
+			  }
 			  this.getVoicelist()
 			  this.$refs.subuDropdown.close();
 		  },
@@ -679,6 +872,7 @@ import uniCopy from '@/utils/uni-copy.js'
 
 					orderItem.works.playStatus = true
 					this.dataPlay = orderItem
+					buriedSomeStatistical(1)
 				}
 				setTimeout(()=>{
 					this.$refs.musicAudio.preStartPlay()
@@ -718,7 +912,29 @@ import uniCopy from '@/utils/uni-copy.js'
 				error:(e)=>{
 				}
 			})
-		},
+			buriedSomeStatistical(1)
+		   },
+		  // 复制样音信息链接
+		  async downloadcopySampleVoices(item,title) {
+            let res =  await teacherdetail({teacher_id: item.teacher_id})
+			console.log('配音师主页链接',res)
+			let groupNum = '样音信息：'+ item.teacher.nickname + '('+ item.teacher.grade_text+')'+
+			 '+' + item.title+ 
+			 '+' + item.offer_price+
+			 '+下载链接 ' + item.works.url
+			console.log(item,groupNum)
+			uniCopy({
+				content:groupNum,
+				success:(res)=>{
+					uni.showToast({
+						title: title,
+						icon: 'none'
+					})
+				},
+				error:(e)=>{
+				}
+			})
+		   },
 		}
 	}
 </script>
@@ -837,6 +1053,17 @@ page {
 				height:28.986rpx;
 				z-index: 9;
 			 }
+			 .online {
+				position: absolute;
+				bottom: 0px;
+				right: 0rpx; 
+				width: 21.739rpx;
+				height: 21.739rpx;
+				border-radius: 10.87rpx;
+				background: #26DA52;
+				z-index: 9;
+				border: 1px solid #FFFFFF;
+			}
 			.head_portrait_meng {
 				position: absolute;
 				left: 0px;
@@ -955,6 +1182,24 @@ page {
 				width: 177.536rpx;
 				height: 231.884rpx;
 				background: rgba(0, 0, 0, 0.2);
+				.video_label {
+					position: absolute;	
+					top: 10.87rpx;
+					left: 10.87rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0 9.058rpx;
+					height: 36.232rpx;
+					background: #FF445A;
+					border-radius: 7.246rpx;
+					opacity: 0.9;
+					font-size: 19.928rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+				    z-index: 999;
+					color: #FFFFFF;
+				}
 				.head_portrait_img {
 				    border-radius: 14.493rpx;
 					width: 177.536rpx;
@@ -967,6 +1212,17 @@ page {
 					width: 23.551rpx;
 					height:28.986rpx;
 					z-index: 9;
+				}
+				.online {
+					position: absolute;
+					bottom: 0px;
+					right: 0rpx; 
+					width: 21.739rpx;
+					height: 21.739rpx;
+					border-radius: 10.87rpx;
+					z-index: 9;
+					background: #26DA52;
+					border: 1px solid #FFFFFF;
 				}
 				.head_portrait_meng {
 					position: absolute;
@@ -995,7 +1251,7 @@ page {
 						line-height: 39.855rpx;
 					}
 					.name {
-						margin-left: 16.304rpx;
+						// margin-left: 16.304rpx;
 						max-width: 250rpx;
 						height: 39.855rpx;
 						font-size: 28.986rpx;
@@ -1023,6 +1279,24 @@ page {
 						font-weight: 400;
 						color: #FF445A;
 						line-height: 43.478rpx;
+					}
+					.grade_btn {
+						text-align: center;
+						position: absolute;
+						right: 10rpx;
+						display: flex;
+						align-items: center;
+						justify-content: center;
+						min-width: 97.71rpx;
+						padding: 0 9.058rpx;
+						height: 36.232rpx;
+						background: #FF445A;
+						border-radius: 7.246rpx;
+						opacity: 0.9;
+						font-size: 19.928rpx;
+						font-family: PingFangSC-Regular, PingFang SC;
+						font-weight: 400;
+						color: #FFFFFF;
 					}
 					.nofocus_btn {
 					    text-align: center;
@@ -1151,6 +1425,38 @@ page {
 		font-weight: 500;
 		color: #000000;
 	}
+	.cloudsharebox {
+		display: flex;
+		align-items: center;
+		width: 650rpx;
+		justify-content: space-between;
+        .collect_text {
+            margin-left: 14.493rpx;
+			font-size: 16px;
+			width: 50%;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #000000;
+		}
+		.cloud_btn {
+			display: flex;
+			justify-content: flex-end;
+		    align-items: center;
+			width: 50%;
+			.collect_text1 {
+				margin-left: 14.493rpx;
+				font-size: 16px;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #000000;
+			}
+			.rightarr_icon {
+				width: 19.928rpx;
+				height: 21.739rpx;
+				margin: 0 13.551rpx;
+		  }
+		}
+	}
 	.redcollect_text {
 		margin-left: 14.493rpx;
 		font-size: 16px;
@@ -1187,10 +1493,13 @@ page {
 	  position: absolute;	
 	  top: 10.87rpx;
 	  left: 10.87rpx;
-	  width: 79.71rpx;
+	  display: flex;
+	  align-items: center;
+	  justify-content: center;
+	  min-width: 97.71rpx;
+	  padding: 0 9.058rpx;
 	  height: 36.232rpx;
-	  background: #000000;
-	  text-align: center;
+	  background: #FF445A;
 	  border-radius: 7.246rpx;
 	  opacity: 0.9;
 	  font-size: 19.928rpx;
@@ -1209,7 +1518,7 @@ page {
 		justify-content: space-between;
 		margin: 0 18.116rpx;
 		left: 0;
-		width: 157px;
+		width: 284.42rpx;
 		bottom: 18.116rpx;
 		.video_paly {
            display: flex;
@@ -1235,7 +1544,8 @@ page {
 	}
   }
   .video_desc {
-	  width: 207px;
+	  position: relative;
+	  width: 375rpx;
 	  padding: 23.551rpx 30.797rpx;
 	  .video_title {
 		font-size: 28.986rpx;
@@ -1251,22 +1561,89 @@ page {
 		  color: #666666;
 	  }
 	  .video_by {
-		  margin-top: 27.174rpx;
+		//   margin-top: 30.42rpx;
 		  display: flex;
 		  align-items: center;
+		  position: absolute;
+          bottom: 18.116rpx;
 		  .video_icon {
 			  width: 36.232rpx;
 			  height: 36.232rpx;
 			  border-radius: 18.116rpx;
 		  }
 		  .video_name {
-			 margin-left: 9.058rpx; 
-			font-size: 13px;
+			margin-left: 9.058rpx; 
+			width: 269rpx;
+			font-size: 23.551rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #666666;
 		  }
 	  }
+  }
+}
+.masklayer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  .coupons_box {
+    position: relative;
+    margin-top: 50%;
+    margin-left: 67.029rpx;
+    position: relative;
+    transform: calc(0%, -50%);
+    width: 597.826rpx;
+    height: 760.87rpx;
+    .shutdown_icon {
+      position: absolute;
+      right: 0;
+      top: -65.899rpx;
+      width: 38.043rpx;
+      height: 38.043rpx;
+    }
+    .coupons_icon {
+      width: 597.826rpx;
+      height: 760.87rpx;
+    }
+    .coupons_content {
+      position: absolute;
+      top: 180rpx;
+      width: 100%;
+      left: 0px;
+      .content_text {
+		  padding: 0px 101.449rpx;
+		  font-size: 28.986rpx;
+		  font-family: PingFangSC-Regular, PingFang SC;
+		  font-weight: 400;
+		  color: #666666;
+		  .text {
+			  margin-top: 36.232rpx;
+		  }
+		  .red_text {
+			  color: #FF445A;
+			  font-weight: 500;
+		  }
+	  }
+	  .know_btn {
+		  display: inline-block;
+		  text-align: center;
+		  margin-top: 59.783rpx;
+		  margin-left: 148.551rpx;
+		  width: 300.725rpx;
+		  height: 86.957rpx;
+		  line-height: 86.957rpx;
+		  font-size: 28.986rpx;
+	      font-family: PingFangSC-Medium, PingFang SC;
+		  font-weight: 500;
+		  color: #FFFFFF;
+		  background: #FF445A;
+		  border-radius: 43.478rpx;
+	  }
+    }
   }
 }
 </style>

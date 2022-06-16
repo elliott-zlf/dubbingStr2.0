@@ -114,7 +114,7 @@ export default {
 			console.log('微信上传的文件名', param)
 			wx.chooseMessageFile({
 				count: 1,
-				type: 'file',
+				type: 'all',
 				success: ({tempFiles}) => {
 					this.setdefUI();
 					console.log('微信上传返回的参数', tempFiles)
@@ -227,20 +227,24 @@ export default {
 		上传
 		*/
 		upload(param = {}) {
+			console.log('哪里都不走')
 			if (!param.url) {this.toast('上传地址不正确');return;}
 			if (this.loading) {this.toast('文件正在上传，请稍候..');return;}
-			
 			// #ifdef APP-PLUS
+			    console.log('app微信端')
 				return this.appChooseFile(param);
 			// #endif
 			
 			// #ifdef MP-WEIXIN
+			    console.log('微信端')
 				return this.wxChooseFile(param);
 			// #endif
 			
 			// #ifdef H5
+			    console.log('h5微信端')
 				this.h5ChooseFile(param);
 			// #endif
+			console.log('哪里都不走')
 		},
 		/* 
 		打开文件 

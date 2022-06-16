@@ -127,6 +127,17 @@ page {
   font-weight: 400;
   color: #000000;
 }
+.container_res .content .release_form .form_item .note_text_pading.data-v-9226d606 {
+  flex: 1;
+  margin: 0px 23.551rpx;
+  padding-top: 25.362rpx;
+  text-align: left;
+  height: 122.464rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+}
 .container_res .content .release_form .form_item .note_textplaceholder.data-v-9226d606 {
   flex: 1;
   margin: 0px 27.174rpx;
@@ -213,25 +224,24 @@ page {
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .textarea_num.data-v-9226d606 {
   width: 63.406rpx;
+  text-align: right;
   font-size: 28.986rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #999999;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box.data-v-9226d606 {
-  width: 76.087rpx;
-  width: 138rpx;
   text-align: right;
+  display: flex;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot.data-v-9226d606 {
-  width: 138rpx;
-  height: 54.348rpx;
+  height: 64.348rpx;
   display: flex;
   justify-content: flex-end;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot .add_icon.data-v-9226d606 {
-  width: 54.348rpx;
-  height: 54.348rpx;
+  width: 64.348rpx;
+  height: 64.348rpx;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .home_upload_hot .home_upload.data-v-9226d606 {
   text-align: center;
@@ -251,59 +261,16 @@ page {
   height: 36.232rpx;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .upload_successful_box .successful_img.data-v-9226d606 {
-  width: 46.232rpx;
-  height: 46.232rpx;
+  width: 66.232rpx;
+  height: 66.232rpx;
+  margin-right: 10px;
 }
 .container_res .content .release_form .form_item .home_textarea_box .statistical_box .home_upload_box .upload_successful_box .deletefile_img.data-v-9226d606 {
   position: absolute;
   top: -7rpx;
-  right: -7rpx;
+  right: 16rpx;
   width: 18.116rpx;
   height: 18.116rpx;
-}
-.container_res .content .form_item.data-v-9226d606 {
-  display: flex;
-  align-items: center;
-  background: #FFFFFF;
-  width: 100%;
-  min-height: 108.696rpx;
-  border-bottom: 1px solid #F4F4F4;
-}
-.container_res .content .form_item .note_text.data-v-9226d606 {
-  flex: 1;
-  margin: 0px 27.174rpx;
-  text-align: right;
-  font-size: 28.986rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #000000;
-}
-.container_res .content .form_item .note_textplaceholder.data-v-9226d606 {
-  flex: 1;
-  margin: 0px 27.174rpx;
-  text-align: right;
-}
-.container_res .content .form_item .item_title.data-v-9226d606 {
-  margin-left: 27.174rpx;
-  font-size: 28.986rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #666666;
-}
-.container_res .content .form_item .event_view.data-v-9226d606 {
-  margin-right: 27.174rpx;
-  display: flex;
-  align-items: center;
-}
-.container_res .content .form_item .event_view .event_text.data-v-9226d606 {
-  font-size: 28.986rpx;
-  font-family: PingFangSC-Regular, PingFang SC;
-  font-weight: 400;
-  color: #000000;
-}
-.container_res .content .form_item .event_view .rightarr.data-v-9226d606 {
-  width: 12.681rpx;
-  height: 25.362rpx;
 }
 .container_res .release_btnbox.data-v-9226d606 {
   display: flex;
@@ -324,5 +291,28 @@ page {
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #FFFFFF;
+}
+.red_text.data-v-9226d606 {
+  color: #FF445A;
+  font-weight: 500;
+}
+.custom_popup.data-v-9226d606 {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 100024;
+  background-color: rgba(0, 0, 0, 0.6);
+}
+.custom_popup .masklayer.data-v-9226d606 {
+  width: 100%;
+  position: fixed;
+  height: 984rpx;
+  bottom: 0px;
+  border-top-right-radius: 24.493rpx;
+  border-top-left-radius: 24.493rpx;
+  background: #ffffff;
 }
 

@@ -2,22 +2,25 @@
 	<view class="container">
 	  <u-navbar
 		:is-back="false"
-		title="配音街平台"
+		title="配音街-专业真人配音平台"
 		title-size="36.232rpx"
 		title-color="#000000"
+		title-width="600rpx"
 		:border-bottom="true"
 		:background="background"
 		back-icon-color="#000000"
 	  ></u-navbar>
-	  <view class="release_demand">
-          <view class="release_item" @click="handleJumpPublishing">
+	  <guide v-if="guideShow"></guide>
+	  <view class="release_demand_box">
+        <view class="release_demand">
+          <view class="release_item" @click="handleSoundlibrary(2)">
             <view class="release_text">
-				发布需求
+				人工极速试音
 			</view>
 			<view class="instructions">
 				<view class="ins_text">
-					<view class="ins_text">填写需求</view>
-					<view class="ins_text">匹配配音师试音</view>
+					<view class="ins_text ins_textS">7x24h及时响应</view>
+					<view class="ins_text ins_textS">满意为止</view>
 				</view>
 				<view class="red_icon">
 					<image
@@ -29,24 +32,25 @@
 			</view>
 			<image
 			    class="resease_bc"
+				style="width: 313.594rpx; height: 160.42rpx;"
 				src="@/static/home/red_bc.png"
 				mode="scaleToFill"
 			/>
 		  </view>
-		  <view class="release_item" style="margin-left:21.739rpx;" @click="handleSoundlibrary(2)">
+		  <view class="release_item" style="margin-left:21.739rpx;" @click="handleJumpPublishing">
               <view class="release_text hottext">
-				自选配音 
+				自主按样下单
 				<!-- <image
 				    class="hoticon"
 					src="@/static/img/hotfill.png"
 					mode="scaleToFill"
 				/> -->
-				<view class="hotbtn">hot</view>
+				<!-- <view class="hotbtn">9折</view> -->
 			  </view>
 			<view class="instructions">
 				<view class="ins_text">
-					<view class="ins_text">海量样音</view>
-					<view class="ins_text">按样下单或试音</view>
+					<view class="ins_textS">告别频繁沟通</view>
+					<view class="ins_textS">所听即所得</view>
 				</view>
 				<view class="bule_icon">
 					<image
@@ -58,18 +62,13 @@
 			</view>
 			<image
 			    class="resease_bc"
-				src="@/static/home/bule_bc.png"
+				src="@/static/home/bule_bc1.png"
 				mode="scaleToFill"
 			/>
 		  </view>
 	  </view>
-	  <view class="hottopics_item">
-        <view class="hottitle_box">
-			<view class="hot_title">热门题材</view>
-			<view class="hot_btn" @click="handleSoundlibrary(2)">更多</view>
-		</view>
 		<view class="hotlist_box">
-			<view class="hotlist" v-for="(item,index) in hottopicsData" :key="index" @click="handleSoundlibrary(2,item)">
+			<view class="hotlist" v-for="(item,index) in hottopicsData" :key="index" @click="handleJumpmusic(item)">
 				<image
 				    class="hotitem_icon"
 					:src="item.img_url"
@@ -79,9 +78,17 @@
 			</view>
 		</view>
 	  </view>
+	  <view class="banner_box">
+		  <!-- <image
+		      class="banner_img"
+			  :src="bannerimg"
+			  mode="scaleToFill"
+		  /> -->
+		  <u-swiper :list="bannerimgData" height="181.159" :autoplay="true" name="img" @click="hanldeJumpEvents"></u-swiper>
+	  </view>
 	  <view class="hottopics_item">
         <view class="hottitle_box">
-			<view class="hot_title">热门作品</view>
+			<view class="hot_title">热门样音</view>
 			<view class="hot_btn" @click="handleSoundlibrary(2)">更多</view>
 		</view>
 		<view class="work_conten">
@@ -103,10 +110,14 @@
 							mode="scaleToFill"
 						/>
 						<view class="head_portrait_meng"></view>
+						<!-- 在线状态  -->
+					    <view class="online"></view>
 					</view>
 					<view class="works_name_item" @click="handleVisitorsJump(item)">
 						<view class="works_name u-line-1">{{item.works.title}}</view>
 						<view class="works_style u-line-1">
+							<span v-if="item.teacher.grade_text!=='无'">{{item.teacher.grade_text}}</span>
+							<span v-if="item.teacher.grade_text!=='无'" style="margin-left:10rpx;margin-right:10rpx">|</span>
 							<span>{{item.tags[0].value}}</span>
 							<span style="margin-left:10rpx;margin-right:10rpx">|</span>
 							<span>{{ transformsex(item.teacher.sex)}}</span>
@@ -151,6 +162,7 @@
 			  :key="index"
 			>
 					<view class="head_portrait_box" @click="playTheMusic(item)">
+						<div v-if="item.teacher.grade_text!=='无'" class="video_label">{{item.teacher.grade_text}}</div>
 						<image
 							class="head_portrait_img"
 							:src="item.teacher.avatar"
@@ -162,11 +174,13 @@
 							mode="scaleToFill"
 						/>
 						<view class="head_portrait_meng"></view>
+						<!-- 在线状态  -->
+					    <view class="online"></view>
 					</view>
 					<view class="voice_introduce">
 						<view class="voice_name">
-							<view class="rank" v-if="index < 9">{{'0' + (index+1)}}</view>
-							<view class="rank" v-else>{{ index+1}}</view>
+							<!-- <view class="rank" v-if="index < 9">{{'0' + (index+1)}}</view>
+							<view class="rank" v-else>{{ index+1}}</view> -->
 							<view class="name u-line-1"  @click="handleVisitorsJump(item)">{{item.teacher.nickname}}</view>
 							<image
 								v-if="item.teacher.sex===1"
@@ -212,51 +226,18 @@
 	   <view class="hottopics_item">
         <view class="hottitle_box">
 			<view class="hot_title">平台案例</view>
-			<view class="hot_btn" @click="handleSoundlibrary(1)">更多</view>
+			<view class="hot_btn" @click="handleSoundlibrary(3)">更多</view>
 		</view>
 		<view class="anli_conten">
-			<div class="anliitem">
+			<div class="anliitem" v-for="(item,index) in hotcaseData" :key="index" @click="handleSoundlibrary(3, item)">
 			  <image
 			      class="anli_bc"
-				  src="@/static/anli/anli1.png"
+				  :src="item.img_url"
 				  mode="scaleToFill"
 			  />
 			  <div class="anli_text">
-                <p class="anli_type">商业配音</p>
-			    <p class="anli_fubiao">耳熟能详的广告</p>
-			  </div>
-			</div>
-			<div class="anliitem">
-			  <image
-			      class="anli_bc"
-				  src="@/static/anli/anli2.png"
-				  mode="scaleToFill"
-			  />
-			  <div class="anli_text">
-                <p class="anli_type">商业配音</p>
-			    <p class="anli_fubiao">耳熟能详的广告</p>
-			  </div>
-			</div>
-			<div class="anliitem">
-			  <image
-			      class="anli_bc"
-				  src="@/static/anli/anli3.png"
-				  mode="scaleToFill"
-			  />
-			  <div class="anli_text">
-                <p class="anli_type">商业配音</p>
-			    <p class="anli_fubiao">耳熟能详的广告</p>
-			  </div>
-			</div>
-			<div class="anliitem">
-			  <image
-			      class="anli_bc"
-				  src="@/static/anli/anli4.png"
-				  mode="scaleToFill"
-			  />
-			  <div class="anli_text">
-                <p class="anli_type">商业配音</p>
-			    <p class="anli_fubiao">耳熟能详的广告</p>
+                <p class="anli_type">{{item.name}}</p>
+			    <p class="anli_fubiao">{{item.content}}</p>
 			  </div>
 			</div>
 		</view>
@@ -270,7 +251,7 @@
 			  />
 			  <view class="logo_name" @click="handleServiceChat">配音街</view>
 		  </view>
-		  <view class="logo_sogin">直接找配音师下单，配音只需成本价</view>
+		  <view class="logo_sogin">累计已为用户配音超过837280字</view>
 	  </view>
 	  <view v-if="audioShow" class="home_musicSrc_box disappear">
         <musicAudio 
@@ -330,17 +311,21 @@
 
 <script>
 import musicAudio from "@/components/audio/audioplay.vue";
-import { couponadd, servicehot } from "@/api/index.js"
+import { couponadd, servicehot,bannerIndex } from "@/api/index.js"
 import submitForm from '@/components/submitform/submitform.vue'
 import { mapState, mapActions } from "vuex";
 import dropball from '@/components/dropball/dropball.vue'
 import play from '@/static/home/homeplay.png'
 import playActive from '@/static/home/homeplayActive.png'
+import guide from '@/components/guide/guide.vue'
+// 埋点统计
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 	export default {
 		components: {
 		  musicAudio,
 		  submitForm,
-		  dropball
+		  dropball,
+		  guide
 		},
 		data() {
 			return {
@@ -353,6 +338,7 @@ import playActive from '@/static/home/homeplayActive.png'
 				playActive: playActive,
 				swiperId: '',
 				musicSrc: '',
+				guideShow: true,
 				dataPlay: {
 				works: {url: ''}
 			    },
@@ -366,6 +352,7 @@ import playActive from '@/static/home/homeplayActive.png'
 				hottopicsData: [],
                 hotworksData:[],
 				hotteacherData: [],
+				hotcaseData: [],
 				audioShow: false,
 			    innerAudio: '',
 				innerAudioUrl: '',
@@ -375,7 +362,8 @@ import playActive from '@/static/home/homeplayActive.png'
 				// 优惠卷数据
 				couponsData: {
 
-				}
+				},
+				bannerimgData: [],
 			}
 		},
 		computed: {
@@ -390,6 +378,17 @@ import playActive from '@/static/home/homeplayActive.png'
 			// this.swiperList.map((itemlist)=>{
             //     itemlist.playStatus = false
 			// })
+			let platform =  uni.getSystemInfoSync().platform
+			if (platform == 'android' || platform == 'ios' || platform == 'devtools') {
+               if (uni.getStorageSync('SHOW_TOP') === false) {
+				this.guideShow = uni.getStorageSync('SHOW_TOP')
+				} else {
+				this.guideShow = true
+				}
+			}else {
+				// 电脑端
+				this.guideShow = false
+			}
 		},
 		onHide() {
 		 this.musicClose()	
@@ -399,7 +398,16 @@ import playActive from '@/static/home/homeplayActive.png'
 				console.log(res.target)
 			}
 			return {
-				title: '直接找配音师下单，配音只需成本价。点击极速试音~',
+				title: '推荐一个专业真人配音平台，配音只需成本价。点击收藏',
+				desc: '',
+				complete: function(res) {
+					console.log('分享成功', res)
+				},
+			}
+		},
+		onShareTimeline(res) {
+			return {
+				title: '直接找配音师下单，配音只需成本价',
 				desc: '',
 				complete: function(res) {
 					console.log('分享成功', res)
@@ -410,8 +418,9 @@ import playActive from '@/static/home/homeplayActive.png'
 			 ...mapActions("user", ["login",'getIphoneStatus']),
 			 logins() {
                 uni.login({
-				provider: "weixin",
+				provider: "",
 				success: async (result) => {
+					    console.log('走没走登录设置',result) 
 						await this.login(result.code);
                         await this.getIphoneStatus();
 						this.getHotData()
@@ -430,6 +439,10 @@ import playActive from '@/static/home/homeplayActive.png'
 					},
 				    fail(err) {
                       console.log('接小程序客服失败',err)
+					  uni.showToast({
+							icon: 'none',
+							title: '仅支持在手机微信中使用该功能哦'
+					  });
 					}
 				})
 			},
@@ -446,11 +459,17 @@ import playActive from '@/static/home/homeplayActive.png'
 			},
 			// 请求热门数据
 			getHotData() {
+				bannerIndex().then((res)=>{
+                  console.log('配音师数据',res)
+				  this.bannerimgData = res.data
+				})
 				servicehot(this.getListArg).then((res)=>{
 					console.log('配音师数据', res)
 					this.hottopicsData = res.data[0]
 					this.hotworksData = res.data[1]
 					this.hotteacherData = res.data[2]
+					this.hotcaseData = res.data[3]
+					console.log('案例数据', this.hotcaseData)
 				}).catch(err=>{
 
 				})
@@ -463,6 +482,12 @@ import playActive from '@/static/home/homeplayActive.png'
 				}else {
 					return '企业'
 				}	
+			},
+			hanldeJumpEvents(index) {
+				console.log(index)
+				uni.navigateTo({
+				  url: "/subpkg/pages/webview/webview?src="+this.bannerimgData[index].url+'&&title=新片场创作者助力计划',
+				});
 			},
 			// 点击领取优惠卷
 			handleCouponCollection() {
@@ -484,12 +509,9 @@ import playActive from '@/static/home/homeplayActive.png'
 			},
 			// 跳转到发布
 			handleJumpPublishing() {
-			  console.log('跳转到发布')
-			  uni.showToast({
-					title: '该功能尚未开放',
-					icon: 'none'
-				})
-			//   uni.navigateTo({ url: '/subpkg/pages/release/release'})
+			  uni.navigateTo({
+					url: "/subpkg/pages/samplevoices/samplevoices",
+			  });
 			},
 			 // 跳转配音师详情
 			handleVisitorsJump(orderItem) {
@@ -498,24 +520,50 @@ import playActive from '@/static/home/homeplayActive.png'
 					url: "/subpkg/pages/teacherlist/teacherlist?id=" + orderItem.teacher_id,
 				});
 			},
+			// 跳转到音乐音效
+			handleJumpmusic(item) {
+			   console.log('最近合作',item)
+			   if (item.name === '最近合作') {
+				  uni.navigateTo({
+					url: "/subpkg/pages/myfocus/myfocus",
+			      });
+			   } else if(item.name === '积分'){
+				   uni.navigateTo({
+					url: "/subpkg/pages/integral/integral",
+			       }); 
+			   }else if(item.name === '优惠券'){
+                     uni.navigateTo({
+						url: "/subpkg/pages/coupons/coupons",
+					 }); 
+			   }else if(item.name === '找音效'){
+                  uni.navigateTo({
+					url: "/subpkg/pages/music/music?type=0",
+			       });
+			   }else if(item.name === '找音乐'){
+                  uni.navigateTo({
+					url: "/subpkg/pages/music/music?type=1",
+			       });
+			   }
+			},
 			playTheMusic(orderItem) {
 				console.log('传过来的数据', orderItem)
 				this.audioShow = true
 				if(this.dataPlay.works.url === orderItem.works.url) {
-				this.hotteacherData.map((item)=>{
-					if(this.dataPlay===item){
-						orderItem.works.playStatus = !orderItem.works.playStatus
-					}else {
-						item.playStatus = false
-					}
+					console.log('每次都会走这里',orderItem, orderItem.works.playStatus)
+					this.hotteacherData.map((item)=>{
+						if(this.dataPlay===item){
+							orderItem.works.playStatus = !orderItem.works.playStatus
+						}else {
+							item.playStatus = false
+						}
+						})
+					this.hotworksData.map((item)=>{
+						if(this.dataPlay===item){
+							orderItem.works.playStatus = !orderItem.works.playStatus
+						}else {
+							item.playStatus = false
+						}
 					})
-				this.hotworksData.map((item)=>{
-					if(this.dataPlay===item){
-						orderItem.works.playStatus = !orderItem.works.playStatus
-					}else {
-						item.playStatus = false
-					}
-				})
 				}else {
 					this.hotteacherData.map((item)=>{
 					item.works.playStatus = false
@@ -526,6 +574,7 @@ import playActive from '@/static/home/homeplayActive.png'
 
 					orderItem.works.playStatus = true
 					this.dataPlay = orderItem
+					buriedSomeStatistical(0)
 				}
 				setTimeout(()=>{
 					this.$refs.musicAudio.preStartPlay()
@@ -570,6 +619,11 @@ import playActive from '@/static/home/homeplayActive.png'
 page {
   height: 100%;
 }
+.u-title {
+	text-align: right;
+	// margin-left: 10rpx;
+    margin-right: 32rpx;
+}
 </style>
 <style lang="scss" scoped>
 .container {
@@ -581,15 +635,58 @@ page {
 		position: fixed;
 		bottom: 2.58rpx;
 	}
+	.banner_box {
+		margin-top: 21.739rpx;
+		margin-left: 27.174rpx;
+		width: 695.652rpx;
+		height: 181.159rpx;
+		.banner_img {
+		  width: 695.652rpx;
+		  height: 181.159rpx;	
+		}
+	}
+}
+.release_demand_box {
+	margin-top: 30.797rpx;
+	width: 695.652rpx;
+	margin-left: 27.174rpx;
+	height: 389.493rpx;
+	background: #FFFFFF;
+	box-shadow: 0px 0px 36.232rpx 0px rgba(236, 236, 236, 0.5);
+	border-radius: 14.493rpx;
+	.hotlist_box {
+	 margin: 38.043rpx 25.362rpx;
+     display: flex;
+	 justify-content: space-between;
+	 align-items: center; 
+    .hotlist {
+	//   display: flex;
+	//   justify-content: center;
+	//   align-items: center; 
+	   text-align: center;
+	  .hotitem_icon {
+		//   margin-bottom: 15.551rpx;
+		  width: 86.957rpx;
+		  height: 86.957rpx;
+	  }
+	  .name {
+		font-size: 23.551rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #666666;
+		margin-top: 5rpx;
+	  }
+	}
+  }
 }
 .release_demand {
   display: flex;
-  margin-left: 27rpx;
-  margin-top: 27.174rpx;
+  margin-left: 25.362rpx;
+  padding-top: 27.174rpx;
   align-items: center;
   .release_item {
-	  width: 336.957rpx;
-	  height: 159.42rpx;
+	  width: 311.594rpx;
+      height: 159.42rpx;
 	  position: relative;
 	  padding: 25.174rpx;
 	  .release_text {
@@ -608,42 +705,47 @@ page {
 			  height: 43.478rpx;
 		  }
 		  .hotbtn {
-			  background-color: #FF445A;
+			  
 			  font-size: 18.116rpx;
 			  font-family: PingFangSC-Semibold, PingFang SC;
-			  color: #FFFFFF;
+			  color: #FFF400;
+			  border: 1px solid #FFF400;
 			  margin-left: 10.87rpx;
 			  border-radius: 6rpx;
-			  padding: 3.623rpx 9.058rpx;
+			  padding: 0rpx 6.058rpx;
 		  }
 	  }
 	  .instructions {
 		  z-index: 120;
 		  position: relative;
 		  display: flex;
+		  justify-content: space-between;
 		  .red_icon {
-			  width: 72.464rpx;
-			  height: 61.594rpx;
+			  width: 56.159rpx;
+			  height: 68.841rpx;
 		  }
 		  .bule_icon {
-			  width: 63.406rpx;
-			  height: 63.406rpx;
+			  width: 59.783rpx;
+			  height: 59.783rpx;
 		  }
 		  .ins_text {
-			width: 218.333rpx;
-			margin-top: 3.435rpx;
+			width: 200.333rpx;
+			margin-top: 4.435rpx;
 			font-size: 21.739rpx;
 			font-family: PingFangSC-Regular, PingFang SC;
 			font-weight: 400;
 			color: #FFFFFF;
+		  }
+		  .ins_textS {
+			  margin-top: 5.346rpx;
 		  }
 	  }
 	  .resease_bc {
 		  position: absolute;
 		  top: 0;
 		  left: 0;
-		  width: 336.957rpx;
-	      height: 159.42rpx;
+		  width: 311.594rpx;
+          height: 159.42rpx;
 	  }
   }
 }
@@ -680,7 +782,7 @@ page {
 	  }
   }
   .hotlist_box {
-	  margin-top: 19.928rpx;
+	 margin-top: 10.928rpx;
      display: flex;
 	 justify-content: space-between;
 	 align-items: center; 
@@ -722,6 +824,17 @@ page {
 				height: 123.188rpx;
 				border-radius: 14.493rpx;
 			 }
+			 .online {
+				position: absolute;
+				bottom: 0px;
+				right: 0rpx; 
+				width: 21.739rpx;
+				height: 21.739rpx;
+				border-radius: 10.87rpx;
+				background: #26DA52;
+				z-index: 9;
+				border: 1px solid #FFFFFF;
+			}
 			 .home_play {
 				position: absolute;
 				top: 50%;
@@ -849,10 +962,39 @@ page {
 				height: 195.652rpx;
 				background: rgba(0, 0, 0, 0.2);
 				border-radius: 14.493rpx;
+				.video_label {
+					position: absolute;	
+					top: 10.87rpx;
+					left: 10.87rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0 9.058rpx;
+					height: 36.232rpx;
+					background: #FF445A;
+					border-radius: 7.246rpx;
+					opacity: 0.9;
+					font-size: 19.928rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+				    z-index: 999;
+					color: #FFFFFF;
+				}
 				.head_portrait_img {
 					width: 155.797rpx;
 					height: 195.652rpx;
 					border-radius: 14.493rpx;
+				}
+				.online {
+					position: absolute;
+					bottom: 0px;
+					right: 0rpx; 
+					width: 21.739rpx;
+					height: 21.739rpx;
+					border-radius: 10.87rpx;
+					background: #26DA52;
+					border: 1px solid #FFFFFF;
+					z-index: 9;
 				}
 				.home_play {
 					position: absolute;
@@ -891,7 +1033,7 @@ page {
 						line-height: 39.855rpx;
 					}
 					.name {
-						margin-left: 16.304rpx;
+						// margin-left: 16.304rpx;
 						max-width: 250rpx;
 						height: 39.855rpx;
 						font-size: 28.986rpx;
@@ -1000,21 +1142,24 @@ page {
 	  }
 	  .anli_text {
 		  position: relative;
+		  width: 183.043rpx;
 		  margin-left: 25.362rpx;
-		  margin-top: 36.232rpx;
+		  margin-top: 28.986rpx;
 		  .anli_type {
 			font-size: 28.986rpx;
+			 width: 183.043rpx;
 			font-family: PingFangSC-Medium, PingFang SC;
 			font-weight: 500;
-			color: #FFFFFF;
+			color: #2B3E5B;
 		  }
 		  .anli_fubiao {
-			  margin-top: 16.304rpx;
+			  margin-top: 5.435rpx;
 			  height: 32.609rpx;
+			  width: 183.043rpx;
 			  font-size: 23.551rpx;
 			  font-family: PingFangSC-Regular, PingFang SC;
 			  font-weight: 400;
-			  color: #FFFFFF;
+			  color: #838EA1;
 			  line-height: 32.609rpx;
 		  }
 	  }

@@ -1,0 +1,10 @@
+{
+  "navigationBarTitleText": "配乐免费素材",
+  "enablePullDownRefresh": false,
+  "usingComponents": {
+    "u-tabs": "/uview-ui/components/u-tabs/u-tabs",
+    "u-loadmore": "/uview-ui/components/u-loadmore/u-loadmore",
+    "dropball": "/components/dropball/dropball",
+    "music-audio": "/components/audio/audioplay"
+  }
+}

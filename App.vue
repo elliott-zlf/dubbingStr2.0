@@ -47,6 +47,7 @@ import { mapState, mapActions } from "vuex";
 		},
 		methods: {
             ...mapActions("user", ["login"]),
+			// #ifdef MP-WEIXIN
 			getUnionid() {
 				uni.login({
 					provider: "weixin",
@@ -71,6 +72,33 @@ import { mapState, mapActions } from "vuex";
 					},
 				});
 			},
+			// #endif
+			// #ifndef  MP-WEIXIN
+				getUnionid() {
+					uni.login({
+						provider: "",
+						success: async (result) => {
+						await this.login(result.code);
+						console.log('APP里面的登录')
+						// const userIdres = await chatSignature()
+						// console.log('userIdD', userIdres)
+						// const userID = userIdres.data.userId
+						// const userSig = userIdres.data.sign
+						// this.getNewsCount(userID)
+						// this.setData({
+						//   userID: userID,
+						// })
+						// uni.$TUIKit.login({
+						// 	userID: userID,
+						// 	userSig: userSig
+						// }).then(() => {}).catch(() => {});
+						},
+						fail: (error) => {
+						console.log("登录失败", error);
+						},
+					});
+				},
+			// #endif  
 			// getNewsCount(userID) {
 			//   newsCount({userId:userID}).then((res)=>{
 			// 	const allMsg = res.data.AllC2CUnreadMsgNum + ''
@@ -129,6 +157,7 @@ import { mapState, mapActions } from "vuex";
 		border-radius: 7.246rpx;
 		opacity: 0.8;
 	}
+	.uni-video-bar{ background: #F52C5A !important;}
 </style>
 <style lang="scss">
 	@import "uview-ui/index.scss";

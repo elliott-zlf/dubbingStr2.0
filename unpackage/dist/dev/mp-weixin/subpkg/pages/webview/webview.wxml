@@ -1,1 +1,1 @@
-<view><web-view src="{{websrc}}"></web-view></view>
+<view class="container_res"><web-view src="{{websrc}}"></web-view></view>

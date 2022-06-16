@@ -1,6 +1,6 @@
 <template>
   <view class="container">
-    <u-navbar
+    <!-- <u-navbar
       :is-back="true"
       title="订单详情"
       title-size="36.232rpx"
@@ -8,7 +8,8 @@
       :border-bottom="true"
       :background="background"
       back-icon-color="#000000"
-    ></u-navbar>
+      :custom-back="handleGoBack"
+    ></u-navbar> -->
     <pyspopuup v-if="notputShow" @handleclose="handleclose" @handleConfirm="handleConfirm"></pyspopuup>
     <view class="integral">
       <view v-if="orderData.status == 1" class="availableIntegral">
@@ -44,7 +45,7 @@
           <view class="payment">待交付</view>
         </view>
         <view class="score_text">
-          成品交付后会短信通知您来下载
+          成品交付后会短信通知您来下载，若有问题售后客服一对一服务
         </view>
       </view>
       <view v-if="orderData.status == 3" class="availableIntegral">
@@ -77,12 +78,12 @@
         <view class="item_list">
           <view class="title">我的需求</view>
           <view class="content checkDemand" @click="handleCheckdemand">
-			   <text class="toView">点击查看</text>
-			   <image
-				  class="yhjright"
-				  src="@/static/coupons/yhjright.png"
-				  mode="scaleToFill"
-				/>
+            <text class="toView">点击查看</text>
+            <image
+              class="yhjright"
+              src="@/static/coupons/yhjright.png"
+              mode="scaleToFill"
+            />
 		  </view>
         </view>
         <view class="item_list">
@@ -101,12 +102,23 @@
           <view class="content">￥{{ orderData.origin_price }}</view>
         </view>
         <view class="item_list">
-          <view class="title">优惠券</view>
+          <view class="title">自主下单折扣</view>
           <view class="content">-¥{{ orderData.discount_price }}</view>
         </view>
         <view class="item_list">
           <view class="title">积分</view>
           <view class="content">-¥{{ orderData.score_price }}</view>
+        </view>
+        <view class="item_list">
+          <view class="title">交付时间</view>
+          <view class="content checkDemand" @click="handlePrompt">
+            <text class="toView">工作时段2h内交付，点击查看详情</text>
+            <image
+              class="yhjright"
+              src="@/static/coupons/yhjright.png"
+              mode="scaleToFill"
+            />
+          </view>
         </view>
       </view>
       <view class="demandinfo_bottom">
@@ -212,6 +224,11 @@
     </div>
     <dropball title="联系客服">
 	  </dropball>
+    <div v-show="promptShow" class="custom_popup" @tap.stop="handleCloseSubmit">
+			<div class="masklayer" @click.stop="!handleCloseSubmit">
+				<prompt ref="submitform" btnText="需求详情" @handleCloseSubmitShow="handleCloseSubmit"></prompt>
+			</div>
+		</div>
   </view>
 </template>
 
@@ -225,12 +242,15 @@ import uniCopy from '@/utils/uni-copy.js'
 import pyspopuup from '@/components/pyspopup/pyspopup.vue'
 import release from '@/components/release/release.vue'
 import dropball from '@/components/dropball/dropball.vue'
+import prompt from "@/components/prompt/prompt.vue";
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
   components: {
     musicAudio,
     pyspopuup,
     release,
-    dropball
+    dropball,
+    prompt
   },
   data() {
     return {
@@ -250,12 +270,15 @@ export default {
       notputShow: false,
       demandProfile: {},
       submitShow: false,
-      submitShow1: false
+      submitShow1: false,
+      urlpath: '',
+      promptShow: false,
     };
   },
   onLoad(options) {
     this.type = options.type;
     this.orderId = options.id;
+    this.urlpath = options.type
     this.getOrderDetail(this.orderId);
   },
   onHide() {
@@ -315,9 +338,15 @@ export default {
           success: function (res) {
             console.log("success:" + JSON.stringify(res));
             _that.getOrderDetail(order_id);
+            uni.requestSubscribeMessage({
+              tmplIds: ['EKGq56oSCMqh1bslBtr01L9ELuL7PjWhFb7vuoJuySk','L1BpikjyiraC4mZKTYm_YS5T4PRCp-9uW7DjWKlM8M8'],
+              success (res) {
+                console.log(res)
+              }
+            }) 
           },
           fail: function (err) {
-            console.log("fail:" + JSON.stringify(err));
+            console.log("支付回调失败fail:" + JSON.stringify(err)); 
             _that.getOrderDetail(order_id)
           },
         });
@@ -329,9 +358,12 @@ export default {
     },
     // 跳转到配音师详情
     handleJumpdetails(item) {
-      console.log(item)
-      if(item.cate===0) {
-        
+      console.log('该配音师已下架，请选择其他老师',item)
+      if(item.teacher_status===0) {
+        uni.showToast({
+					title: '该配音师已下架，请选择其他老师',
+					icon: 'none'
+				})
       }else {
         uni.navigateTo({ url: '/subpkg/pages/teacherlist/teacherlist?id='+ item.teacher_id })
       }
@@ -345,6 +377,14 @@ export default {
         this.notputShow= false
       })
     },
+    // 展示弹窗
+    handlePrompt() {
+      this.promptShow = true
+    },
+      // 关闭提示弹窗
+    handleCloseSubmit() {
+        this.promptShow = false
+    },
 	  // 播放音频
     playTheMusic(orderItem) {
       console.log("传过来的数据", orderItem, this.orderData);
@@ -354,21 +394,24 @@ export default {
       setTimeout(() => {
         this.$refs.musicAudio.preStartPlay();
       }, 0);
+      if (this.orderData.work.playStatus){
+         buriedSomeStatistical(0)
+      }
     },
-	handleChangePlay(status) {
-		this.orderData.work.playStatus = !this.orderData.work.playStatus
-	},
-	musicClose() {
-		this.orderData.work.playStatus = false;
-		this.audioShow = false;
-		this.dataPlay = {
-			url: ''
-		};
-	},
-  // 关闭弹窗
-  handleCloseSubmitShow() {
-    this.submitShow1 = false
-  },
+    handleChangePlay(status) {
+      this.orderData.work.playStatus = !this.orderData.work.playStatus
+    },
+    musicClose() {
+      this.orderData.work.playStatus = false;
+      this.audioShow = false;
+      this.dataPlay = {
+        url: ''
+      };
+    },
+    // 关闭弹窗
+    handleCloseSubmitShow() {
+      this.submitShow1 = false
+    },
 	downloadcopy(groupNum,title) {
 		uniCopy({
 			content:groupNum,
@@ -382,6 +425,15 @@ export default {
 			}
 		})
 	}
+  },
+  handleGoBack() {
+    if (this.urlpath == 'index') {
+          uni.navigateBack({
+            delta: 1
+          })
+        } else {
+          uni.switchTab({ url: '/pages/index/index' })
+        }
   },
 };
 </script>
@@ -538,12 +590,13 @@ page {
     margin-top: -74.348rpx;
     width: 695.652rpx;
     margin-left: 27.174rpx;
-    height: 538.261rpx;
+    // height: 538.261rpx;
     background: #ffffff;
     border-radius: 14.493rpx;
     .demandinfo_top {
       width: 100%;
-      height: 422.319rpx;
+      // height: 422.319rpx;
+       padding-bottom: 34.42rpx;
       border-bottom: 1.812rpx solid #f7f7f7;
       .item_list {
         padding: 38.232rpx 34.42rpx 0rpx 34.42rpx;
@@ -737,4 +790,5 @@ page {
     background: #ffffff;
   }
 }
+
 </style>

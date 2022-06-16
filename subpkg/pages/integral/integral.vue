@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar
+		<!-- <u-navbar
 			:is-back="true"
 			title="我的积分"
 			title-size="36.232rpx"
@@ -8,7 +8,7 @@
 			:border-bottom="true"
 			:background="background"
 			back-icon-color="#000000"
-		></u-navbar>
+		></u-navbar> -->
 		<view class="integral">
 		   <!-- <view class="integral_use" @click="hanldeIntegral">
 			   <image
@@ -40,7 +40,17 @@
 			  </view>
               <view class="detail_score">{{item.status == 0 ? '+':'-'}}{{item.score}}</view>
 		    </view>
-			<view v-if="integralData.length == 0" style="text-align: center; margin-top: 30rpx;">暂无积分明细</view>
+			<!-- <view v-if="integralData.length == 0" style="text-align: center; margin-top: 30rpx;">暂无积分明细</view> -->
+			<view v-if="integralData.length == 0" class="page-box">
+				<view class="defaltPage">
+					<image
+						class="defaltPageimg"
+						src="@/static/demand/defaulticon.png"
+						mode="scaleToFill"
+					/>
+					<!-- <view class="defaltext">你还没有订单</view> -->
+				</view>
+			</view>
 			<view style="height: 600.087rpx;"></view>
 		  </view>
 		</view>
@@ -195,5 +205,20 @@ page {
 	}
   }
 }
-
+.defaltPage {
+	text-align: center;
+	.defaltPageimg {
+		margin-top: 110.507rpx;
+		width: 403.986rpx;
+		height: 331.522rpx;
+	}
+	.defaltext {
+		margin-top: -72.464rpx;
+		text-align: center;
+		font-size: 25.362rpx;
+		font-family: PingFangSC-Regular, PingFang SC;
+		font-weight: 400;
+		color: #000000;
+	}
+} 
 </style>

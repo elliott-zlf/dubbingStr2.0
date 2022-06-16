@@ -1,6 +1,6 @@
 <template>
 	<view class="container">
-		<u-navbar
+		<!-- <u-navbar
 			:is-back="true"
 			title="我的订单"
 			title-size="36.232rpx"
@@ -8,7 +8,7 @@
 			:border-bottom="true"
 			:background="background"
 			back-icon-color="#000000"
-		></u-navbar>
+		></u-navbar> -->
         <view class="wrap">
 			<view class="u-tabs-box">
 				<u-tabs
@@ -184,7 +184,7 @@ import { orderList } from '@/api/personal.js'
 
 			},
 			handleJumporderdetails(index,id) {
-			  uni.navigateTo({ url: '/subpkg/pages/orderdetails/orderdetails?id='+id+'&&type='+ index })
+			  uni.navigateTo({ url: '/subpkg/pages/orderdetails/orderdetails?id='+id+'&&type=index' })
 			}
 		}
 	}

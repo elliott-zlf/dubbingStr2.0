@@ -1,0 +1,45 @@
+
+.content {
+}
+.peipei {
+    margin-top: 200rpx;
+    text-align: center;
+}
+.u-progress-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 180rpx;
+    height: 180rpx;
+}
+.progress_content_img {
+    width: 100%;
+    height: 100%;
+    border-radius: 140rpx;
+}
+.timem {
+    font-size: 27.174rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 400;
+    color: #37C59D;
+}
+.tiptext {
+    margin-top: 18.116rpx;
+    font-size: 27.174rpx;
+    font-family: PingFangSC-Regular, PingFang SC;
+    font-weight: 500;
+    color: #000000;
+}
+.u-progress-dot {
+    margin-top: 18.116rpx;
+    width: 16rpx;
+    height: 16rpx;
+    border-radius: 50%;
+    background-color: #fb9126;
+}
+.u-progress-info {
+    font-size: 28rpx;
+    padding-left: 16rpx;
+    letter-spacing: 2rpx
+}
+

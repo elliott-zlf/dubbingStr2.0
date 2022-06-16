@@ -86,6 +86,7 @@
 	import uniCopy from '@/utils/uni-copy.js'
 	import { fabulouworks } from '@/api/index.js'
 	import { mapState } from "vuex";
+	import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 	export default {
 		components:{
 			musicAudio
@@ -167,6 +168,7 @@
 				});
 				orderItem.playStatus = true;
 				this.dataPlay = orderItem;
+				buriedSomeStatistical(0)
 			}
 			setTimeout(() => {
 				this.$refs.musicAudio.preStartPlay();

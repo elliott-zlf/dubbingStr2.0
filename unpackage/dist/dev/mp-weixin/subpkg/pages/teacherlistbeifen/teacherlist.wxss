@@ -352,13 +352,15 @@ scroll-view  ::-webkit-scrollbar {
   justify-content: space-between;
 }
 .container .content .business_data .business_data_title .title_data.data-v-d8cf398c {
-  width: 173.913rpx;
   height: 39.855rpx;
   font-size: 28.986rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
   color: #000000;
   line-height: 39.855rpx;
+}
+.container .content .business_data .business_data_title .title_data .price_text.data-v-d8cf398c {
+  color: #E83035 !important;
 }
 .container .content .business_data .data_content.data-v-d8cf398c {
   padding: 20rpx 0px 0px 0px;
@@ -453,6 +455,118 @@ scroll-view  ::-webkit-scrollbar {
   margin-left: 9.058rpx;
   width: 7.246rpx;
   height: 32.609rpx;
+}
+.container .content .business_data .data_content .dd.data-v-d8cf398c {
+  border-top-left-radius: 21.739rpx;
+  border-top-right-radius: 21.739rpx;
+  border-bottom: none !important;
+}
+.container .content .business_data .data_content .video_item.data-v-d8cf398c {
+  display: flex;
+  align-items: center;
+  width: 695.652rpx;
+  height: 250rpx;
+  background: #FFFFFF;
+  border-bottom: solid 1.812rpx #F7F7F7;
+  padding-left: 27.174rpx;
+  border-top-left-radius: 21.739rpx;
+  border-top-right-radius: 21.739rpx;
+}
+.container .content .business_data .data_content .video_item .video_box.data-v-d8cf398c {
+  position: relative;
+  width: 320.652rpx;
+  height: 195.652rpx;
+  border-radius: 14.493rpx;
+}
+.container .content .business_data .data_content .video_item .video_box .video_label.data-v-d8cf398c {
+  position: absolute;
+  top: 10.87rpx;
+  left: 10.87rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 97.71rpx;
+  padding: 0 9.058rpx;
+  height: 36.232rpx;
+  background: #FF445A;
+  border-radius: 7.246rpx;
+  opacity: 0.9;
+  font-size: 19.928rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+.container .content .business_data .data_content .video_item .video_box .video_cover.data-v-d8cf398c {
+  width: 320.652rpx;
+  height: 195.652rpx;
+  border-radius: 14.493rpx;
+}
+.container .content .business_data .data_content .video_item .video_box .video_palybox.data-v-d8cf398c {
+  position: absolute;
+  display: flex;
+  justify-content: space-between;
+  margin: 0 18.116rpx;
+  left: 0;
+  width: 284.42rpx;
+  bottom: 18.116rpx;
+}
+.container .content .business_data .data_content .video_item .video_box .video_palybox .video_paly.data-v-d8cf398c {
+  display: flex;
+  align-items: center;
+}
+.container .content .business_data .data_content .video_item .video_box .video_palybox .video_paly .video_icon.data-v-d8cf398c {
+  width: 19.928rpx;
+  height: 21.739rpx;
+}
+.container .content .business_data .data_content .video_item .video_box .video_palybox .video_paly .play_Num.data-v-d8cf398c {
+  margin-left: 5.435rpx;
+  font-size: 23.551rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+.container .content .business_data .data_content .video_item .video_box .video_palybox .broadcasttime.data-v-d8cf398c {
+  font-size: 23.551rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+}
+.container .content .business_data .data_content .video_item .video_desc.data-v-d8cf398c {
+  position: relative;
+  width: 350rpx;
+  height: 195.652rpx;
+  padding: 23.551rpx 30.797rpx;
+}
+.container .content .business_data .data_content .video_item .video_desc .video_title.data-v-d8cf398c {
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.container .content .business_data .data_content .video_item .video_desc .video_style.data-v-d8cf398c {
+  margin-top: 18.116rpx;
+  font-size: 23.551rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.container .content .business_data .data_content .video_item .video_desc .video_by.data-v-d8cf398c {
+  position: absolute;
+  bottom: 18.116rpx;
+  display: flex;
+  align-items: center;
+}
+.container .content .business_data .data_content .video_item .video_desc .video_by .video_icon.data-v-d8cf398c {
+  width: 36.232rpx;
+  height: 36.232rpx;
+  border-radius: 18.116rpx;
+}
+.container .content .business_data .data_content .video_item .video_desc .video_by .video_name.data-v-d8cf398c {
+  font-size: 23.551rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  width: 259rpx;
 }
 .container .content .business_data .data_content_introduction.data-v-d8cf398c {
   margin-top: 18.116rpx;
@@ -890,5 +1004,70 @@ scroll-view  ::-webkit-scrollbar {
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #999999;
+}
+.masklayer.data-v-d8cf398c {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+.masklayer .coupons_box.data-v-d8cf398c {
+  position: relative;
+  margin-top: 50%;
+  margin-left: 67.029rpx;
+  position: relative;
+  -webkit-transform: calc(0%, -50%);
+          transform: calc(0%, -50%);
+  width: 597.826rpx;
+  height: 760.87rpx;
+}
+.masklayer .coupons_box .shutdown_icon.data-v-d8cf398c {
+  position: absolute;
+  right: 0;
+  top: -65.899rpx;
+  width: 38.043rpx;
+  height: 38.043rpx;
+}
+.masklayer .coupons_box .coupons_icon.data-v-d8cf398c {
+  width: 597.826rpx;
+  height: 760.87rpx;
+}
+.masklayer .coupons_box .coupons_content.data-v-d8cf398c {
+  position: absolute;
+  top: 180rpx;
+  width: 100%;
+  left: 0px;
+}
+.masklayer .coupons_box .coupons_content .content_text.data-v-d8cf398c {
+  padding: 0px 101.449rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.masklayer .coupons_box .coupons_content .content_text .text.data-v-d8cf398c {
+  margin-top: 36.232rpx;
+}
+.masklayer .coupons_box .coupons_content .content_text .red_text.data-v-d8cf398c {
+  color: #FF445A;
+  font-weight: 500;
+}
+.masklayer .coupons_box .coupons_content .know_btn.data-v-d8cf398c {
+  display: inline-block;
+  text-align: center;
+  margin-top: 59.783rpx;
+  margin-left: 148.551rpx;
+  width: 300.725rpx;
+  height: 86.957rpx;
+  line-height: 86.957rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  background: #FF445A;
+  border-radius: 43.478rpx;
 }
 

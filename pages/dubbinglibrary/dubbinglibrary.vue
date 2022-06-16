@@ -250,6 +250,8 @@ import playActive from "@/static/teacherlist/palyActive2.png";
 // 优惠卷状态
 import { couponadd,couponstatus } from "@/api/index.js";
 import { profileUpdate, loginStatus, } from '@/api/index.js'
+// 埋点统计
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
   components: {
     musicAudio,
@@ -489,6 +491,7 @@ export default {
         });
         orderItem.works.playStatus = true;
         this.dataPlay = orderItem;
+        buriedSomeStatistical(0)
       }
       setTimeout(() => {
         this.$refs.musicAudio.preStartPlay();

@@ -48,3 +48,11 @@ export function collection(data) {
         data
     })
 }
+// 弹窗两次
+export function loginPopup(data) {
+    return request ({
+        url: '/street/login/popup',
+        method: 'POST',
+        data
+    })
+}

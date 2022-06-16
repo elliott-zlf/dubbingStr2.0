@@ -8,6 +8,7 @@
 			:border-bottom="false"
 			:background="background"
 			back-icon-color="#FFFFFF"
+      :custom-back="handleGoBack"
 		></u-navbar>
     <!-- :custom-back="handleGoBack" -->
     <view class="container_box">
@@ -261,7 +262,7 @@
       </view>
       <view class="business_data">
         <view class="business_data_title">
-          <view class="title_data">配音作品</view>
+          <view class="title_data">我的服务<text  v-if="dataList.price_text == 1"  class="price_text">（限时价优惠中）</text></view>
         </view>
         <view class="data_content">
           <view class="list_worksbox" v-if="!addbtnShow">
@@ -308,7 +309,9 @@
                     <view class="use_btn">配音</view>
                   </view> -->
                   <view class="btn_item">
-                    <view class="voice_btn" @click="handleUseOrder(item)">下单</view>
+                    <!-- <view class="voice_btn" v-if="order_status==0" @click="handlefirstTimeUseOrder(item)">下单</view> -->
+						        <!-- <view class="voice_btn" @click="handleUseOrder(item)">下单</view> -->
+                    <view class="voice_btn" @click="downloadcopySampleVoices(item,'复制样音信息成功')">复制</view> 
                     <view class="voice_img_box" @click="handleOperation(item)">
                       <image
                         class="voice_img"
@@ -316,6 +319,67 @@
                         mode="scaleToFill"
                       />
                     </view>
+                  </view>
+                </view>
+              </view>
+              <view v-if="!defaultshow" class="page-box">
+                <view class="defaltPage">
+                  <!-- <image
+								class="defaltPageimg"
+								src="@/static/ui/defaultPage/d1.png"
+								mode="scaleToFill"
+							/> -->
+                  <view class="defaltext">暂无匹配数据</view>
+                </view>
+              </view>
+            </scroll-view>
+          </view>
+          <view v-if="addbtnShow" class="emptydata">
+            <image
+              class="emptydataimg"
+              src="@/static/carddetails/emptydata.png"
+              mode="scaleToFill"
+            />
+            <view class="emptydatatext">暂无数据</view>
+          </view>
+        </view>
+      </view>
+      <view class="business_data" v-if="caseData.length !==0">
+        <view class="business_data_title">
+          <view class="title_data">成品案例</view>
+        </view>
+        <view class="data_content" style="padding:0px">
+          <view class="list_worksbox" v-if="!addbtnShow">
+            <scroll-view
+              scroll-y
+              style="height: 100%; width: 100%"
+              :refresher-triggered="triggered"
+            >
+              <view class="video_item" :class="{'dd': caseData.length-1 ==index }" v-for="(item,index) in caseData" :key="index" @click="handlecaseDetails(item)">
+                <view class="video_box">
+                  <view class="video_label">{{item.tags[0].value}}</view>
+                  <image
+                    class="video_cover"
+                    :src="item.head_img"
+                    mode="scaleToFill"
+                  />
+                  <view class="video_palybox">
+                    <view class="video_paly">
+                      <image
+                        class="video_icon"
+                        src="@/static/anli/anliplay.png"
+                        mode="scaleToFill"
+                      />
+                      <span class="play_Num">{{item.play_num}}</span>
+                    </view>
+                    <view class="broadcasttime">{{item.works[0].time}}</view>
+                  </view>
+                </view>
+                <view class="video_desc">
+                  <view class="video_title u-line-1">{{item.works[0].title}}</view>
+                  <view class="video_style u-line-1">{{item.title}}</view>
+                  <view class="video_by">
+                    <span class="video_name">{{item.created_at}}</span>
                   </view>
                 </view>
               </view>
@@ -387,6 +451,14 @@
 			</release>
 	  </u-popup>
     <u-popup v-model="collectShow" mode="bottom" border-radius="24">
+       <view class="collect_item" @click="handleUseOrder(operationItem)">
+			  <image
+			      class="collection"
+				  src="@/static/teacherlist/copyicon.png"
+				  mode="scaleToFill"
+			  />
+			  <view class="collect_text">按样下单</view>
+		  </view>
 		  <view class="collect_item" @click="handleCollectStatus">
 			  <image
 			      class="collection"
@@ -403,10 +475,53 @@
 			  />
 			  <view class="collect_text">下载</view>
 		  </view>
+      <view class="collect_item">
+			  <image
+			      class="collection"
+				  :src="operationItem.share_type===0 ? shouchang : yishouchang"
+				  mode="scaleToFill"
+			  />
+			  <view class="cloudsharebox">
+				<view class="collect_text" @click="operationItem.share_type===0 ? handlejoincloudAdd(operationItem) :  handlejoincloud(operationItem)">{{operationItem.share_type===0 ? '加入云分享' : '移除云分享'}}</view>
+                <view class="cloud_btn" @click="handleCloudShare(operationItem)">
+					<span class="collect_text1">进入</span>
+					<image
+					    class="rightarr_icon"
+						src="@/static/coupons/rightarr.png"
+						mode="scaleToFill"
+					/>
+				</view>
+			  </view>
+		  </view>
 		  <view class="collect_item_btn" @click="hanldeCancelcoll">取消</view>
 	  </u-popup>
-    <dropball title="找我试音">
+    <dropball :bottomdistance="270" title="找我试音">
 	  </dropball>
+     <view v-if="orderPromptShow" class="masklayer">
+		  <view class="coupons_box">
+			<image
+				class="shutdown_icon"
+				src="@/static/coupons/shutdownC.png"
+				mode="scaleToFill"
+				@click="handlecloseCoupons"
+			/>
+			<image
+				class="coupons_icon"
+				src="@/static/img/orderpro.png"
+				mode="scaleToFill"
+			/>
+			<view class="coupons_content">
+				<view class="content_text">
+					<view class="text">1、更快速：交付<text class="red_text">速度翻倍</text></view>
+					<view class="text">2、更便捷：告别<text class="red_text">频繁沟通</text></view>
+					<view class="text">3、更省钱：成本价上<text class="red_text">再9折</text></view>
+					<view class="text">4、质量保障：<text class="red_text">所听即所得</text></view>
+					<view class="text">5、售后无忧：<text class="red_text">一对一</text>修改补录</view>
+				</view>
+				<view class="know_btn" @click="handlejupumUseOrder">我知道了</view>
+			</view>
+		</view>
+	  </view>	
   </view>
 </template>
 
@@ -417,6 +532,7 @@ import uniCopy from "@/utils/uni-copy.js";
 import musicAudio from "@/components/audio/audioplay.vue";
 import myTabs from "@/components/my-tabs/my-tabs";
 import {profileDetail,followFabulous} from "@/api/carddetails.js";
+import { teacherdetail, shareAdd,shareDel } from "@/api/index.js";
 import man from "@/static/teacherlist/manicon.png";
 import female from "@/static/teacherlist/woman.png";
 import qi from "@/static/teacherlist/woman.png";
@@ -426,6 +542,8 @@ import shouchang from '@/static/img/shouchang.png'
 import yishouchang from '@/static/img/yishouchang.png'
 import { collection } from "@/api/voice.js"
 import dropball from '@/components/dropball/dropball.vue'
+// 埋点统计
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
   components: {
     myTabs,
@@ -489,6 +607,7 @@ export default {
       tabsList: [],
 	    tabsItem: [],
       audioList: [],
+      caseData: [],
       current: 0,
       modifyShow: false,
       audioShow: false,
@@ -508,29 +627,36 @@ export default {
         avatar: '',
 			  nickname: '',
         offer_price: '',
+        subjecttype: ''
       },
       btnText: '按作品效果下单',
       // 收藏的作品  
 			collectShow: false,
+      firstItem: {},
+			orderPromptShow: false,
 			// 操作item
 			operationItem: {},
       shouchang:shouchang,
-			yishouchang:yishouchang
+			yishouchang:yishouchang,
+      avatarimageUrl: '',
+      urlpath: '',
     };
   },
   onLoad(options) {
     this.cardId = options.id;
     this.dataObj.teacher_id = options.id;
+    this.urlpath = options.url
     uni.showLoading({
         title: '加载中'
     });
     this.getUnionid();
   },
   onShow() {
+    console.log('样音数据刷新', this.cardId,this.dataObj.teacher_id,this.urlpath)
 	  this.shareSow = true
   },
   computed: {
-    ...mapState("user", ["token", "userInfo"]),
+    ...mapState("user", ["token", "userInfo","order_status"]),
   },
   onHide() {
     //   this.musicClose()
@@ -543,26 +669,40 @@ export default {
     return {
       // title: '这是'+this.dataList.nickname + "的声音主页，点击在线试听样音",
       title: '听一听这个配音师的声音，报价比市场价低一半',
-      path: "/subpkg/pages/teacherlistbeifen/teacherlist?id="+this.cardId,
+      path: "/subpkg/pages/teacherlistbeifen/teacherlist?id="+this.cardId+"&&url=index",
       imageUrl: "",
       complete: function (res) {
         console.log("分享成功", res);
       },
     };
   },
+  onShareTimeline(res) {
+     console.log('走这里了吗')
+			return {
+				title: '听下这个配音师的声音，报价比市场价低一半',
+        query: "id="+this.cardId+"&&url=index",
+        imageUrl: this.avatarimageUrl,
+				complete: function(res) {
+					console.log('分享成功', res)
+				},
+			}
+	},
   methods: {
-    ...mapActions("user", ["login"]),
+    ...mapActions("user", ["login","getIphoneStatus"]),
     getUnionid() {
       uni.login({
         provider: "weixin",
         success: async (result) => {
           await this.login(result.code);
+          await this.getIphoneStatus();
           this.woekslist = this.woekslist1;
           this.handleProfileDetail();
           // this.followFabuloulistData();
         },
         fail: (error) => {
           console.log("登录失败", error);
+          this.woekslist = this.woekslist1;
+          this.handleProfileDetail();
         },
       });
     },
@@ -570,7 +710,9 @@ export default {
       profileDetail({ id: this.cardId }).then((res) => {
         console.log("名片数据", res);
         this.dataList = res.data.data;
+        this.avatarimageUrl = this.dataList.avatar
         const itemworks = res.data.list;
+        this.caseData = res.data.case
         uni.hideLoading();
           this.itemList = res.data.row;
           itemworks.map((item) => {
@@ -612,6 +754,11 @@ export default {
       uni.showShareMenu({
         title: "配音师资源",
       });
+    },
+    // 跳转案例详情页
+    handlecaseDetails(item) {
+      console.log('跳转到案例详情页面', item)  
+      uni.navigateTo({ url: '/subpkg/pages/caseDetails/caseDetails?id='+item.id})
     },
     handleShowQrcode() {
       this.erweimaShow = true 
@@ -672,6 +819,48 @@ export default {
       });
       console.log("关注点击事件");
     },
+    // 进入云分享页面  
+		  handleCloudShare(item) {
+             console.log('进入云分享',item)
+			  uni.navigateTo({
+				url:
+				"/subpkg/pages/voicesshare/voicesshare"
+			  });
+			  this.collectShow = false
+		   },
+		   // 加入云分享
+		   handlejoincloudAdd(item) {
+			 console.log('加入云分享',item)
+			 shareAdd({work_id: item.id}).then((res)=>{
+				console.log()
+				if (this.operationItem.share_type ===1) {
+					this.operationItem.share_type = 0
+					uni.showToast({
+						title: '移除成功',
+						icon: 'none'
+				    })
+				} else {
+					this.operationItem.share_type = 1
+				}
+			 })
+		   },
+		    // 移除云分享
+		   handlejoincloud(item) {
+			 console.log('移除云分享',item)
+			 let _this = this
+			 shareDel({work_id: item.id}).then((res)=>{
+				console.log()
+				if (this.operationItem.share_type ===1) {
+					this.operationItem.share_type = 0
+					uni.showToast({
+						title: '移除成功',
+						icon: 'none'
+				    })
+				} else {
+					this.operationItem.share_type = 1
+				}
+			 })
+		   },
     // 下单
     // handlePlaceOrder() {
     //   this.dataObj.filename = ''
@@ -682,7 +871,51 @@ export default {
     //     this.$refs.submitform.handlertextarea()
     //   });
     // },
-     // 使用样音下单
+    //  提示弹窗打开
+		handlefirstTimeUseOrder(item) {
+      this.firstItem = item
+      this.orderPromptShow = true
+      // 下单button
+			buriedSomeStatistical(3)
+			// 弹窗展示次数
+			buriedSomeStatistical(4)
+      },
+    handlejupumUseOrder() {
+         let item = this.firstItem
+			   if(item.admin_price) {
+            this.dataObj.service_id = item.service_id
+            this.dataObj.teacher_id = item.teacher_id
+            this.dataObj.filename = item.title
+            this.dataObj.content_url_escape = item.url
+            this.dataObj.work_id = item.id
+            this.dataObj.avatar = this.dataList.avatar
+            this.dataObj.nickname = this.dataList.nickname
+            this.dataObj.offer_price = item.offer_price
+            this.dataObj.subjecttype = this.tabsItem[this.current].tags[0].value
+            console.log('跳转到',item,this.dataObj,this.tabsItem,this.current,this.tabsItem[this.current].tags[0].value)
+            this.btnText="按作品效果下单"
+            uni.setStorageSync('dataObj',this.dataObj)
+            uni.navigateTo({ url: '/subpkg/pages/voicesrelease/voicesrelease' })
+            // this.submitShow = true
+            // this.btnText="按作品效果试音"
+            // this.$nextTick(() => { 
+            //   this.$refs.submitform.handlertextarea()
+            // });
+          } else {
+            uni.showToast({
+              title: '该服务暂不支持在线下单，请联系客服',
+              icon: 'none'
+            })
+          }
+        this.orderPromptShow = false
+        // 点击我知道了在线下单
+        buriedSomeStatistical(5)
+      },
+      // 提示弹窗关闭
+    handlecloseCoupons() {
+        this.orderPromptShow = false
+      }, 
+     // 使用样音下单  
     handleUseOrder(item) {
       console.log('使用样音下单service_id',item, item.id)
       if(item.admin_price) {
@@ -694,6 +927,7 @@ export default {
         this.dataObj.avatar = this.dataList.avatar
         this.dataObj.nickname = this.dataList.nickname
         this.dataObj.offer_price = item.offer_price
+        this.dataObj.subjecttype = this.tabsItem[this.current].tags[0].value
         this.btnText="按作品效果下单"
 				uni.setStorageSync('dataObj',this.dataObj)
 				uni.navigateTo({ url: '/subpkg/pages/voicesrelease/voicesrelease' })
@@ -708,6 +942,8 @@ export default {
 					icon: 'none'
 				})
 			}
+      // 统计在线下单
+			buriedSomeStatistical(3)
     },
     getsubmitShow() {
 			this.submitShow = false
@@ -753,6 +989,7 @@ export default {
         });
         orderItem.playStatus = true;
         this.dataPlay = orderItem;
+        buriedSomeStatistical(0)
       }
       setTimeout(() => {
         this.$refs.musicAudio.preStartPlay();
@@ -769,6 +1006,15 @@ export default {
         });
       });
     },
+    handleGoBack() {
+      if (this.urlpath == 'index') {
+        uni.switchTab({ url: '/pages/index/index' })
+      } else {
+        uni.navigateBack({
+          delta: 1
+        })
+      }
+    },
     downloadcopy(groupNum, title) {
       uniCopy({
         content: groupNum,
@@ -776,12 +1022,41 @@ export default {
           uni.showToast({
             title: title,
             icon: "none",
-			duration: 2000
+			      duration: 2000
           });
         },
         error: (e) => {},
       });
+      buriedSomeStatistical(1)
     },
+    // 复制样音信息链接
+		async downloadcopySampleVoices(item,title) {
+      console.log(item,this.tabsItem,this.dataList)
+      let res =  await teacherdetail({teacher_id: item.teacher_id})
+      let groupNum = ''
+      if (this.dataList.grade_text==='无') {
+          groupNum = '样音信息：'+ this.dataList.nickname +
+        '+' + item.title+ 
+        '+' + item.offer_price+
+        '+下载链接 ' + item.url
+      } else {
+       groupNum = '样音信息：'+ this.dataList.nickname + '('+ this.dataList.grade_text+')'+
+			 '+' + item.title+ 
+			 '+' + item.offer_price+
+       '+下载链接 ' + item.url
+      }
+			uniCopy({
+				content:groupNum,
+				success:(res)=>{
+					uni.showToast({
+						title: title,
+						icon: 'none'
+					})
+				},
+				error:(e)=>{
+				}
+			})
+		},
     musicClose() {
       this.tabsList.map((item) => {
         item.works.map((items) => {
@@ -1123,13 +1398,15 @@ scroll-view ::v-deep ::-webkit-scrollbar {
         display: flex;
         justify-content: space-between;
         .title_data {
-          width: 173.913rpx;
           height: 39.855rpx;
           font-size: 28.986rpx;
           font-family: PingFangSC-Medium, PingFang SC;
           font-weight: 500;
           color: #000000;
           line-height: 39.855rpx;
+           .price_text {
+              color: #E83035 !important;
+           }
         }
       }
       .data_content {
@@ -1244,6 +1521,121 @@ scroll-view ::v-deep ::-webkit-scrollbar {
           //     color: #000000;
           //   }
           // }
+        }
+        // 案例item
+       .dd {
+          border-bottom-left-radius: 21.739rpx;
+          border-bottom-right-radius: 21.739rpx;
+          border-bottom: none !important;
+        }
+        // 案例item
+        .video_item {
+          display: flex;
+          align-items: center;
+          width: 695.652rpx;
+          height: 250rpx;
+          background: #FFFFFF;
+          border-bottom: solid 1.812rpx #F7F7F7;
+          padding-left: 27.174rpx;
+          border-top-left-radius: 21.739rpx;
+          border-top-right-radius: 21.739rpx;
+        .video_box {
+          position: relative;  
+          width: 320.652rpx;
+          height: 195.652rpx;
+          border-radius: 14.493rpx;
+          .video_label {
+          position: absolute;	
+          top: 10.87rpx;
+          left: 10.87rpx;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          min-width: 97.71rpx;
+          padding: 0 9.058rpx;
+          height: 36.232rpx;
+          background: #FF445A;
+          border-radius: 7.246rpx;
+          opacity: 0.9;
+          font-size: 19.928rpx;
+          font-family: PingFangSC-Regular, PingFang SC;
+          font-weight: 400;
+          color: #FFFFFF;
+          }
+          .video_cover {
+          width: 320.652rpx;
+          height: 195.652rpx;
+          border-radius: 14.493rpx;
+          }
+          .video_palybox {
+            position: absolute;
+            display: flex;
+            justify-content: space-between;
+            margin: 0 18.116rpx;
+            left: 0;
+            width: 284.42rpx;
+            bottom: 18.116rpx;
+            .video_paly {
+            display: flex;
+            align-items: center;
+            .video_icon {
+              width: 19.928rpx;
+              height: 21.739rpx;
+            }
+            .play_Num {
+              margin-left: 5.435rpx;
+                font-size: 23.551rpx;
+                font-family: PingFangSC-Regular, PingFang SC;
+                font-weight: 400;
+                color: #FFFFFF;
+            }
+            }
+            .broadcasttime {
+              font-size: 23.551rpx;
+              font-family: PingFangSC-Regular, PingFang SC;
+              font-weight: 400;
+              color: #FFFFFF;
+            }
+          }
+        }
+        .video_desc {
+          position: relative;
+          width: 350rpx;
+          height: 195.652rpx;
+          padding: 23.551rpx 30.797rpx;
+          .video_title {
+            font-size: 28.986rpx;
+            font-family: PingFangSC-Medium, PingFang SC;
+            font-weight: 500;
+            color: #000000;
+          }
+          .video_style {
+            margin-top: 18.116rpx;
+            font-size: 23.551rpx;
+            font-family: PingFangSC-Regular, PingFang SC;
+            font-weight: 400;
+            color: #666666;
+          }
+          .video_by {
+            position: absolute;
+			      bottom: 18.116rpx;
+            display: flex;
+            align-items: center;
+            .video_icon {
+              width: 36.232rpx;
+              height: 36.232rpx;
+              border-radius: 18.116rpx;
+            }
+            .video_name {
+              // margin-left: 9.058rpx; 
+              font-size: 23.551rpx;
+              font-family: PingFangSC-Regular, PingFang SC;
+              font-weight: 400;
+              color: #666666;
+              width: 259rpx;
+            }
+          }
+        }
         }
       }
       .data_content_introduction {
@@ -1628,6 +2020,38 @@ scroll-view ::v-deep ::-webkit-scrollbar {
 		font-weight: 500;
 		color: #000000;
 	}
+  .cloudsharebox {
+		display: flex;
+		align-items: center;
+		width: 650rpx;
+		justify-content: space-between;
+        .collect_text {
+            margin-left: 14.493rpx;
+			font-size: 16px;
+			width: 50%;
+			font-family: PingFangSC-Medium, PingFang SC;
+			font-weight: 500;
+			color: #000000;
+		}
+		.cloud_btn {
+			display: flex;
+			justify-content: flex-end;
+		    align-items: center;
+			width: 50%;
+			.collect_text1 {
+				margin-left: 14.493rpx;
+				font-size: 16px;
+				font-family: PingFangSC-Medium, PingFang SC;
+				font-weight: 500;
+				color: #000000;
+			}
+			.rightarr_icon {
+				width: 19.928rpx;
+				height: 21.739rpx;
+				margin: 0 13.551rpx;
+		  }
+		}
+	}
 	.redcollect_text {
 		margin-left: 14.493rpx;
 		font-size: 16px;
@@ -1684,4 +2108,68 @@ scroll-view ::v-deep ::-webkit-scrollbar {
     font-weight: 400;
     color: #999999;
   }
+  .masklayer {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+  .coupons_box {
+    position: relative;
+    margin-top: 50%;
+    margin-left: 67.029rpx;
+    position: relative;
+    transform: calc(0%, -50%);
+    width: 597.826rpx;
+    height: 760.87rpx;
+    .shutdown_icon {
+      position: absolute;
+      right: 0;
+      top: -65.899rpx;
+      width: 38.043rpx;
+      height: 38.043rpx;
+    }
+    .coupons_icon {
+      width: 597.826rpx;
+      height: 760.87rpx;
+    }
+    .coupons_content {
+      position: absolute;
+      top: 180rpx;
+      width: 100%;
+      left: 0px;
+      .content_text {
+		  padding: 0px 101.449rpx;
+		  font-size: 28.986rpx;
+		  font-family: PingFangSC-Regular, PingFang SC;
+		  font-weight: 400;
+		  color: #666666;
+		  .text {
+			  margin-top: 36.232rpx;
+		  }
+      .red_text {
+			  color: #FF445A;
+			  font-weight: 500;
+		  }
+	  }
+	  .know_btn {
+		  display: inline-block;
+		  text-align: center;
+		  margin-top: 59.783rpx;
+		  margin-left: 148.551rpx;
+		  width: 300.725rpx;
+		  height: 86.957rpx;
+		  line-height: 86.957rpx;
+		  font-size: 28.986rpx;
+	      font-family: PingFangSC-Medium, PingFang SC;
+		  font-weight: 500;
+		  color: #FFFFFF;
+		  background: #FF445A;
+		  border-radius: 43.478rpx;
+	  }
+    }
+  }
+}
 </style>

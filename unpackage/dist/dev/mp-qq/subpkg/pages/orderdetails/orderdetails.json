@@ -1,0 +1,12 @@
+{
+  "navigationStyle": "custom",
+  "usingComponents": {
+    "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "u-count-down": "/uview-ui/components/u-count-down/u-count-down",
+    "u-popup": "/uview-ui/components/u-popup/u-popup",
+    "release": "/components/release/release",
+    "dropball": "/components/dropball/dropball",
+    "music-audio": "/components/audio/audioplay",
+    "pyspopuup": "/components/pyspopup/pyspopup"
+  }
+}

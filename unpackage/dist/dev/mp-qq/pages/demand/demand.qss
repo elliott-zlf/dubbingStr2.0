@@ -1,0 +1,406 @@
+
+page {
+	min-height: 100%;
+	width: 100%;
+	overflow: hidden;
+}
+.u-mask {
+	position: absolute !important;
+}
+.u-drawer {
+	position: absolute !important;
+}
+.defaltext {
+	margin-top: 30rpx;
+	text-align: center;
+	font-size: 24rpx;
+	font-family: PingFangSC-Medium, PingFang SC;
+	font-weight: 500;
+	color: #717171;
+	line-height: 16px;
+}
+
+@charset "UTF-8";
+/**
+ * 这里是uni-app内置的常用样式变量
+ *
+ * uni-app 官方扩展插件及插件市场（https://ext.dcloud.net.cn）上很多三方插件均使用了这些样式变量
+ * 如果你是插件开发者，建议你使用scss预处理，并在插件代码中直接使用这些变量（无需 import 这个文件），方便用户通过搭积木的方式开发整体风格一致的App
+ *
+ */
+/**
+ * 如果你是App开发者（插件使用者），你可以通过修改这些变量来定制自己的插件主题，实现自定义主题功能
+ *
+ * 如果你的项目同样使用了scss预处理，你也可以直接在你的 scss 代码中使用如下变量，同时无需 import 这个文件
+ */
+/* 颜色变量 */
+.p-line-1.data-v-07e68366 {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  -o-text-overflow: ellipsis;
+}
+.text_exclusive.data-v-07e68366 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 30.797rpx;
+}
+.text_price.data-v-07e68366 {
+  height: 30.797rpx;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FF445A;
+  line-height: 30.797rpx;
+}
+/* uni.scss */
+/* 行为相关颜色 */
+/* 文字基本颜色 */
+/* 背景颜色 */
+/* 边框颜色 */
+/* 尺寸变量 */
+/* 文字尺寸 */
+/* 图片尺寸 */
+/* Border Radius */
+/* 水平间距 */
+/* 垂直间距 */
+/* 透明度 */
+/* 文章场景相关 */
+.erweimabox.data-v-07e68366 {
+  position: relative;
+}
+.erweimabox .close_iconbox.data-v-07e68366 {
+  position: absolute;
+  background: #000000;
+  right: 0rpx;
+  width: 50rpx;
+  height: 50rpx;
+  top: 0rpx;
+  border-radius: 50%;
+}
+.erweimabox .close_iconbox .close_icon.data-v-07e68366 {
+  width: 50rpx;
+  height: 50rpx;
+}
+.erweimabox .erweima_iconbox.data-v-07e68366 {
+  margin-left: 34.478rpx;
+}
+.erweimabox .erweima_icon.data-v-07e68366 {
+  width: 491.014rpx;
+  height: 491.014rpx;
+}
+.erweimabox .erweima_box.data-v-07e68366 {
+  width: 471.014rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 36.232rpx;
+  margin-left: 43.478rpx;
+}
+.notice.data-v-07e68366 {
+  width: 750rpx;
+  height: 72.464rpx;
+}
+.teacherlist_box.data-v-07e68366 {
+  position: relative;
+}
+.teacherlist_box .home_musicSrc_box.data-v-07e68366 {
+  position: absolute;
+  bottom: 90.58rpx;
+}
+.u-tabs-box.data-v-07e68366 {
+  position: relative;
+}
+.wrap.data-v-07e68366 {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - 0px);
+  width: 100%;
+  background: #F2F2F2;
+}
+.swiper-box.data-v-07e68366 {
+  flex: 1;
+}
+.swiper-item.data-v-07e68366 {
+  height: 100%;
+}
+.teacherOrder.data-v-07e68366 {
+  width: 695.652rpx;
+  margin-left: 27.174rpx;
+}
+.teacherOrder .list_item_box.data-v-07e68366 {
+  margin-top: 21.739rpx;
+  width: 695.652rpx;
+  height: 345.072rpx;
+  padding: 0rpx 36.232rpx;
+  background: #FFFFFF;
+  border-radius: 14.493rpx;
+}
+.teacherOrder .list_item_box .item_title_box.data-v-07e68366 {
+  display: flex;
+  padding-top: 36.232rpx;
+  padding-bottom: 5.739rpx;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box.data-v-07e68366 {
+  display: flex;
+  align-items: center;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .logo_icon.data-v-07e68366 {
+  width: 39.855rpx;
+  height: 39.855rpx;
+  border-radius: 19.928rpx;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text.data-v-07e68366 {
+  width: 419.899rpx;
+  height: 39.855rpx;
+  margin-left: 14.493rpx;
+  display: flex;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text .nickname.data-v-07e68366 {
+  display: flex;
+  align-items: center;
+}
+.teacherOrder .list_item_box .item_title_box .logo_icon_box .title_text .nicktime.data-v-07e68366 {
+  margin-left: 9.058rpx;
+  display: flex;
+  align-items: center;
+}
+.teacherOrder .list_item_box .item_title_box .apply_group_box.data-v-07e68366 {
+  display: flex;
+  align-items: center;
+}
+.teacherOrder .list_item_box .item_title_box .apply_group_box .apply_group.data-v-07e68366 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 144.928rpx;
+  height: 47.101rpx;
+  background: #FFFFFF;
+  border-radius: 7.246rpx;
+  color: #FF445A;
+  border: 1.812rpx solid #FF445A;
+  font-size: 21.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+}
+.teacherOrder .list_item_box .demand_content .item_list.data-v-07e68366 {
+  display: flex;
+  margin-top: 14.493rpx;
+  align-items: center;
+}
+.teacherOrder .list_item_box .demand_content .item_list .demand_title.data-v-07e68366 {
+  width: 76.087rpx;
+  height: 36.232rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .demand_content .item_list .demand_text.data-v-07e68366 {
+  width: 520.319rpx;
+  height: 36.232rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .placeholder_line.data-v-07e68366 {
+  position: relative;
+  margin-top: 25.362rpx;
+  margin-left: -36.232rpx;
+  width: 695.652rpx;
+  height: 1.812rpx;
+  background: #F6F7FA;
+}
+.teacherOrder .list_item_box .demand_box.data-v-07e68366 {
+  display: flex;
+  height: 80.957rpx;
+  align-items: center;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box.data-v-07e68366 {
+  width: 100%;
+  text-align: right;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box.data-v-07e68366 {
+  text-align: right;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box .instructions_title.data-v-07e68366 {
+  margin-right: 3.623rpx;
+  width: 215.58rpx;
+  height: 36.232rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FF445A;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .status_box .instructions_icon.data-v-07e68366 {
+  margin-left: 9.058rpx;
+  width: 21.739rpx;
+  height: 21.739rpx;
+  margin-bottom: -3.623rpx;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .instructions_title.data-v-07e68366 {
+  margin-right: 3.623rpx;
+  width: 215.58rpx;
+  height: 36.232rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FF445A;
+  line-height: 36.232rpx;
+}
+.teacherOrder .list_item_box .demand_box .instructions_box .instructions_icon.data-v-07e68366 {
+  width: 21.739rpx;
+  height: 21.739rpx;
+  margin-bottom: -3.623rpx;
+}
+.check_WeChat_test.data-v-07e68366 {
+  text-align: center;
+  height: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+  line-height: 39.855rpx;
+}
+.check_WeChat_tips.data-v-07e68366 {
+  margin-top: 28.986rpx;
+  margin-bottom: 36.232rpx;
+  height: 36.232rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+  line-height: 36.232rpx;
+}
+.share_btn_box.data-v-07e68366 {
+  display: flex;
+}
+.share_btn_box .cancelSharebtn.data-v-07e68366 {
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #FFFFFF;
+  border-radius: 39.855rpx;
+  border: 1.812rpx solid #DEDEDE;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #999999;
+}
+.share_btn_box .cancelSharebtn.data-v-07e68366::after {
+  border: none !important;
+}
+.share_btn_box .sharebtn.data-v-07e68366 {
+  width: 213.768rpx;
+  height: 79.71rpx;
+  background: #EE3F34;
+  border-radius: 39.855rpx;
+  font-size: 28.986rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FFFFFF;
+  line-height: 79.71rpx;
+}
+.share_btn_box .sharebtn.data-v-07e68366::after {
+  border: none !important;
+}
+.defaltPage.data-v-07e68366 {
+  text-align: center;
+}
+.defaltPage .defaltPageimg.data-v-07e68366 {
+  margin-top: 110.507rpx;
+  width: 403.986rpx;
+  height: 331.522rpx;
+}
+.defaltPage .defaltext.data-v-07e68366 {
+  margin-top: -72.464rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+}
+.masklayer.data-v-07e68366 {
+  position: fixed;
+  top: 0px;
+  left: 0px;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  z-index: 9999;
+}
+.masklayer .coupons_box.data-v-07e68366 {
+  margin-top: 50%;
+  margin-left: 67.029rpx;
+  position: absolute;
+  -webkit-transform: calc(0%,-50%);
+          transform: calc(0%,-50%);
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .shutdown_icon.data-v-07e68366 {
+  position: absolute;
+  right: 0;
+  top: -65.899rpx;
+  width: 38.043rpx;
+  height: 38.043rpx;
+}
+.masklayer .coupons_box .coupons_icon.data-v-07e68366 {
+  width: 615.942rpx;
+  height: 615.942rpx;
+}
+.masklayer .coupons_box .coupons_content.data-v-07e68366 {
+  position: absolute;
+  top: 240rpx;
+  width: 100%;
+  left: 0px;
+  display: flex;
+}
+.masklayer .coupons_box .coupons_content .discount_box.data-v-07e68366 {
+  margin-left: 106.884rpx;
+  margin-top: 16.304rpx;
+}
+.masklayer .coupons_box .coupons_content .discount_box .discount.data-v-07e68366 {
+  font-size: 54.348rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #FE445A;
+}
+.masklayer .coupons_box .coupons_content .discount_box .scope_discount.data-v-07e68366 {
+  font-size: 28.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FE445A;
+}
+.masklayer .coupons_box .coupons_content .discounts_box.data-v-07e68366 {
+  margin-left: 120rpx;
+  margin-top: 11px;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_ins.data-v-07e68366 {
+  font-size: 36rpx;
+  font-family: PingFangSC-Medium, PingFang SC;
+  font-weight: 500;
+  color: #000000;
+}
+.masklayer .coupons_box .coupons_content .discounts_box .discounts_validity.data-v-07e68366 {
+  font-size: 26.739rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #999999;
+  margin-top: 20rpx;
+}
+

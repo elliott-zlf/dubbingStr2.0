@@ -680,7 +680,7 @@ page {
 		align-items: center;
 		justify-content: center;
 		width: 100%;
-		margin-top: 101.739rpx;
+		margin-top: 71.739rpx;
 		.release_btn {
 			display: flex;
 			align-items: center;

@@ -178,6 +178,24 @@ page {
   height: 231.884rpx;
   background: rgba(0, 0, 0, 0.2);
 }
+.jisuangaodu .scroll_view .voice_item .head_portrait_box .video_label.data-v-731c08c9 {
+  position: absolute;
+  top: 10.87rpx;
+  left: 10.87rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9.058rpx;
+  height: 36.232rpx;
+  background: #FF445A;
+  border-radius: 7.246rpx;
+  opacity: 0.9;
+  font-size: 19.928rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #FFFFFF;
+  z-index: 999;
+}
 .jisuangaodu .scroll_view .voice_item .head_portrait_box .head_portrait_img.data-v-731c08c9 {
   border-radius: 14.493rpx;
   width: 177.536rpx;

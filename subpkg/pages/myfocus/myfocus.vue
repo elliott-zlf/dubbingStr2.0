@@ -1,12 +1,12 @@
 <template>
   <view class="container">
-    <u-navbar
+    <!-- <u-navbar
       :is-back="true"
       title="我的配音师"
       title-size="36.232rpx"
       title-color="#000000"
       :border-bottom="true"
-    ></u-navbar>
+    ></u-navbar> -->
     <view class="jisuangaodu">
       <view class="u-tabs-box">
         <u-tabs
@@ -34,6 +34,7 @@
       <view v-if="defaultshow">
         <view class="voice_item" v-for="(item, index) in readList" :key="index">
           <view class="head_portrait_box" @click="playTheMusic(item)">
+            <div v-if="item.teacher.grade_text!=='无'" class="video_label">{{item.teacher.grade_text}}</div>
             <image
               class="head_portrait_img"
               :src="item.teacher.avatar"
@@ -135,7 +136,7 @@
           ref="musicAudio"
           :url="dataPlay.works.url"
           :autoplay="true"
-          :portrait="dataPlay.avatar"
+          :portrait="dataPlay.teacher.avatar"
           :music_title="dataPlay.works.title"
           @handleChangePlay="handleChangePlay"  
           @musicClose="musicClose"
@@ -150,6 +151,7 @@ import { profileteacherlist } from "@/api/personal.js";
 import musicAudio from '@/components/audio/audioplay.vue';
 import playActive from '@/static/teacherlist/palyActive2.png'
 import play from '@/static/teacherlist/paly2.png'
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
   components: { accesslist,musicAudio },
   data() {
@@ -167,11 +169,11 @@ export default {
       },
       list: [
         {
-          name: "我关注的",
+          name: "下过单的",
           id: 0,
         },
         {
-          name: "下过单的",
+          name: "我关注的",
           id: 1,
         },
       ],
@@ -257,21 +259,22 @@ export default {
 	playTheMusic(orderItem) {
 				console.log('传过来的数据', orderItem)
 				this.audioShow = true
-				if(this.dataPlay.works.url === orderItem.teacher.works.url) {
+				if(this.dataPlay.works.url === orderItem.works.url) {
 				   this.readList.map((item)=>{
 					if(this.dataPlay===item){
-						orderItem.teacher.works.playStatus = !orderItem.teacher.works.playStatus
+						orderItem.works.playStatus = !orderItem.works.playStatus
 					}else {
 						item.playStatus = false
 					}
-				   })
+				  })
 				}else {
 					this.readList.map((item)=>{
-					item.teacher.works.playStatus = false
+					item.works.playStatus = false
 					})
 
-					orderItem.teacher.works.playStatus = true
-					this.dataPlay = orderItem.teacher
+					orderItem.works.playStatus = true
+					this.dataPlay = orderItem
+          buriedSomeStatistical(0)
 				}
 				setTimeout(()=>{
 					this.$refs.musicAudio.preStartPlay()
@@ -280,16 +283,16 @@ export default {
 			handleChangePlay(status) {
 				this.readList.map((item)=>{
 					if(this.dataPlay===item){
-						item.teacher.works.playStatus = status
+						item.works.playStatus = status
 					}else {
-						item.teacher.works.playStatus = false
+						item.works.playStatus = false
 					}
 				})
 
 			},
 			musicClose() {
 				this.readList.map((item)=>{
-					item.teacher.works.playStatus = false
+					item.works.playStatus = false
 				})
 				this.audioShow = false	
 				this.dataPlay =  {
@@ -382,6 +385,24 @@ page {
         width: 177.536rpx;
         height: 231.884rpx;
         background: rgba(0, 0, 0, 0.2);
+        .video_label {
+					position: absolute;	
+					top: 10.87rpx;
+					left: 10.87rpx;
+					display: flex;
+					align-items: center;
+					justify-content: center;
+					padding: 0 9.058rpx;
+					height: 36.232rpx;
+					background: #FF445A;
+					border-radius: 7.246rpx;
+					opacity: 0.9;
+					font-size: 19.928rpx;
+					font-family: PingFangSC-Regular, PingFang SC;
+					font-weight: 400;
+					color: #FFFFFF;
+          z-index: 999;
+				}
         .head_portrait_img {
           border-radius: 14.493rpx;
           width: 177.536rpx;

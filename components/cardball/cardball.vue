@@ -144,6 +144,7 @@ export default {
 	padding: 0 !important;
 	font-family: PingFangSC-Regular, PingFang SC;
 	font-weight: 400;
+	background: #FF445A;
 }
 .invitationBtn::after {
   border: none !important;

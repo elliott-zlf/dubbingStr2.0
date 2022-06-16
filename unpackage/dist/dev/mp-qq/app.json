@@ -1,0 +1,86 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/dubbinglibrary/dubbinglibrary",
+    "pages/personal/personal",
+    "pages/demand/demand",
+    "pages/soundlibrary/soundlibrary",
+    "pages/messageChat/messageChat"
+  ],
+  "subPackages": [
+    {
+      "root": "subpkg",
+      "pages": [
+        "pages/teacherlist/teacherlist",
+        "pages/teacherlistbeifen/teacherlist",
+        "pages/demanddetails/demanddetails",
+        "pages/about/about",
+        "pages/voicelist/voicelist",
+        "pages/transitions/transitions",
+        "pages/webview/webview",
+        "pages/cloudshare/cloudshare",
+        "pages/cshare/cshare",
+        "pages/myfocus/myfocus",
+        "pages/integral/integral",
+        "pages/coupons/coupons",
+        "pages/myorder/myorder",
+        "pages/orderdetails/orderdetails",
+        "pages/payment/payment",
+        "pages/release/release",
+        "pages/mywork/mywork",
+        "pages/voicesrelease/voicesrelease",
+        "pages/paymentcreate/paymentcreate",
+        "pages/caseDetails/caseDetails",
+        "pages/caseDetailsshare/caseDetailsshare",
+        "pages/music/music",
+        "pages/utility/utility",
+        "pages/asresources/asresources",
+        "pages/asresourcesshare/asresourcesshare",
+        "pages/utilityshaer/utilityshaer"
+      ],
+      "name": "sub-1"
+    }
+  ],
+  "window": {
+    "navigationBarTextStyle": "black",
+    "backgroundTextStyle": "light",
+    "navigationBarTitleText": "配音街",
+    "navigationBarBackgroundColor": "#FFFFFF",
+    "backgroundColor": "#FFFFFF"
+  },
+  "tabBar": {
+    "selectedColor": "#FF445A",
+    "backgroundColor": "#FFFFFF",
+    "borderStyle": "white",
+    "color": "#999999",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页",
+        "iconPath": "./static/tabbar/home.png",
+        "selectedIconPath": "./static/tabbar/homeActive.png"
+      },
+      {
+        "pagePath": "pages/soundlibrary/soundlibrary",
+        "text": "声音库",
+        "iconPath": "./static/tabbar/message.png",
+        "selectedIconPath": "./static/tabbar/messageActive.png"
+      },
+      {
+        "pagePath": "pages/messageChat/messageChat",
+        "text": "消息",
+        "iconPath": "./static/tabbar/messagechat.png",
+        "selectedIconPath": "./static/tabbar/messagechatActive.png"
+      },
+      {
+        "pagePath": "pages/personal/personal",
+        "text": "我的",
+        "iconPath": "./static/tabbar/my.png",
+        "selectedIconPath": "./static/tabbar/myActive.png"
+      }
+    ]
+  },
+  "usingComponents": {
+    "fix-2648": "/fix-2648"
+  }
+}

@@ -344,7 +344,7 @@ export default {
       }];
     },
     // 复制
-		downloadcopy(groupNum, title) {
+		downloadcopy(groupNum, title) { 
 				uniCopy({
 					content: groupNum,
 					success: (res) => {

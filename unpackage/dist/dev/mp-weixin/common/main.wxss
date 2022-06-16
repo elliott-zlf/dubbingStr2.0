@@ -120,6 +120,34 @@
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*每个页面公共css */
 .home_musicSrc_box {
 	width: 675.725rpx;
@@ -129,6 +157,7 @@
 	border-radius: 7.246rpx;
 	opacity: 0.8;
 }
+.uni-video-bar{ background: #F52C5A !important;}
 
 @charset "UTF-8";
 /**

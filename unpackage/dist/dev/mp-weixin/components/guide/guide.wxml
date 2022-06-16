@@ -1,0 +1,1 @@
+<block wx:if="{{SHOW_TOP}}"><view data-event-opts="{{[['tap',[['okHandler',['$event']]]]]}}" class="box data-v-451cbbbe" bindtap="__e"><view class="arrow data-v-451cbbbe" style="{{'margin-right:'+(marRight+'px')+';'+('margin-top:'+(marTop+'px')+';')}}"></view><view class="body data-v-451cbbbe"><view class="textContent data-v-451cbbbe">{{text}}</view></view></view></block>

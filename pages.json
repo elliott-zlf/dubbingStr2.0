@@ -43,6 +43,14 @@
 		}
 		
 		}
+        ,{
+            "path" : "pages/messageChat/messageChat",
+            "style" :                                                                                    
+            {
+                "navigationStyle":"custom"
+            }
+            
+        }
     ],
 	"globalStyle": {
 		"navigationBarTextStyle": "black",
@@ -73,10 +81,10 @@
 			"selectedIconPath":"./static/tabbar/messageActive.png"
           },
 		  {
-			"pagePath": "pages/demand/demand",
-			"text": "试音",
-			"iconPath": "./static/tabbar/syk.png",
-			"selectedIconPath":"./static/tabbar/sykActive.png"
+			"pagePath": "pages/messageChat/messageChat",
+			"text": "消息",
+			"iconPath": "./static/tabbar/messagechat.png",
+			"selectedIconPath":"./static/tabbar/messagechatActive.png"
 		  },
 		  {
 			"pagePath": "pages/personal/personal",
@@ -97,14 +105,14 @@
 			      {
 					"navigationStyle":"custom"
 			      }  
-			  }
-              ,{
+			 }
+             ,{
 				"path" : "pages/teacherlistbeifen/teacherlist",
 				"style" :                                                                                    
 				{
 				  "navigationStyle":"custom"
 				}  
-			}
+			 }
 			,{
 					"path" : "pages/demanddetails/demanddetails",
 					"style" :                                                                                    
@@ -141,7 +149,7 @@
                     "path" : "pages/webview/webview",
                     "style" :                                                                                    
                 {
-                    "navigationBarTitleText": "平台规范化运营手册",
+                    "navigationBarTitleText": "配音街平台",
                     "enablePullDownRefresh": false
                 }
                 
@@ -157,16 +165,18 @@
                 ,{
                     "path" : "pages/cshare/cshare",
                     "style" :                                                                                    
-                {
-                    "navigationStyle":"custom"
-                }
+                    {
+                        "navigationBarTitleText": "云分享",
+                        "enablePullDownRefresh": false
+                    }
                 
                 }
                 ,{
                     "path" : "pages/myfocus/myfocus",
                     "style" :                                                                                    
                 {
-                    "navigationStyle":"custom"
+                    "navigationBarTitleText": "我的配音师",
+                    "enablePullDownRefresh": false
                 }
                 
                 }
@@ -174,7 +184,8 @@
                     "path" : "pages/integral/integral",
                     "style" :                                                                                    
                 {
-                    "navigationStyle":"custom"
+                    "navigationBarTitleText": "我的积分",
+                    "enablePullDownRefresh": false
                 }
                 
                 },
@@ -190,7 +201,8 @@
                     "path" : "pages/myorder/myorder",
                     "style" :                                                                                    
                 {
-					"navigationStyle":"custom"
+                    "navigationBarTitleText": "我的订单",
+                    "enablePullDownRefresh": false
                 }
                 
                 }
@@ -198,7 +210,8 @@
                     "path" : "pages/orderdetails/orderdetails",
                     "style" :                                                                                    
                 {
-                    "navigationStyle":"custom"
+                    "navigationBarTitleText": "订单详情",
+                    "enablePullDownRefresh": false
                 }
                 
                 }
@@ -247,6 +260,72 @@
                     "style" :                                                                                    
                 {
                     "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/caseDetailsshare/caseDetailsshare",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/music/music",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "配乐免费素材",
+                    "enablePullDownRefresh": false
+                }
+                
+                }
+                ,{
+                    "path" : "pages/utility/utility",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/asresources/asresources",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/asresourcesshare/asresourcesshare",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/utilityshaer/utilityshaer",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/samplevoices/samplevoices",
+                    "style" :                                                                                    
+                {
+                    "navigationStyle":"custom"
+                }
+                
+                }
+                ,{
+                    "path" : "pages/voicesshare/voicesshare",
+                    "style" :                                                                                    
+                {
+                    "navigationBarTitleText": "云分享",
+                    "enablePullDownRefresh": false
                 }
                 
                 }

@@ -50,6 +50,10 @@
 page {
   height: 100%;
 }
+.u-title {
+  text-align: right;
+  margin-right: 32rpx;
+}
 
 @charset "UTF-8";
 /**
@@ -110,14 +114,53 @@ page {
   position: fixed;
   bottom: 2.58rpx;
 }
+.container .banner_box.data-v-57280228 {
+  margin-top: 21.739rpx;
+  margin-left: 27.174rpx;
+  width: 695.652rpx;
+  height: 181.159rpx;
+}
+.container .banner_box .banner_img.data-v-57280228 {
+  width: 695.652rpx;
+  height: 181.159rpx;
+}
+.release_demand_box.data-v-57280228 {
+  margin-top: 30.797rpx;
+  width: 695.652rpx;
+  margin-left: 27.174rpx;
+  height: 389.493rpx;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 36.232rpx 0px rgba(236, 236, 236, 0.5);
+  border-radius: 14.493rpx;
+}
+.release_demand_box .hotlist_box.data-v-57280228 {
+  margin: 38.043rpx 25.362rpx;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.release_demand_box .hotlist_box .hotlist.data-v-57280228 {
+  text-align: center;
+}
+.release_demand_box .hotlist_box .hotlist .hotitem_icon.data-v-57280228 {
+  width: 86.957rpx;
+  height: 86.957rpx;
+}
+.release_demand_box .hotlist_box .hotlist .name.data-v-57280228 {
+  font-size: 23.551rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #666666;
+  margin-top: 5rpx;
+}
 .release_demand.data-v-57280228 {
   display: flex;
-  margin-left: 27rpx;
-  margin-top: 27.174rpx;
+  margin-left: 25.362rpx;
+  padding-top: 27.174rpx;
   align-items: center;
 }
 .release_demand .release_item.data-v-57280228 {
-  width: 336.957rpx;
+  width: 311.594rpx;
   height: 159.42rpx;
   position: relative;
   padding: 25.174rpx;
@@ -139,40 +182,44 @@ page {
   height: 43.478rpx;
 }
 .release_demand .release_item .hottext .hotbtn.data-v-57280228 {
-  background-color: #FF445A;
   font-size: 18.116rpx;
   font-family: PingFangSC-Semibold, PingFang SC;
-  color: #FFFFFF;
+  color: #FFF400;
+  border: 1px solid #FFF400;
   margin-left: 10.87rpx;
   border-radius: 6rpx;
-  padding: 3.623rpx 9.058rpx;
+  padding: 0rpx 6.058rpx;
 }
 .release_demand .release_item .instructions.data-v-57280228 {
   z-index: 120;
   position: relative;
   display: flex;
+  justify-content: space-between;
 }
 .release_demand .release_item .instructions .red_icon.data-v-57280228 {
-  width: 72.464rpx;
-  height: 61.594rpx;
+  width: 56.159rpx;
+  height: 68.841rpx;
 }
 .release_demand .release_item .instructions .bule_icon.data-v-57280228 {
-  width: 63.406rpx;
-  height: 63.406rpx;
+  width: 59.783rpx;
+  height: 59.783rpx;
 }
 .release_demand .release_item .instructions .ins_text.data-v-57280228 {
-  width: 218.333rpx;
-  margin-top: 3.435rpx;
+  width: 200.333rpx;
+  margin-top: 4.435rpx;
   font-size: 21.739rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
   color: #FFFFFF;
 }
+.release_demand .release_item .instructions .ins_textS.data-v-57280228 {
+  margin-top: 5.346rpx;
+}
 .release_demand .release_item .resease_bc.data-v-57280228 {
   position: absolute;
   top: 0;
   left: 0;
-  width: 336.957rpx;
+  width: 311.594rpx;
   height: 159.42rpx;
 }
 .hottopics_item.data-v-57280228 {
@@ -209,7 +256,7 @@ page {
   color: #666666;
 }
 .hottopics_item .hotlist_box.data-v-57280228 {
-  margin-top: 19.928rpx;
+  margin-top: 10.928rpx;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -246,6 +293,17 @@ page {
   width: 123.188rpx;
   height: 123.188rpx;
   border-radius: 14.493rpx;
+}
+.hottopics_item .work_conten .works_item .play_item .online.data-v-57280228 {
+  position: absolute;
+  bottom: 0px;
+  right: 0rpx;
+  width: 21.739rpx;
+  height: 21.739rpx;
+  border-radius: 10.87rpx;
+  background: #26DA52;
+  z-index: 9;
+  border: 1px solid #FFFFFF;
 }
 .hottopics_item .work_conten .works_item .play_item .home_play.data-v-57280228 {
   position: absolute;
@@ -372,10 +430,39 @@ page {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 14.493rpx;
 }
+.hottopics_item .teacher_conten .voice_item .head_portrait_box .video_label.data-v-57280228 {
+  position: absolute;
+  top: 10.87rpx;
+  left: 10.87rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 9.058rpx;
+  height: 36.232rpx;
+  background: #FF445A;
+  border-radius: 7.246rpx;
+  opacity: 0.9;
+  font-size: 19.928rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  z-index: 999;
+  color: #FFFFFF;
+}
 .hottopics_item .teacher_conten .voice_item .head_portrait_box .head_portrait_img.data-v-57280228 {
   width: 155.797rpx;
   height: 195.652rpx;
   border-radius: 14.493rpx;
+}
+.hottopics_item .teacher_conten .voice_item .head_portrait_box .online.data-v-57280228 {
+  position: absolute;
+  bottom: 0px;
+  right: 0rpx;
+  width: 21.739rpx;
+  height: 21.739rpx;
+  border-radius: 10.87rpx;
+  background: #26DA52;
+  border: 1px solid #FFFFFF;
+  z-index: 9;
 }
 .hottopics_item .teacher_conten .voice_item .head_portrait_box .home_play.data-v-57280228 {
   position: absolute;
@@ -415,7 +502,6 @@ page {
   line-height: 39.855rpx;
 }
 .hottopics_item .teacher_conten .voice_item .voice_introduce .voice_name .name.data-v-57280228 {
-  margin-left: 16.304rpx;
   max-width: 250rpx;
   height: 39.855rpx;
   font-size: 28.986rpx;
@@ -522,22 +608,25 @@ page {
 }
 .hottopics_item .anli_conten .anliitem .anli_text.data-v-57280228 {
   position: relative;
+  width: 183.043rpx;
   margin-left: 25.362rpx;
-  margin-top: 36.232rpx;
+  margin-top: 28.986rpx;
 }
 .hottopics_item .anli_conten .anliitem .anli_text .anli_type.data-v-57280228 {
   font-size: 28.986rpx;
+  width: 183.043rpx;
   font-family: PingFangSC-Medium, PingFang SC;
   font-weight: 500;
-  color: #FFFFFF;
+  color: #2B3E5B;
 }
 .hottopics_item .anli_conten .anliitem .anli_text .anli_fubiao.data-v-57280228 {
-  margin-top: 16.304rpx;
+  margin-top: 5.435rpx;
   height: 32.609rpx;
+  width: 183.043rpx;
   font-size: 23.551rpx;
   font-family: PingFangSC-Regular, PingFang SC;
   font-weight: 400;
-  color: #FFFFFF;
+  color: #838EA1;
   line-height: 32.609rpx;
 }
 .logo_item.data-v-57280228 {

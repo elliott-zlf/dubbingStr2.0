@@ -154,4 +154,20 @@ page {
   font-weight: 400;
   color: #FE445A;
 }
+.defaltPage {
+  text-align: center;
+}
+.defaltPage .defaltPageimg {
+  margin-top: 110.507rpx;
+  width: 403.986rpx;
+  height: 331.522rpx;
+}
+.defaltPage .defaltext {
+  margin-top: -72.464rpx;
+  text-align: center;
+  font-size: 25.362rpx;
+  font-family: PingFangSC-Regular, PingFang SC;
+  font-weight: 400;
+  color: #000000;
+}
 

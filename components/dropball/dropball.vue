@@ -8,7 +8,7 @@
 	 @tap="onTap"
 	 :animation="ballAnimation"
 	 >
-	 <button  class="invitationBtn" :style="{background:bg}" open-type="contact" send-message-title="联系客服" :show-message-card="true">
+	 <button  class="invitationBtn" :style="{background:bg}" @click="handleJumpWeChat">
 		  <image
 			  class="service_icon"
 			  src="@/static/my/cService1.png"
@@ -20,6 +20,8 @@
 </template>
 
 <script>
+// 埋点统计
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 export default {
     props: {
       title: {
@@ -29,6 +31,10 @@ export default {
 	  bg: {
 		type: String,
 		default: '#FF445A'
+	  },
+	  bottomdistance: {
+		  type: Number,
+		  default: 150
 	  }
     },
 	data() {
@@ -46,7 +52,7 @@ export default {
 	created() {
 		let _this = this;
 		_this.modile = uni.getSystemInfoSync();
-		_this.top = _this.modile.safeArea.bottom -270;
+		_this.top = _this.modile.safeArea.bottom - _this.bottomdistance;
 		_this.left = _this.modile.safeArea.right-100;
 		_this.diameter = _this.modile.screenHeight / 15;
 	},
@@ -67,6 +73,26 @@ export default {
 		},
 		handleChangeDroball() {
           this.$emit('handleChangeDroball')
+		},
+		// 跳转到发布
+		handleJumpWeChat() {
+			  console.log('跳转到发布')
+			  //统计极速试音埋点   
+			  buriedSomeStatistical(2)
+			  wx.openCustomerServiceChat({
+					extInfo: {url: 'https://work.weixin.qq.com/kfid/kfcade993b61c3ff656'},
+					corpId: 'ww901fbb3c6ecf9871',
+					success(res) {
+					  console.log('接入小程序客服成功')
+					},
+				    fail(err) {
+                      console.log('接小程序客服失败',err)
+					  uni.showToast({
+							icon: 'none',
+							title: '仅支持在手机微信中使用该功能哦'
+					  });
+					}
+				})
 		},
 		touchmove(e) {
 			let _this = this;

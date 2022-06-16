@@ -22,7 +22,7 @@ const accountInfo = wx.getAccountInfoSync();
 				break;
 			}
  // #endif  
- // #ifdef  H5   
+ // #ifndef  MP-WEIXIN  
   url = 'https://www.peiyinstreet.com';
  // #endif  
 const BASE_URL = url

@@ -2,6 +2,8 @@
   "navigationStyle": "custom",
   "usingComponents": {
     "u-navbar": "/uview-ui/components/u-navbar/u-navbar",
+    "guide": "/components/guide/guide",
+    "u-swiper": "/uview-ui/components/u-swiper/u-swiper",
     "dropball": "/components/dropball/dropball",
     "music-audio": "/components/audio/audioplay",
     "submit-form": "/components/submitform/submitform"

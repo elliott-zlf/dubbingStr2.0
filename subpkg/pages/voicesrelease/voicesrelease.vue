@@ -11,7 +11,7 @@
 		></u-navbar>
 		<view class="content">
 		  <l-file ref="lFile" @up-success="onSuccess"></l-file>	
-            <view class="banner_title">
+            <view v-if="!activityData.status" class="banner_title">
 			  填写需求
 			  <image
 			      class="rightarr_icon"
@@ -26,6 +26,7 @@
 			  />
 			  交付成品
 		  </view>
+		  <u-notice-bar v-if="activityData.status" mode="horizontal" bg-color="#FF445A" color="#FFFFFF" :list="activityData.text"></u-notice-bar>
 		  <view class="release_form">
 			<view class="form_item" @click="handleVisitorsJump">
 			<view class="item_title">服务配音师</view>
@@ -67,7 +68,7 @@
 				</view>
 			</view>
 			<view class="form_item" @click="onUpload()">
-				<view class="item_title">参考样音</view>
+				<view class="item_title">参考样音<text class="red_text">(可替换)</text></view>
 				<view v-if="form.filename == ''" class="note_textplaceholder textarea-placeholder">从微信聊天文件中选择</view>
 				<view v-else class="note_text u-line-1">{{form.filename}}</view>
 				 <view class="event_view">
@@ -78,15 +79,35 @@
 					/>
 				</view>
 			  </view>
+			  <view class="form_item" @click="handlePrompt">
+				<view class="item_title">交付时间</view>
+				<view class="note_text u-line-1">工作时段2h内交付，点击查看详情</view>
+				 <view class="event_view">
+					<image
+						class="rightarr"
+						src="@/static/coupons/rightarr.png"
+						mode="scaleToFill"
+					/>
+				</view>
+			  </view>
 			  <view class="interval_view"></view>
               <view class="form_item">
-                   <input
+                   <!-- <input
 						v-model="form.content"
 						:disabled="!editor"
 						class="note_text"
 						style="text-align:left"
 						type="text"
 						placeholder="输入配音要求，或注意事项"
+						placeholder-class="textarea-placeholder"
+					/> -->
+					<textarea
+						class="note_text_pading "
+						v-model="form.content"
+						:disabled="!editor"
+						:disable-default-padding="true"
+						placeholder="输入配音要求，或注意事项"
+						:maxlength="-1"
 						placeholder-class="textarea-placeholder"
 					/>
 			  </view>
@@ -98,64 +119,41 @@
 							v-model="form.audition_text"
 							:disabled="!editor"
 							:disable-default-padding="true"
-							placeholder="输入配音正文，或直接从手机微信的聊天文件中上传稿件"
+							:placeholder="placeholderType"
 							:maxlength="-1"
 							placeholder-class="textarea-placeholder"
 							@input="handleInputEvents"
 						/>
 					</view>
 					<view class="statistical_box">
+						<view class="home_upload_box">
+							<view
+							    v-for="(item,index) in form.audition_url"
+                                :key="index"
+								class="upload_successful_box"
+								@click="editor ? handleDeleteFile(index) : ''"
+							>
+								<image
+									class="deletefile_img"
+									src="@/static/home/deletefile.png"
+									mode="scaleToFill"
+								/>
+								<image
+								class="successful_img"
+								src="@/static/home/wordicon.png"
+								mode="scaleToFill"
+								/>
+							</view>
+							<view v-if="form.audition_url.length <= 2" class="home_upload_hot" @click="onUpload('file')">
+								<image
+									class="add_icon"
+									src="@/static/coupons/tianjia.png"
+									mode="scaleToFill"
+								/>
+							</view>
+						</view>
 						<view class="textarea_num">
-						<text>{{ textareanum }}</text>
-						</view>
-						<view class="home_upload_box" v-if="editor">
-							<view v-if="fileShow" class="home_upload_hot" @click="onUpload('file')">
-								<image
-									class="add_icon"
-									src="@/static/coupons/tianjia.png"
-									mode="scaleToFill"
-								/>
-							</view>
-							<view
-								v-else
-								class="upload_successful_box"
-								@click="handleDeleteFile('file')"
-							>
-								<image
-								class="deletefile_img"
-								src="@/static/home/deletefile.png"
-								mode="scaleToFill"
-								/>
-								<image
-								class="successful_img"
-								src="@/static/home/wordicon.png"
-								mode="scaleToFill"
-								/>
-							</view>
-						</view>
-						<view class="home_upload_box" v-else>
-							<view v-if="fileShow" class="home_upload_hot">
-								<image
-									class="add_icon"
-									src="@/static/coupons/tianjia.png"
-									mode="scaleToFill"
-								/>
-							</view>
-							<view
-								v-else
-								class="upload_successful_box"
-							>
-								<image
-								class="deletefile_img"
-								src="@/static/home/deletefile.png"
-								mode="scaleToFill"
-								/>
-								<image
-								class="successful_img"
-								src="@/static/home/wordicon.png"
-								mode="scaleToFill"
-								/>
-							</view>
+						  <text>{{ textareanum }}</text>
 						</view>
 					</view>
 					</view>
@@ -175,9 +173,9 @@
 				<view class="item_title"><span class="red_span" style="color:#FF445A;margin-left: -12rpx;">*</span>跳过试音直接录制</view>
 				<u-switch style="margin-right: 23.551rpx;" class="sr_status" v-model="form.sr_status" active-color="#FF445A" inactive-color="#E5E5E5"></u-switch>
 			  </view> -->
-			  <view class="form_item" style="border:none">
+			  <!-- <view class="form_item" style="border:none">
 				   <view class="item_title"><span class="red_span" style="color:#FF445A;margin-left:-16.304rpx;">*</span>如需试音，请返回上一页点击【找我试音】</view>
-			  </view>
+			  </view> -->
 		  </view>
 		</view>
 		<view class="release_btnbox" v-if="submitbtnS">
@@ -186,6 +184,11 @@
 			   {{resBtn}}
 			 </view>
 		</view>
+		<div v-show="promptShow" class="custom_popup" @tap.stop="handleCloseSubmitShow">
+			<div class="masklayer" @click.stop="!handleCloseSubmitShow">
+				<prompt ref="submitform" btnText="需求详情" @handleCloseSubmitShow="handleCloseSubmitShow"></prompt>
+			</div>
+		</div>
 	</view>
 </template>
 
@@ -193,7 +196,14 @@
 import { homeTag,demandPublish,profileUpdate,urlIndex } from '@/api/index.js'
 import { getphone } from "@/api/myneeds.js"
 import { mapState, mapActions } from "vuex";
+import { holidaypopup } from '@/api/index'
+// 埋点统计
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
+import prompt from "@/components/prompt/prompt.vue";
 	export default {
+		components: {
+          prompt
+		},
 		props: {
 			srstatus: {
 			    type: Boolean,
@@ -249,7 +259,7 @@ import { mapState, mapActions } from "vuex";
 				status: 0,  
                 content: '',
 				audition_text: '',
-				audition_url: '',
+				audition_url: [],
 				draft_word_count: Number,
 				budget: null,
 				discuss: false,
@@ -266,6 +276,10 @@ import { mapState, mapActions } from "vuex";
 				work_id: null,
 				sr_status: true
 			  },
+			  activityData: {
+				  status: false,
+				  text: ['端午期间部分老师无法及时录制，紧急需求请联系人工客服匹配，祝您端午安康！'],
+			  },
 			  data: {},
 			  // pickView
 			  multiArray: [],
@@ -279,9 +293,11 @@ import { mapState, mapActions } from "vuex";
 			  dataCode: '',
 			  // 防止提交多次
 			  submittime: true,
+			  promptShow: false,
 			  avatar: '',
 			  nickname: '',
-			  offer_price: ''
+			  offer_price: '',
+			  placeholderType: '输入配音正文，或直接从手机微信的聊天文件中上传稿件'
 			};
 		},
 		watch:{
@@ -289,7 +305,11 @@ import { mapState, mapActions } from "vuex";
 		created() {
 		   console.log('每次都会走这里吗')
 		   this.getTagAll()
-		   this.handleAssignment()
+		   this.handleAssignment()  
+		},
+		onLoad(options) {
+           // 统计填写需求的锚点
+		   this.voicesrelease() 
 		},
 		beforeMount() {
 		    uni.login({
@@ -331,7 +351,19 @@ import { mapState, mapActions } from "vuex";
 					//   '1': sexArray[0].id,
 					//   '5': styleArray[0].id
 					// }
+					holidaypopup().then((res)=>{
+						console.log('弹窗内容提示', res)
+						this.activityData = res.data 
+					})
 				})
+			},
+			voicesrelease() {
+				//统计极速试音埋点   
+				buriedSomeStatistical(6)
+			},
+			submitvoicesrelease() {
+				//统计极速试音埋点   
+				buriedSomeStatistical(8)
 			},
 			handlertextarea() {
 				this.form.audition_text = '0'
@@ -356,14 +388,11 @@ import { mapState, mapActions } from "vuex";
 				console.log('传到发布页面的数据', this.data)
 				if (JSON.stringify(this.data) !== "{}") {
 					// 修改需求赋值
-					if (this.data.audition_url) {
-						this.fileShow = false
-					}
 					this.form = {
 							status: this.data.status || 0, 
 							content: this.data.content || '',
 							audition_text: this.data.audition_text || '',
-							audition_url: this.data.audition_url_escape || '',
+							audition_url: this.data.audition_url_escape || [],
 							draft_word_count: this.data.draft_word_count || '',
 							budget: this.data.budget || null,
 							discuss: this.data.discuss || false,
@@ -380,6 +409,11 @@ import { mapState, mapActions } from "vuex";
 						this.avatar= this.data.avatar
 						this.offer_price =this.data.offer_price
 						this.form.work_id = this.data.work_id || null
+						if (this.data.subjecttype === '品牌广告' || this.data.subjecttype === '促销广告') {
+							this.placeholderType = '输入配音正文，或直接从手机微信的聊天文件中上传稿件(广告文案长度，不可超过200字，超过请选择其他题材类型下单)'
+						} else {
+							this.placeholderType = '输入配音正文，或直接从手机微信的聊天文件中上传稿件'
+						}
 					if (this.form.audition_text) {	
 						this.textareanum = this.form.audition_text.length;
 					}
@@ -402,7 +436,27 @@ import { mapState, mapActions } from "vuex";
 			},
 			// 计算输入框的字数
 			handleInputEvents() {
-			  this.textareanum = this.form.audition_text.length;
+			  console.log('打算大家好风景回复',this.form.audition_text)	
+			  this.textareanum = this.fnGetCpmisWords(this.form.audition_text)
+			},
+			fnGetCpmisWords(str){
+					let sLen = 0;
+					console.log('打算大家好风景回复',sLen,str)
+					try{
+						//先将回车换行符做特殊处理
+						str = str.replace(/(\r\n+|s+| +)/g,"龘");
+						//处理英文字符数字，连续字母、数字、英文符号视为一个单词
+						str = str.replace(/[\x00-\xff]/g,"m");	
+						//合并字符m，连续字母、数字、英文符号视为一个单词
+						str = str.replace(/m+/g,"*");
+						//去掉回车换行符
+						str = str.replace(/龘+/g,"");
+						//返回字数
+						sLen = str.length;
+					}catch(e){
+						
+					}
+					return sLen;
 			},
 			 // 提交订单
 			submit() {
@@ -413,6 +467,8 @@ import { mapState, mapActions } from "vuex";
 				this.submittime = false
 				demandPublish(this.form).then((res)=>{
 					console.log('code等于多少', res.errcode)
+					// 点击提交埋点数据
+					this.submitvoicesrelease()
 					this.submittime = true
 					if (res.errcode ===1) {
 						uni.showToast({
@@ -507,11 +563,8 @@ import { mapState, mapActions } from "vuex";
 				}  
 			},
 			 // 删除文件事件
-			handleDeleteFile(item) {
-				if(item==='file') {
-					this.fileShow = true;
-					this.form.audition_url = ''
-				}
+			handleDeleteFile(index) {
+				this.form.audition_url.splice(index,1)
 			},
 			// 选择优惠卷
 			handleCheckboxchange(item) {
@@ -526,7 +579,7 @@ import { mapState, mapActions } from "vuex";
 			onUpload(item) { 
 			let platform =  uni.getSystemInfoSync().platform
 			if (platform == 'android' || platform == 'ios' || platform == 'devtools') {
-			this.uploaditem = item
+			    this.uploaditem = item
 				this.$refs.lFile.upload({
 				// #ifdef APP-PLUS
 				// nvue页面使用时请查阅nvue获取当前webview的api，当前示例为vue窗口
@@ -541,20 +594,27 @@ import { mapState, mapActions } from "vuex";
 				fileName: '',
 				},
 				});
-					}else {
-						uni.showToast({
-							title: "微信小程序仅支持从手机端上传",
-							icon: 'none',
-							mask: true,
-							duration: 3000
-						});
-					}	
-				},
+			}else {
+				uni.showToast({
+					title: "微信小程序仅支持从手机端上传",
+					icon: 'none',
+					mask: true,
+					duration: 3000
+				});			
+			}	
+			},
+			// 展示弹窗
+			handlePrompt() {
+			  this.promptShow = true
+			},
+			 // 关闭提示弹窗
+			handleCloseSubmitShow() {
+			   this.promptShow = false
+			},
 			onSuccess(res) {
 			console.log('上传成功回调',JSON.stringify(res), res);
 				if(this.uploaditem==='file') {
-					this.fileShow = false;
-					this.form.audition_url = res.data.data
+					this.form.audition_url.push(res.data.data)
 				}else {
 					this.musicShow = false;
 					console.log('上传成功回调文件名称', this.form,res.fileName)
@@ -643,6 +703,17 @@ page {
 				flex: 1;
 				margin: 0px 27.174rpx;
 				text-align: right;
+				font-size: 28.986rpx;
+				font-family: PingFangSC-Regular, PingFang SC;
+				font-weight: 400;
+				color: #000000;
+			  }
+			  .note_text_pading {
+				flex: 1;
+				margin: 0px 23.551rpx;
+				padding-top: 25.362rpx;
+				text-align: left;
+				height: 122.464rpx;
 				font-size: 28.986rpx;
 				font-family: PingFangSC-Regular, PingFang SC;
 				font-weight: 400;
@@ -739,24 +810,26 @@ page {
 				align-items: center;
 				.textarea_num {
 					width: 63.406rpx;
+					text-align: right;
 					font-size: 28.986rpx;
 					font-family: PingFangSC-Regular, PingFang SC;
 					font-weight: 400;
 					color: #999999;
 				}
 				.home_upload_box {
-					width: 76.087rpx;
-					width: 138rpx;
+					// width: 76.087rpx;
+					// width: 138rpx;
 					text-align: right;
+					display: flex;
 					// margin-right: 18.116rpx;
 					.home_upload_hot {
-						width: 138rpx;
-						height: 54.348rpx;
+						// width: 138rpx;
+						height: 64.348rpx;
 						display: flex;
 						justify-content: flex-end;
 					.add_icon {
-                      width: 54.348rpx;
-					  height: 54.348rpx;
+                      width: 64.348rpx;
+					  height: 64.348rpx;
 					}
 					.home_upload {
 						text-align: center;
@@ -776,13 +849,14 @@ page {
 					width: 100%;
 					height: 36.232rpx;
 					.successful_img {
-						width: 46.232rpx;
-						height: 46.232rpx;
+						width: 66.232rpx;
+						height: 66.232rpx;
+						margin-right: 10px;
 					}
 					.deletefile_img {
 						position: absolute;
 						top: -7rpx;
-						right: -7rpx;
+						right: 16rpx;
 						width: 18.116rpx;
 						height: 18.116rpx;
 					}
@@ -791,50 +865,6 @@ page {
 				}
 			  }
 		  }
-		}
-        .form_item {
-              display: flex;
-			  align-items: center;
-			  background: #FFFFFF;
-			  width: 100%;
-			  min-height: 108.696rpx;
-			  border-bottom: 1px solid #F4F4F4;
-			  .note_text {
-				flex: 1;
-				margin: 0px 27.174rpx;
-				text-align: right;
-				font-size: 28.986rpx;
-				font-family: PingFangSC-Regular, PingFang SC;
-				font-weight: 400;
-				color: #000000;
-			  }
-			  .note_textplaceholder {
-				flex: 1;
-				margin: 0px 27.174rpx;
-				text-align: right;
-			  }
-			  .item_title {
-				  margin-left: 27.174rpx;
-				  font-size: 28.986rpx;
-				  font-family: PingFangSC-Regular, PingFang SC;
-				  font-weight: 400;
-				  color: #666666;
-			  }
-			  .event_view {
-				  margin-right: 27.174rpx;
-				  display: flex;
-				  align-items: center;
-				  .event_text {
-					font-size: 28.986rpx;
-					font-family: PingFangSC-Regular, PingFang SC;
-					font-weight: 400;
-					color: #000000;
-				  }
-				  .rightarr {
-					width: 12.681rpx;
-					height: 25.362rpx;	
-				  }
-			  }
 		}
 	}
 	.release_btnbox {
@@ -857,5 +887,28 @@ page {
 			color: #FFFFFF;
 		}
 	}
+} 
+.red_text {
+	color: #FF445A;
+	font-weight: 500;
+}
+.custom_popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  z-index: 100024;
+  background-color: rgba(0, 0, 0, 0.6);
+  .masklayer {
+    width: 100%;
+    position: fixed;
+    height: 984rpx;
+    bottom: 0px;
+    border-top-right-radius: 24.493rpx;
+    border-top-left-radius: 24.493rpx;
+    background: #ffffff;
+  }
 }
 </style>

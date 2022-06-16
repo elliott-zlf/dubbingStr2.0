@@ -473,14 +473,14 @@ export default {
             console.log("success:" + JSON.stringify(res));
             console.log("fail返回的参数", res);
             uni.redirectTo({
-              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id,
+              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id+'&&type=index',
             });
           },
           fail: function (err) {
             console.log("fail返回的参数", err);
             console.log("fail:" + JSON.stringify(err));
             uni.redirectTo({
-              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id,
+              url: "/subpkg/pages/orderdetails/orderdetails?id=" + order_id+'&&type=index',
             });
           },
         });

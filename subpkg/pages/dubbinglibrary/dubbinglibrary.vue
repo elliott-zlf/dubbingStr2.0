@@ -181,6 +181,7 @@ import cardball from "@/components/cardball/cardball.vue"
 import { mapState, mapActions } from "vuex";
 import play from '@/static/teacherlist/paly2.png'
 import playActive from '@/static/teacherlist/palyActive2.png'
+import { buriedSomeStatistical } from '@/utils/encapsulation.js'
 	export default {
 		components: {
 			musicAudio,
@@ -306,6 +307,7 @@ import playActive from '@/static/teacherlist/palyActive2.png'
 					})
 					orderItem.works.playStatus = true
 					this.dataPlay = orderItem
+					buriedSomeStatistical(0)
 				}
 				setTimeout(()=>{
 					this.$refs.musicAudio.preStartPlay()
